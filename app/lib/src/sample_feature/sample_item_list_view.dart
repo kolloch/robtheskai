@@ -17,6 +17,8 @@ class SampleItemListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // adjust the code below to match the new Material3 theme.
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sample Items'),
