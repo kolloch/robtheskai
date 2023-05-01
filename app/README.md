@@ -1,6 +1,6 @@
-# robokru
+# robtheskai
 
-A new Flutter project.
+The offline-first flutter app for amateur film makers.
 
 ## Getting Started
 
