@@ -8,6 +8,7 @@ version: 1.0.0+1
 
 environment:
   sdk: '>=2.19.6 <3.0.0'
+  flutter: ">=3.0.0"
 
 dependencies:
   flutter:
@@ -20,6 +21,10 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.0
   path_provider: ^2.0.0
   path: ^1.8.2
+
+  # Riverpod dependencies
+  flutter_hooks: ^0.18.0
+  hooks_riverpod: ^2.3.6
 
 dev_dependencies:
   flutter_test:
