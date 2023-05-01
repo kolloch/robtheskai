@@ -1,23 +1,81 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:robokru/src/settings/settings_service.dart';
 
 import 'sample_feature/sample_item_details_view.dart';
 import 'sample_feature/sample_item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
+final FutureProvider<SettingsController> settingsControllerFutureProvider =
+    FutureProvider((ref) async {
+  // Set up the SettingsController, which will glue user settings to multiple
+  // Flutter Widgets.
+  final settingsController = SettingsController(SettingsService());
+
+  // Load the user's preferred theme while the splash screen is displayed.
+  // This prevents a sudden theme change when the app is first displayed.
+  await settingsController.loadSettings();
+
+  return settingsController;
+});
+
+final GoRouter _router = GoRouter(
+  routes: [
+    GoRoute(
+      name: SampleItemListView.routeName,
+      path: '/',
+      builder: (context, state) => const SampleItemListView(),
+    ),
+    GoRoute(
+      name: SampleItemDetailsView.routeName,
+      path: '/sampleItemDetails/:id',
+      builder: (context, state) => const SampleItemDetailsView(),
+    ),
+    GoRoute(
+      name: SettingsView.routeName,
+      path: '/settings',
+      builder: (context, state) => const SettingsView(),
+    ),
+  ],
+);
+
 /// The Widget that configures your application.
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({
     super.key,
-    required this.settingsController,
   });
 
-  final SettingsController settingsController;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final maybeSettingsController =
+        ref.watch(settingsControllerFutureProvider).asData;
+
+    if (maybeSettingsController?.isLoading ?? true) {
+      // While the SettingsController is loading, display a loading screen.
+      return const MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    } else if (maybeSettingsController?.error != null) {
+      // If the SettingsController has an error, display an error screen.
+      return const MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: Text('Error loading settings'),
+          ),
+        ),
+      );
+    }
+
+    final settingsController = maybeSettingsController!.value;
+
     // Glue the SettingsController to the MaterialApp.
     //
     // The AnimatedBuilder Widget listens to the SettingsController for changes.
@@ -25,7 +83,7 @@ class MyApp extends StatelessWidget {
     return AnimatedBuilder(
       animation: settingsController,
       builder: (BuildContext context, Widget? child) {
-        return MaterialApp(
+        return MaterialApp.router(
           // Providing a restorationScopeId allows the Navigator built by the
           // MaterialApp to restore the navigation stack when a user leaves and
           // returns to the app after it has been killed while running in the
@@ -62,24 +120,7 @@ class MyApp extends StatelessWidget {
           darkTheme: ThemeData.dark(),
           themeMode: settingsController.themeMode,
 
-          // Define a function to handle named routes in order to support
-          // Flutter web url navigation and deep linking.
-          onGenerateRoute: (RouteSettings routeSettings) {
-            return MaterialPageRoute<void>(
-              settings: routeSettings,
-              builder: (BuildContext context) {
-                switch (routeSettings.name) {
-                  case SettingsView.routeName:
-                    return SettingsView(controller: settingsController);
-                  case SampleItemDetailsView.routeName:
-                    return const SampleItemDetailsView();
-                  case SampleItemListView.routeName:
-                  default:
-                    return const SampleItemListView();
-                }
-              },
-            );
-          },
+          routerConfig: _router,
         );
       },
     );

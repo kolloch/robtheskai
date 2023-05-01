@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'settings_controller.dart';
+import '../app.dart';
 
 /// Displays the various settings that can be customized by the user.
 ///
 /// When a user changes a setting, the SettingsController is updated and
 /// Widgets that listen to the SettingsController are rebuilt.
-class SettingsView extends StatelessWidget {
-  const SettingsView({super.key, required this.controller});
+class SettingsView extends ConsumerWidget {
+  const SettingsView({super.key});
 
   static const routeName = '/settings';
 
-  final SettingsController controller;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Read the SettingsController provided by the SettingsControllerProvider
+    // above to listen to changes to the selected theme.
+    final controller =
+        ref.watch(settingsControllerFutureProvider).asData!.value;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
