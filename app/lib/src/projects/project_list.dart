@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:robokru/src/tables.dart';
 
 import '../settings/settings_view.dart';
-import 'sample_item_details_view.dart';
+import 'project_scene_list.dart';
 
 final projectsProvider = StreamProvider((ref) {
   final skaidb = ref.watch(skaiDbProvider);
@@ -12,8 +12,8 @@ final projectsProvider = StreamProvider((ref) {
 });
 
 /// Displays a list of SampleItems.
-class SampleItemListView extends ConsumerWidget {
-  const SampleItemListView({
+class ProjectListView extends ConsumerWidget {
+  const ProjectListView({
     super.key,
   });
 
@@ -63,10 +63,9 @@ class SampleItemListView extends ConsumerWidget {
                 },
               ),
               onTap: () {
-                context.pushNamed(SampleItemDetailsView.routeName,
-                    pathParameters: {
-                      'id': item.id.toString(),
-                    });
+                context.pushNamed(ProjectSceneList.routeName, pathParameters: {
+                  'id': item.id.toString(),
+                });
               });
         },
       );

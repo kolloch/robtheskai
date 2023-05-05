@@ -230,7 +230,10 @@ class $LocationsTable extends Locations
   @override
   late final GeneratedColumn<int> projectId = GeneratedColumn<int>(
       'project_id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES projects (id)'));
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -435,7 +438,19 @@ class $ScenesTable extends Scenes with TableInfo<$ScenesTable, Scene> {
   @override
   late final GeneratedColumn<int> projectId = GeneratedColumn<int>(
       'project_id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES projects (id)'));
+  static const VerificationMeta _locationIdMeta =
+      const VerificationMeta('locationId');
+  @override
+  late final GeneratedColumn<int> locationId = GeneratedColumn<int>(
+      'location_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES locations (id)'));
   static const VerificationMeta _numberMeta = const VerificationMeta('number');
   @override
   late final GeneratedColumn<int> number = GeneratedColumn<int>(
@@ -447,7 +462,8 @@ class $ScenesTable extends Scenes with TableInfo<$ScenesTable, Scene> {
       'name', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [id, projectId, number, name];
+  List<GeneratedColumn> get $columns =>
+      [id, projectId, locationId, number, name];
   @override
   String get aliasedName => _alias ?? 'scenes';
   @override
@@ -465,6 +481,14 @@ class $ScenesTable extends Scenes with TableInfo<$ScenesTable, Scene> {
           projectId.isAcceptableOrUnknown(data['project_id']!, _projectIdMeta));
     } else if (isInserting) {
       context.missing(_projectIdMeta);
+    }
+    if (data.containsKey('location_id')) {
+      context.handle(
+          _locationIdMeta,
+          locationId.isAcceptableOrUnknown(
+              data['location_id']!, _locationIdMeta));
+    } else if (isInserting) {
+      context.missing(_locationIdMeta);
     }
     if (data.containsKey('number')) {
       context.handle(_numberMeta,
@@ -491,6 +515,8 @@ class $ScenesTable extends Scenes with TableInfo<$ScenesTable, Scene> {
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       projectId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}project_id'])!,
+      locationId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}location_id'])!,
       number: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}number'])!,
       name: attachedDatabase.typeMapping
@@ -507,11 +533,13 @@ class $ScenesTable extends Scenes with TableInfo<$ScenesTable, Scene> {
 class Scene extends DataClass implements Insertable<Scene> {
   final int id;
   final int projectId;
+  final int locationId;
   final int number;
   final String name;
   const Scene(
       {required this.id,
       required this.projectId,
+      required this.locationId,
       required this.number,
       required this.name});
   @override
@@ -519,6 +547,7 @@ class Scene extends DataClass implements Insertable<Scene> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['project_id'] = Variable<int>(projectId);
+    map['location_id'] = Variable<int>(locationId);
     map['number'] = Variable<int>(number);
     map['name'] = Variable<String>(name);
     return map;
@@ -528,6 +557,7 @@ class Scene extends DataClass implements Insertable<Scene> {
     return ScenesCompanion(
       id: Value(id),
       projectId: Value(projectId),
+      locationId: Value(locationId),
       number: Value(number),
       name: Value(name),
     );
@@ -539,6 +569,7 @@ class Scene extends DataClass implements Insertable<Scene> {
     return Scene(
       id: serializer.fromJson<int>(json['id']),
       projectId: serializer.fromJson<int>(json['projectId']),
+      locationId: serializer.fromJson<int>(json['locationId']),
       number: serializer.fromJson<int>(json['number']),
       name: serializer.fromJson<String>(json['name']),
     );
@@ -549,14 +580,22 @@ class Scene extends DataClass implements Insertable<Scene> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'projectId': serializer.toJson<int>(projectId),
+      'locationId': serializer.toJson<int>(locationId),
       'number': serializer.toJson<int>(number),
       'name': serializer.toJson<String>(name),
     };
   }
 
-  Scene copyWith({int? id, int? projectId, int? number, String? name}) => Scene(
+  Scene copyWith(
+          {int? id,
+          int? projectId,
+          int? locationId,
+          int? number,
+          String? name}) =>
+      Scene(
         id: id ?? this.id,
         projectId: projectId ?? this.projectId,
+        locationId: locationId ?? this.locationId,
         number: number ?? this.number,
         name: name ?? this.name,
       );
@@ -565,6 +604,7 @@ class Scene extends DataClass implements Insertable<Scene> {
     return (StringBuffer('Scene(')
           ..write('id: $id, ')
           ..write('projectId: $projectId, ')
+          ..write('locationId: $locationId, ')
           ..write('number: $number, ')
           ..write('name: $name')
           ..write(')'))
@@ -572,13 +612,14 @@ class Scene extends DataClass implements Insertable<Scene> {
   }
 
   @override
-  int get hashCode => Object.hash(id, projectId, number, name);
+  int get hashCode => Object.hash(id, projectId, locationId, number, name);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Scene &&
           other.id == this.id &&
           other.projectId == this.projectId &&
+          other.locationId == this.locationId &&
           other.number == this.number &&
           other.name == this.name);
 }
@@ -586,31 +627,37 @@ class Scene extends DataClass implements Insertable<Scene> {
 class ScenesCompanion extends UpdateCompanion<Scene> {
   final Value<int> id;
   final Value<int> projectId;
+  final Value<int> locationId;
   final Value<int> number;
   final Value<String> name;
   const ScenesCompanion({
     this.id = const Value.absent(),
     this.projectId = const Value.absent(),
+    this.locationId = const Value.absent(),
     this.number = const Value.absent(),
     this.name = const Value.absent(),
   });
   ScenesCompanion.insert({
     this.id = const Value.absent(),
     required int projectId,
+    required int locationId,
     required int number,
     required String name,
   })  : projectId = Value(projectId),
+        locationId = Value(locationId),
         number = Value(number),
         name = Value(name);
   static Insertable<Scene> custom({
     Expression<int>? id,
     Expression<int>? projectId,
+    Expression<int>? locationId,
     Expression<int>? number,
     Expression<String>? name,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (projectId != null) 'project_id': projectId,
+      if (locationId != null) 'location_id': locationId,
       if (number != null) 'number': number,
       if (name != null) 'name': name,
     });
@@ -619,11 +666,13 @@ class ScenesCompanion extends UpdateCompanion<Scene> {
   ScenesCompanion copyWith(
       {Value<int>? id,
       Value<int>? projectId,
+      Value<int>? locationId,
       Value<int>? number,
       Value<String>? name}) {
     return ScenesCompanion(
       id: id ?? this.id,
       projectId: projectId ?? this.projectId,
+      locationId: locationId ?? this.locationId,
       number: number ?? this.number,
       name: name ?? this.name,
     );
@@ -637,6 +686,9 @@ class ScenesCompanion extends UpdateCompanion<Scene> {
     }
     if (projectId.present) {
       map['project_id'] = Variable<int>(projectId.value);
+    }
+    if (locationId.present) {
+      map['location_id'] = Variable<int>(locationId.value);
     }
     if (number.present) {
       map['number'] = Variable<int>(number.value);
@@ -652,6 +704,7 @@ class ScenesCompanion extends UpdateCompanion<Scene> {
     return (StringBuffer('ScenesCompanion(')
           ..write('id: $id, ')
           ..write('projectId: $projectId, ')
+          ..write('locationId: $locationId, ')
           ..write('number: $number, ')
           ..write('name: $name')
           ..write(')'))

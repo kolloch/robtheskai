@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:robokru/src/settings/settings_service.dart';
 
-import 'sample_feature/sample_item_details_view.dart';
-import 'sample_feature/sample_item_list_view.dart';
+import 'projects/project_scene_list.dart';
+import 'projects/project_list.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
@@ -26,14 +26,14 @@ final FutureProvider<SettingsController> settingsControllerFutureProvider =
 final GoRouter _router = GoRouter(
   routes: [
     GoRoute(
-      name: SampleItemListView.routeName,
+      name: ProjectListView.routeName,
       path: '/',
-      builder: (context, state) => const SampleItemListView(),
+      builder: (context, state) => const ProjectListView(),
     ),
     GoRoute(
-      name: SampleItemDetailsView.routeName,
+      name: ProjectSceneList.routeName,
       path: '/sampleItemDetails/:id',
-      builder: (context, state) => const SampleItemDetailsView(),
+      builder: (context, state) => const ProjectSceneList(),
     ),
     GoRoute(
       name: SettingsView.routeName,

@@ -23,6 +23,7 @@ class Locations extends Table {
 class Scenes extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get projectId => integer().references(Projects, #id)();
+  IntColumn get locationId => integer().references(Locations, #id)();
   IntColumn get number => integer()();
   TextColumn get name => text()();
 }
@@ -32,23 +33,52 @@ class SkaiDb extends _$SkaiDb {
   SkaiDb() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 3;
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onCreate: (Migrator m) async {
+        await m.createAll();
+      },
+      onUpgrade: (Migrator m, int from, int to) async {
+        if (from < 3) {
+          await m.addColumn(scenes, scenes.locationId);
+        }
+      },
+    );
+  }
 
   Stream<List<Project>> getAllProjects() => select(projects).watch();
 
   Future<void> createSampleProjects() async {
-    await into(projects).insert(const Project(
-        id: 1,
-        name: 'Project 1',
-        description: 'This is a sample project description.'));
-    await into(projects).insert(const Project(
-        id: 2,
-        name: 'Project 2',
-        description: 'This is a sample project description.'));
-    await into(projects).insert(const Project(
-        id: 3,
-        name: 'Project 3',
-        description: 'This is a sample project description.'));
+    for (int i = 0; i < 10; i++) {
+      await insertSampleProject(i);
+    }
+  }
+
+  Future<void> insertSampleProject(int i) async {
+    await into(projects).insert(ProjectsCompanion(
+        name: Value('Project $i'),
+        description: const Value('This is a sample project description.')));
+
+    final villa = await into(locations).insertReturning(LocationsCompanion(
+        projectId: Value(i), name: const Value('Villa in the Woods, Office')));
+    final sunnyBeachHouse = await into(locations).insertReturning(
+        LocationsCompanion(
+            projectId: Value(i),
+            name: const Value('Sunny Beach House, Front Bench')));
+
+    await into(scenes).insert(ScenesCompanion(
+        projectId: Value(i),
+        locationId: Value(villa.id),
+        number: const Value(1),
+        name: const Value('A normal day at work')));
+    await into(scenes).insert(ScenesCompanion(
+        projectId: Value(i),
+        locationId: Value(sunnyBeachHouse.id),
+        number: const Value(2),
+        name: const Value('Epethany at the beach')));
   }
 
   Future<void> deleteProject(int id) async {
