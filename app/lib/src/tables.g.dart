@@ -3,6 +3,19 @@
 part of 'tables.dart';
 
 // ignore_for_file: type=lint
+mixin _$ProjectsDaoMixin on DatabaseAccessor<SkaiDb> {
+  $ProjectsTable get projects => attachedDatabase.projects;
+}
+mixin _$LocationsDaoMixin on DatabaseAccessor<SkaiDb> {
+  $ProjectsTable get projects => attachedDatabase.projects;
+  $LocationsTable get locations => attachedDatabase.locations;
+}
+mixin _$ScenesDaoMixin on DatabaseAccessor<SkaiDb> {
+  $ProjectsTable get projects => attachedDatabase.projects;
+  $LocationsTable get locations => attachedDatabase.locations;
+  $ScenesTable get scenes => attachedDatabase.scenes;
+}
+
 class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -717,6 +730,9 @@ abstract class _$SkaiDb extends GeneratedDatabase {
   late final $ProjectsTable projects = $ProjectsTable(this);
   late final $LocationsTable locations = $LocationsTable(this);
   late final $ScenesTable scenes = $ScenesTable(this);
+  late final ProjectsDao projectsDao = ProjectsDao(this as SkaiDb);
+  late final LocationsDao locationsDao = LocationsDao(this as SkaiDb);
+  late final ScenesDao scenesDao = ScenesDao(this as SkaiDb);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

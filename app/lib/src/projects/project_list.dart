@@ -6,8 +6,8 @@ import 'package:robokru/src/tables.dart';
 import '../settings/settings_view.dart';
 import 'project_scene_list.dart';
 
-final projectsProvider = StreamProvider((ref) {
-  final skaidb = ref.watch(skaiDbProvider);
+final projectsProvider = StreamProvider.autoDispose((ref) {
+  final skaidb = ref.watch(projectsDaoProvider);
   return skaidb.getAllProjects();
 });
 
@@ -58,7 +58,7 @@ class ProjectListView extends ConsumerWidget {
               trailing: IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () async {
-                  final skaidb = ref.read(skaiDbProvider);
+                  final skaidb = ref.read(projectsDaoProvider);
                   await skaidb.deleteProject(item.id);
                 },
               ),
@@ -75,7 +75,7 @@ class ProjectListView extends ConsumerWidget {
         child: ElevatedButton(
           child: const Text('Create Sample Projects'),
           onPressed: () async {
-            final skaidb = ref.read(skaiDbProvider);
+            final skaidb = ref.read(projectsDaoProvider);
             await skaidb.createSampleProjects();
           },
         ),
