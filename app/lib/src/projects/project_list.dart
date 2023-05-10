@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:robokru/src/tables.dart';
+import 'package:robokru/src/data/tables.dart';
 
+import '../data/query/projects.dart';
 import '../settings/settings_view.dart';
 import 'project_scene_list.dart';
 

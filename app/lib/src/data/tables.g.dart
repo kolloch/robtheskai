@@ -3,25 +3,6 @@
 part of 'tables.dart';
 
 // ignore_for_file: type=lint
-mixin _$ProjectsDaoMixin on DatabaseAccessor<SkaiDb> {
-  $ProjectsTable get projects => attachedDatabase.projects;
-}
-mixin _$LocationsDaoMixin on DatabaseAccessor<SkaiDb> {
-  $ProjectsTable get projects => attachedDatabase.projects;
-  $LocationsTable get locations => attachedDatabase.locations;
-}
-mixin _$ScenesDaoMixin on DatabaseAccessor<SkaiDb> {
-  $ProjectsTable get projects => attachedDatabase.projects;
-  $LocationsTable get locations => attachedDatabase.locations;
-  $ScenesTable get scenes => attachedDatabase.scenes;
-}
-mixin _$ShotsDaoMixin on DatabaseAccessor<SkaiDb> {
-  $ProjectsTable get projects => attachedDatabase.projects;
-  $LocationsTable get locations => attachedDatabase.locations;
-  $ScenesTable get scenes => attachedDatabase.scenes;
-  $ShotsTable get shots => attachedDatabase.shots;
-}
-
 class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
   @override
   final GeneratedDatabase attachedDatabase;
