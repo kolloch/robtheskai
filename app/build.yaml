@@ -1,0 +1,16 @@
+targets:
+  $default:
+    sources:
+      - $package$
+      - pubspec.*
+      - lib/$lib$
+      - lib/src/data/**.dart
+      - proto/** # Your .proto directory
+    builders:
+      drift_dev:
+        generate_for:
+          - lib/src/data/**.dart # Your .proto directory
+        options: {}
+      protoc_builder:
+        generate_for:
+          - proto/** # Your .proto directory

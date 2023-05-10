@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+message test {
+    // Vitaly important.
+    string peter = 1;
+}
