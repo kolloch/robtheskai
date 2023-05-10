@@ -12,6 +12,20 @@ For help getting started with Flutter development, view the
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+## Generated code
+
+Once:
+
+```bash
+flutter pub run build_runner build
+```
+
+Continuously:
+
+```bash
+flutter pub run build_runner watch
+```
+
 ## Assets
 
 The `assets` directory houses images, fonts, and any other files you want to

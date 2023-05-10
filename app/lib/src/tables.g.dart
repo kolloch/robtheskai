@@ -15,6 +15,12 @@ mixin _$ScenesDaoMixin on DatabaseAccessor<SkaiDb> {
   $LocationsTable get locations => attachedDatabase.locations;
   $ScenesTable get scenes => attachedDatabase.scenes;
 }
+mixin _$ShotsDaoMixin on DatabaseAccessor<SkaiDb> {
+  $ProjectsTable get projects => attachedDatabase.projects;
+  $LocationsTable get locations => attachedDatabase.locations;
+  $ScenesTable get scenes => attachedDatabase.scenes;
+  $ShotsTable get shots => attachedDatabase.shots;
+}
 
 class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
   @override
@@ -23,13 +29,10 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
   $ProjectsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  late final GeneratedColumnWithTypeConverter<List<int>, String> id =
+      GeneratedColumn<String>('id', aliasedName, false,
+              type: DriftSqlType.string, requiredDuringInsert: true)
+          .withConverter<List<int>>($ProjectsTable.$converterid);
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -52,9 +55,7 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
+    context.handle(_idMeta, const VerificationResult.success());
     if (data.containsKey('name')) {
       context.handle(
           _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
@@ -78,8 +79,8 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
   Project map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Project(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      id: $ProjectsTable.$converterid.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!),
       name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       description: attachedDatabase.typeMapping
@@ -91,10 +92,12 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
   $ProjectsTable createAlias(String alias) {
     return $ProjectsTable(attachedDatabase, alias);
   }
+
+  static TypeConverter<List<int>, String> $converterid = const UuidConverter();
 }
 
 class Project extends DataClass implements Insertable<Project> {
-  final int id;
+  final List<int> id;
   final String name;
   final String description;
   const Project(
@@ -102,7 +105,10 @@ class Project extends DataClass implements Insertable<Project> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
+    {
+      final converter = $ProjectsTable.$converterid;
+      map['id'] = Variable<String>(converter.toSql(id));
+    }
     map['name'] = Variable<String>(name);
     map['description'] = Variable<String>(description);
     return map;
@@ -120,7 +126,7 @@ class Project extends DataClass implements Insertable<Project> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Project(
-      id: serializer.fromJson<int>(json['id']),
+      id: serializer.fromJson<List<int>>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       description: serializer.fromJson<String>(json['description']),
     );
@@ -129,13 +135,14 @@ class Project extends DataClass implements Insertable<Project> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
+      'id': serializer.toJson<List<int>>(id),
       'name': serializer.toJson<String>(name),
       'description': serializer.toJson<String>(description),
     };
   }
 
-  Project copyWith({int? id, String? name, String? description}) => Project(
+  Project copyWith({List<int>? id, String? name, String? description}) =>
+      Project(
         id: id ?? this.id,
         name: name ?? this.name,
         description: description ?? this.description,
@@ -162,38 +169,48 @@ class Project extends DataClass implements Insertable<Project> {
 }
 
 class ProjectsCompanion extends UpdateCompanion<Project> {
-  final Value<int> id;
+  final Value<List<int>> id;
   final Value<String> name;
   final Value<String> description;
+  final Value<int> rowid;
   const ProjectsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.description = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   ProjectsCompanion.insert({
-    this.id = const Value.absent(),
+    required List<int> id,
     required String name,
     required String description,
-  })  : name = Value(name),
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        name = Value(name),
         description = Value(description);
   static Insertable<Project> custom({
-    Expression<int>? id,
+    Expression<String>? id,
     Expression<String>? name,
     Expression<String>? description,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (description != null) 'description': description,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
   ProjectsCompanion copyWith(
-      {Value<int>? id, Value<String>? name, Value<String>? description}) {
+      {Value<List<int>>? id,
+      Value<String>? name,
+      Value<String>? description,
+      Value<int>? rowid}) {
     return ProjectsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -201,13 +218,17 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<int>(id.value);
+      final converter = $ProjectsTable.$converterid;
+      map['id'] = Variable<String>(converter.toSql(id.value));
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
@@ -217,7 +238,8 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
     return (StringBuffer('ProjectsCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('description: $description')
+          ..write('description: $description, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -231,22 +253,20 @@ class $LocationsTable extends Locations
   $LocationsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  late final GeneratedColumnWithTypeConverter<List<int>, String> id =
+      GeneratedColumn<String>('id', aliasedName, false,
+              type: DriftSqlType.string, requiredDuringInsert: true)
+          .withConverter<List<int>>($LocationsTable.$converterid);
   static const VerificationMeta _projectIdMeta =
       const VerificationMeta('projectId');
   @override
-  late final GeneratedColumn<int> projectId = GeneratedColumn<int>(
-      'project_id', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: true,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES projects (id)'));
+  late final GeneratedColumnWithTypeConverter<List<int>, String> projectId =
+      GeneratedColumn<String>('project_id', aliasedName, false,
+              type: DriftSqlType.string,
+              requiredDuringInsert: true,
+              defaultConstraints: GeneratedColumn.constraintIsAlways(
+                  'REFERENCES projects (id)'))
+          .withConverter<List<int>>($LocationsTable.$converterprojectId);
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -263,15 +283,8 @@ class $LocationsTable extends Locations
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('project_id')) {
-      context.handle(_projectIdMeta,
-          projectId.isAcceptableOrUnknown(data['project_id']!, _projectIdMeta));
-    } else if (isInserting) {
-      context.missing(_projectIdMeta);
-    }
+    context.handle(_idMeta, const VerificationResult.success());
+    context.handle(_projectIdMeta, const VerificationResult.success());
     if (data.containsKey('name')) {
       context.handle(
           _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
@@ -287,10 +300,11 @@ class $LocationsTable extends Locations
   Location map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Location(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      projectId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}project_id'])!,
+      id: $LocationsTable.$converterid.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!),
+      projectId: $LocationsTable.$converterprojectId.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}project_id'])!),
       name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
     );
@@ -300,19 +314,29 @@ class $LocationsTable extends Locations
   $LocationsTable createAlias(String alias) {
     return $LocationsTable(attachedDatabase, alias);
   }
+
+  static TypeConverter<List<int>, String> $converterid = const UuidConverter();
+  static TypeConverter<List<int>, String> $converterprojectId =
+      const UuidConverter();
 }
 
 class Location extends DataClass implements Insertable<Location> {
-  final int id;
-  final int projectId;
+  final List<int> id;
+  final List<int> projectId;
   final String name;
   const Location(
       {required this.id, required this.projectId, required this.name});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['project_id'] = Variable<int>(projectId);
+    {
+      final converter = $LocationsTable.$converterid;
+      map['id'] = Variable<String>(converter.toSql(id));
+    }
+    {
+      final converter = $LocationsTable.$converterprojectId;
+      map['project_id'] = Variable<String>(converter.toSql(projectId));
+    }
     map['name'] = Variable<String>(name);
     return map;
   }
@@ -329,8 +353,8 @@ class Location extends DataClass implements Insertable<Location> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Location(
-      id: serializer.fromJson<int>(json['id']),
-      projectId: serializer.fromJson<int>(json['projectId']),
+      id: serializer.fromJson<List<int>>(json['id']),
+      projectId: serializer.fromJson<List<int>>(json['projectId']),
       name: serializer.fromJson<String>(json['name']),
     );
   }
@@ -338,13 +362,14 @@ class Location extends DataClass implements Insertable<Location> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'projectId': serializer.toJson<int>(projectId),
+      'id': serializer.toJson<List<int>>(id),
+      'projectId': serializer.toJson<List<int>>(projectId),
       'name': serializer.toJson<String>(name),
     };
   }
 
-  Location copyWith({int? id, int? projectId, String? name}) => Location(
+  Location copyWith({List<int>? id, List<int>? projectId, String? name}) =>
+      Location(
         id: id ?? this.id,
         projectId: projectId ?? this.projectId,
         name: name ?? this.name,
@@ -371,38 +396,48 @@ class Location extends DataClass implements Insertable<Location> {
 }
 
 class LocationsCompanion extends UpdateCompanion<Location> {
-  final Value<int> id;
-  final Value<int> projectId;
+  final Value<List<int>> id;
+  final Value<List<int>> projectId;
   final Value<String> name;
+  final Value<int> rowid;
   const LocationsCompanion({
     this.id = const Value.absent(),
     this.projectId = const Value.absent(),
     this.name = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   LocationsCompanion.insert({
-    this.id = const Value.absent(),
-    required int projectId,
+    required List<int> id,
+    required List<int> projectId,
     required String name,
-  })  : projectId = Value(projectId),
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        projectId = Value(projectId),
         name = Value(name);
   static Insertable<Location> custom({
-    Expression<int>? id,
-    Expression<int>? projectId,
+    Expression<String>? id,
+    Expression<String>? projectId,
     Expression<String>? name,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (projectId != null) 'project_id': projectId,
       if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
   LocationsCompanion copyWith(
-      {Value<int>? id, Value<int>? projectId, Value<String>? name}) {
+      {Value<List<int>>? id,
+      Value<List<int>>? projectId,
+      Value<String>? name,
+      Value<int>? rowid}) {
     return LocationsCompanion(
       id: id ?? this.id,
       projectId: projectId ?? this.projectId,
       name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -410,13 +445,18 @@ class LocationsCompanion extends UpdateCompanion<Location> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<int>(id.value);
+      final converter = $LocationsTable.$converterid;
+      map['id'] = Variable<String>(converter.toSql(id.value));
     }
     if (projectId.present) {
-      map['project_id'] = Variable<int>(projectId.value);
+      final converter = $LocationsTable.$converterprojectId;
+      map['project_id'] = Variable<String>(converter.toSql(projectId.value));
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
@@ -426,7 +466,8 @@ class LocationsCompanion extends UpdateCompanion<Location> {
     return (StringBuffer('LocationsCompanion(')
           ..write('id: $id, ')
           ..write('projectId: $projectId, ')
-          ..write('name: $name')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -439,31 +480,30 @@ class $ScenesTable extends Scenes with TableInfo<$ScenesTable, Scene> {
   $ScenesTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  late final GeneratedColumnWithTypeConverter<List<int>, String> id =
+      GeneratedColumn<String>('id', aliasedName, false,
+              type: DriftSqlType.string, requiredDuringInsert: true)
+          .withConverter<List<int>>($ScenesTable.$converterid);
   static const VerificationMeta _projectIdMeta =
       const VerificationMeta('projectId');
   @override
-  late final GeneratedColumn<int> projectId = GeneratedColumn<int>(
-      'project_id', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: true,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES projects (id)'));
+  late final GeneratedColumnWithTypeConverter<List<int>, String> projectId =
+      GeneratedColumn<String>('project_id', aliasedName, false,
+              type: DriftSqlType.string,
+              requiredDuringInsert: true,
+              defaultConstraints: GeneratedColumn.constraintIsAlways(
+                  'REFERENCES projects (id)'))
+          .withConverter<List<int>>($ScenesTable.$converterprojectId);
   static const VerificationMeta _locationIdMeta =
       const VerificationMeta('locationId');
   @override
-  late final GeneratedColumn<int> locationId = GeneratedColumn<int>(
-      'location_id', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: true,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES locations (id)'));
+  late final GeneratedColumnWithTypeConverter<List<int>, String> locationId =
+      GeneratedColumn<String>('location_id', aliasedName, false,
+              type: DriftSqlType.string,
+              requiredDuringInsert: true,
+              defaultConstraints: GeneratedColumn.constraintIsAlways(
+                  'REFERENCES locations (id)'))
+          .withConverter<List<int>>($ScenesTable.$converterlocationId);
   static const VerificationMeta _numberMeta = const VerificationMeta('number');
   @override
   late final GeneratedColumn<int> number = GeneratedColumn<int>(
@@ -486,23 +526,9 @@ class $ScenesTable extends Scenes with TableInfo<$ScenesTable, Scene> {
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('project_id')) {
-      context.handle(_projectIdMeta,
-          projectId.isAcceptableOrUnknown(data['project_id']!, _projectIdMeta));
-    } else if (isInserting) {
-      context.missing(_projectIdMeta);
-    }
-    if (data.containsKey('location_id')) {
-      context.handle(
-          _locationIdMeta,
-          locationId.isAcceptableOrUnknown(
-              data['location_id']!, _locationIdMeta));
-    } else if (isInserting) {
-      context.missing(_locationIdMeta);
-    }
+    context.handle(_idMeta, const VerificationResult.success());
+    context.handle(_projectIdMeta, const VerificationResult.success());
+    context.handle(_locationIdMeta, const VerificationResult.success());
     if (data.containsKey('number')) {
       context.handle(_numberMeta,
           number.isAcceptableOrUnknown(data['number']!, _numberMeta));
@@ -524,12 +550,14 @@ class $ScenesTable extends Scenes with TableInfo<$ScenesTable, Scene> {
   Scene map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Scene(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      projectId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}project_id'])!,
-      locationId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}location_id'])!,
+      id: $ScenesTable.$converterid.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!),
+      projectId: $ScenesTable.$converterprojectId.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}project_id'])!),
+      locationId: $ScenesTable.$converterlocationId.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}location_id'])!),
       number: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}number'])!,
       name: attachedDatabase.typeMapping
@@ -541,12 +569,18 @@ class $ScenesTable extends Scenes with TableInfo<$ScenesTable, Scene> {
   $ScenesTable createAlias(String alias) {
     return $ScenesTable(attachedDatabase, alias);
   }
+
+  static TypeConverter<List<int>, String> $converterid = const UuidConverter();
+  static TypeConverter<List<int>, String> $converterprojectId =
+      const UuidConverter();
+  static TypeConverter<List<int>, String> $converterlocationId =
+      const UuidConverter();
 }
 
 class Scene extends DataClass implements Insertable<Scene> {
-  final int id;
-  final int projectId;
-  final int locationId;
+  final List<int> id;
+  final List<int> projectId;
+  final List<int> locationId;
   final int number;
   final String name;
   const Scene(
@@ -558,9 +592,18 @@ class Scene extends DataClass implements Insertable<Scene> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['project_id'] = Variable<int>(projectId);
-    map['location_id'] = Variable<int>(locationId);
+    {
+      final converter = $ScenesTable.$converterid;
+      map['id'] = Variable<String>(converter.toSql(id));
+    }
+    {
+      final converter = $ScenesTable.$converterprojectId;
+      map['project_id'] = Variable<String>(converter.toSql(projectId));
+    }
+    {
+      final converter = $ScenesTable.$converterlocationId;
+      map['location_id'] = Variable<String>(converter.toSql(locationId));
+    }
     map['number'] = Variable<int>(number);
     map['name'] = Variable<String>(name);
     return map;
@@ -580,9 +623,9 @@ class Scene extends DataClass implements Insertable<Scene> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Scene(
-      id: serializer.fromJson<int>(json['id']),
-      projectId: serializer.fromJson<int>(json['projectId']),
-      locationId: serializer.fromJson<int>(json['locationId']),
+      id: serializer.fromJson<List<int>>(json['id']),
+      projectId: serializer.fromJson<List<int>>(json['projectId']),
+      locationId: serializer.fromJson<List<int>>(json['locationId']),
       number: serializer.fromJson<int>(json['number']),
       name: serializer.fromJson<String>(json['name']),
     );
@@ -591,18 +634,18 @@ class Scene extends DataClass implements Insertable<Scene> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'projectId': serializer.toJson<int>(projectId),
-      'locationId': serializer.toJson<int>(locationId),
+      'id': serializer.toJson<List<int>>(id),
+      'projectId': serializer.toJson<List<int>>(projectId),
+      'locationId': serializer.toJson<List<int>>(locationId),
       'number': serializer.toJson<int>(number),
       'name': serializer.toJson<String>(name),
     };
   }
 
   Scene copyWith(
-          {int? id,
-          int? projectId,
-          int? locationId,
+          {List<int>? id,
+          List<int>? projectId,
+          List<int>? locationId,
           int? number,
           String? name}) =>
       Scene(
@@ -638,34 +681,39 @@ class Scene extends DataClass implements Insertable<Scene> {
 }
 
 class ScenesCompanion extends UpdateCompanion<Scene> {
-  final Value<int> id;
-  final Value<int> projectId;
-  final Value<int> locationId;
+  final Value<List<int>> id;
+  final Value<List<int>> projectId;
+  final Value<List<int>> locationId;
   final Value<int> number;
   final Value<String> name;
+  final Value<int> rowid;
   const ScenesCompanion({
     this.id = const Value.absent(),
     this.projectId = const Value.absent(),
     this.locationId = const Value.absent(),
     this.number = const Value.absent(),
     this.name = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   ScenesCompanion.insert({
-    this.id = const Value.absent(),
-    required int projectId,
-    required int locationId,
+    required List<int> id,
+    required List<int> projectId,
+    required List<int> locationId,
     required int number,
     required String name,
-  })  : projectId = Value(projectId),
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        projectId = Value(projectId),
         locationId = Value(locationId),
         number = Value(number),
         name = Value(name);
   static Insertable<Scene> custom({
-    Expression<int>? id,
-    Expression<int>? projectId,
-    Expression<int>? locationId,
+    Expression<String>? id,
+    Expression<String>? projectId,
+    Expression<String>? locationId,
     Expression<int>? number,
     Expression<String>? name,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -673,21 +721,24 @@ class ScenesCompanion extends UpdateCompanion<Scene> {
       if (locationId != null) 'location_id': locationId,
       if (number != null) 'number': number,
       if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
   ScenesCompanion copyWith(
-      {Value<int>? id,
-      Value<int>? projectId,
-      Value<int>? locationId,
+      {Value<List<int>>? id,
+      Value<List<int>>? projectId,
+      Value<List<int>>? locationId,
       Value<int>? number,
-      Value<String>? name}) {
+      Value<String>? name,
+      Value<int>? rowid}) {
     return ScenesCompanion(
       id: id ?? this.id,
       projectId: projectId ?? this.projectId,
       locationId: locationId ?? this.locationId,
       number: number ?? this.number,
       name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -695,19 +746,25 @@ class ScenesCompanion extends UpdateCompanion<Scene> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<int>(id.value);
+      final converter = $ScenesTable.$converterid;
+      map['id'] = Variable<String>(converter.toSql(id.value));
     }
     if (projectId.present) {
-      map['project_id'] = Variable<int>(projectId.value);
+      final converter = $ScenesTable.$converterprojectId;
+      map['project_id'] = Variable<String>(converter.toSql(projectId.value));
     }
     if (locationId.present) {
-      map['location_id'] = Variable<int>(locationId.value);
+      final converter = $ScenesTable.$converterlocationId;
+      map['location_id'] = Variable<String>(converter.toSql(locationId.value));
     }
     if (number.present) {
       map['number'] = Variable<int>(number.value);
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
@@ -719,7 +776,272 @@ class ScenesCompanion extends UpdateCompanion<Scene> {
           ..write('projectId: $projectId, ')
           ..write('locationId: $locationId, ')
           ..write('number: $number, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ShotsTable extends Shots with TableInfo<$ShotsTable, Shot> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ShotsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumnWithTypeConverter<List<int>, String> id =
+      GeneratedColumn<String>('id', aliasedName, false,
+              type: DriftSqlType.string, requiredDuringInsert: true)
+          .withConverter<List<int>>($ShotsTable.$converterid);
+  static const VerificationMeta _sceneIdMeta =
+      const VerificationMeta('sceneId');
+  @override
+  late final GeneratedColumnWithTypeConverter<List<int>, String> sceneId =
+      GeneratedColumn<String>('scene_id', aliasedName, false,
+              type: DriftSqlType.string,
+              requiredDuringInsert: true,
+              defaultConstraints:
+                  GeneratedColumn.constraintIsAlways('REFERENCES scenes (id)'))
+          .withConverter<List<int>>($ShotsTable.$convertersceneId);
+  static const VerificationMeta _numberMeta = const VerificationMeta('number');
+  @override
+  late final GeneratedColumn<int> number = GeneratedColumn<int>(
+      'number', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, sceneId, number, name];
+  @override
+  String get aliasedName => _alias ?? 'shots';
+  @override
+  String get actualTableName => 'shots';
+  @override
+  VerificationContext validateIntegrity(Insertable<Shot> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    context.handle(_idMeta, const VerificationResult.success());
+    context.handle(_sceneIdMeta, const VerificationResult.success());
+    if (data.containsKey('number')) {
+      context.handle(_numberMeta,
+          number.isAcceptableOrUnknown(data['number']!, _numberMeta));
+    } else if (isInserting) {
+      context.missing(_numberMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Shot map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Shot(
+      id: $ShotsTable.$converterid.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!),
+      sceneId: $ShotsTable.$convertersceneId.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}scene_id'])!),
+      number: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}number'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $ShotsTable createAlias(String alias) {
+    return $ShotsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<List<int>, String> $converterid = const UuidConverter();
+  static TypeConverter<List<int>, String> $convertersceneId =
+      const UuidConverter();
+}
+
+class Shot extends DataClass implements Insertable<Shot> {
+  final List<int> id;
+  final List<int> sceneId;
+  final int number;
+  final String name;
+  const Shot(
+      {required this.id,
+      required this.sceneId,
+      required this.number,
+      required this.name});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    {
+      final converter = $ShotsTable.$converterid;
+      map['id'] = Variable<String>(converter.toSql(id));
+    }
+    {
+      final converter = $ShotsTable.$convertersceneId;
+      map['scene_id'] = Variable<String>(converter.toSql(sceneId));
+    }
+    map['number'] = Variable<int>(number);
+    map['name'] = Variable<String>(name);
+    return map;
+  }
+
+  ShotsCompanion toCompanion(bool nullToAbsent) {
+    return ShotsCompanion(
+      id: Value(id),
+      sceneId: Value(sceneId),
+      number: Value(number),
+      name: Value(name),
+    );
+  }
+
+  factory Shot.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Shot(
+      id: serializer.fromJson<List<int>>(json['id']),
+      sceneId: serializer.fromJson<List<int>>(json['sceneId']),
+      number: serializer.fromJson<int>(json['number']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<List<int>>(id),
+      'sceneId': serializer.toJson<List<int>>(sceneId),
+      'number': serializer.toJson<int>(number),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  Shot copyWith(
+          {List<int>? id, List<int>? sceneId, int? number, String? name}) =>
+      Shot(
+        id: id ?? this.id,
+        sceneId: sceneId ?? this.sceneId,
+        number: number ?? this.number,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Shot(')
+          ..write('id: $id, ')
+          ..write('sceneId: $sceneId, ')
+          ..write('number: $number, ')
           ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, sceneId, number, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Shot &&
+          other.id == this.id &&
+          other.sceneId == this.sceneId &&
+          other.number == this.number &&
+          other.name == this.name);
+}
+
+class ShotsCompanion extends UpdateCompanion<Shot> {
+  final Value<List<int>> id;
+  final Value<List<int>> sceneId;
+  final Value<int> number;
+  final Value<String> name;
+  final Value<int> rowid;
+  const ShotsCompanion({
+    this.id = const Value.absent(),
+    this.sceneId = const Value.absent(),
+    this.number = const Value.absent(),
+    this.name = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ShotsCompanion.insert({
+    required List<int> id,
+    required List<int> sceneId,
+    required int number,
+    required String name,
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        sceneId = Value(sceneId),
+        number = Value(number),
+        name = Value(name);
+  static Insertable<Shot> custom({
+    Expression<String>? id,
+    Expression<String>? sceneId,
+    Expression<int>? number,
+    Expression<String>? name,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (sceneId != null) 'scene_id': sceneId,
+      if (number != null) 'number': number,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ShotsCompanion copyWith(
+      {Value<List<int>>? id,
+      Value<List<int>>? sceneId,
+      Value<int>? number,
+      Value<String>? name,
+      Value<int>? rowid}) {
+    return ShotsCompanion(
+      id: id ?? this.id,
+      sceneId: sceneId ?? this.sceneId,
+      number: number ?? this.number,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      final converter = $ShotsTable.$converterid;
+      map['id'] = Variable<String>(converter.toSql(id.value));
+    }
+    if (sceneId.present) {
+      final converter = $ShotsTable.$convertersceneId;
+      map['scene_id'] = Variable<String>(converter.toSql(sceneId.value));
+    }
+    if (number.present) {
+      map['number'] = Variable<int>(number.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ShotsCompanion(')
+          ..write('id: $id, ')
+          ..write('sceneId: $sceneId, ')
+          ..write('number: $number, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -730,13 +1052,15 @@ abstract class _$SkaiDb extends GeneratedDatabase {
   late final $ProjectsTable projects = $ProjectsTable(this);
   late final $LocationsTable locations = $LocationsTable(this);
   late final $ScenesTable scenes = $ScenesTable(this);
+  late final $ShotsTable shots = $ShotsTable(this);
   late final ProjectsDao projectsDao = ProjectsDao(this as SkaiDb);
   late final LocationsDao locationsDao = LocationsDao(this as SkaiDb);
   late final ScenesDao scenesDao = ScenesDao(this as SkaiDb);
+  late final ShotsDao shotsDao = ShotsDao(this as SkaiDb);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [projects, locations, scenes];
+      [projects, locations, scenes, shots];
 }
