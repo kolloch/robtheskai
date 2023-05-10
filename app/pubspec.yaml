@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # Prevent accidental publishing to pub.dev.
 publish_to: 'none'
-
+null_safety: true
 version: 1.0.0+1
 
 environment:
