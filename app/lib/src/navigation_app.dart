@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:robokru/src/settings/settings_service.dart';
 
-import 'navigation/placeholder_page.dart';
 import 'projects/project_scene_list.dart';
 import 'projects/project_list.dart';
 import 'settings/settings_controller.dart';

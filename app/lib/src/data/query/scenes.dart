@@ -2,7 +2,6 @@ import 'package:drift/drift.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../tables.dart';
-import '../uuid.dart';
 
 part 'scenes.g.dart';
 
