@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:robokru/src/data/uuid.dart';
 import 'package:robokru/src/settings/settings_service.dart';
 
 import 'projects/project_scene_list.dart';
@@ -27,13 +28,10 @@ final GoRouter _router = GoRouter(
   routes: [
     GoRoute(
       name: ProjectListView.routeName,
-      path: '/',
-      builder: (context, state) => const ProjectListView(),
-    ),
-    GoRoute(
-      name: ProjectSceneList.routeName,
-      path: '/sampleItemDetails/:id',
-      builder: (context, state) => const ProjectSceneList(),
+      path: '/projects/:projectId',
+      builder: (context, state) => ProjectSceneList(
+        projectId: uuidFromString(state.pathParameters['projectId']!),
+      ),
     ),
     GoRoute(
       name: SettingsView.routeName,
@@ -56,22 +54,10 @@ class MyApp extends ConsumerWidget {
 
     if (maybeSettingsController?.isLoading ?? true) {
       // While the SettingsController is loading, display a loading screen.
-      return const MaterialApp(
-        home: Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      );
+      return minimalCentered(const CircularProgressIndicator());
     } else if (maybeSettingsController?.error != null) {
       // If the SettingsController has an error, display an error screen.
-      return const MaterialApp(
-        home: Scaffold(
-          body: Center(
-            child: Text('Error loading settings'),
-          ),
-        ),
-      );
+      return minimalCentered(const Text('Error loading settings'));
     }
 
     final settingsController = maybeSettingsController!.value;
@@ -123,6 +109,16 @@ class MyApp extends ConsumerWidget {
           routerConfig: _router,
         );
       },
+    );
+  }
+
+  MaterialApp minimalCentered(Widget circularProgressIndicator) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: circularProgressIndicator,
+        ),
+      ),
     );
   }
 }

@@ -14,14 +14,14 @@ class LocationsDao extends DatabaseAccessor<SkaiDb> with _$LocationsDaoMixin {
 
   Future<Location> insertSampleBeachHouse(UuidV projectId) async {
     return await into(locations).insertReturning(LocationsCompanion(
-        id: Value(createRandomUuid()),
+        id: Value(randomUuid()),
         projectId: Value(projectId),
         name: const Value('Sunny Beach House, Front Bench')));
   }
 
   Future<Location> insertSampleVilla(UuidV projectId) async {
     return await into(locations).insertReturning(LocationsCompanion(
-        id: Value(createRandomUuid()),
+        id: Value(randomUuid()),
         projectId: Value(projectId),
         name: const Value('Villa in the Woods, Office')));
   }

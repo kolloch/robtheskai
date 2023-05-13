@@ -4,10 +4,20 @@ import 'package:uuid/uuid_util.dart';
 
 typedef UuidV = List<int>;
 
-UuidV createRandomUuid() {
-  const uuid = Uuid(options: {'grng': UuidUtil.cryptoRNG});
+const Uuid _uuid = Uuid(options: {'grng': UuidUtil.cryptoRNG});
 
-  return uuid.v5buffer(null, null, null);
+UuidV randomUuid() {
+  return _uuid.v5buffer(null, null, null);
+}
+
+UuidV uuidFromString(String uuid) {
+  return Uuid.parse(uuid);
+}
+
+extension UuidVExtension on UuidV {
+  String toShortString() {
+    return Uuid.unparse(this);
+  }
 }
 
 class UuidConverter extends TypeConverter<List<int>, String> {
