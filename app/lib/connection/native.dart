@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:drift_dev/api/migrations.dart';
+// import 'package:drift_dev/api/migrations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -30,7 +30,7 @@ Future<void> validateDatabaseSchema(GeneratedDatabase database) async {
   // without writing a schema migration for it.
   //
   // For details, see: https://drift.simonbinder.eu/docs/advanced-features/migrations/#verifying-a-database-schema-at-runtime
-  if (kDebugMode) {
-    await VerifySelf(database).validateDatabaseSchema();
-  }
+  // if (kDebugMode) {
+  //   await VerifySelf(database).validateDatabaseSchema();
+  // }
 }

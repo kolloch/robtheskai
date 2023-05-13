@@ -4,16 +4,22 @@ targets:
       - $package$
       - pubspec.*
       - lib/$lib$
-      - lib/src/data/**.dart
+      - lib/**
       - proto/** # Your .proto directory
+      - web/**
     builders:
-
+      # We have a designated target for this step.
+      build_web_compilers:entrypoint:
+        generate_for:
+          # This one is compiled in the other target
+          exclude:
+            - "web/database_worker.dart"
       # We have a designated target for this step.
       build_web_compilers:dart2js_archive_extractor:
         enabled: false
       drift_dev:
-        generate_for:
-          - lib/src/data/**.dart # Your .proto directory
+        # generate_for:
+        #   - lib/src/data/**.dart # Your .proto directory
         options:
           named_parameters: true
       protoc_builder:
@@ -41,7 +47,7 @@ targets:
       build_web_compilers:entrypoint:
         enabled: true
         generate_for:
-          - web/database_worker.dart
+          - "web/database_worker.dart"
         options:
           compiler: dart2js
       build_web_compilers:dart2js_archive_extractor:
