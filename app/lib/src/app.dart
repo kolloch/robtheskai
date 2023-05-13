@@ -15,7 +15,7 @@ final FutureProvider<SettingsController> settingsControllerFutureProvider =
     FutureProvider((ref) async {
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
-  final settingsController = SettingsController(SettingsService());
+  final settingsController = SettingsController(await SettingsService.create());
 
   // Load the user's preferred theme while the splash screen is displayed.
   // This prevents a sudden theme change when the app is first displayed.
@@ -39,6 +39,11 @@ final GoRouter _router = GoRouter(
       builder: (context, state) => const SettingsView(),
     ),
   ],
+  initialLocation: '/settings',
+  redirect: (context, state) => switch (state.location) {
+    // '/' => SettingsView.routeName,
+    _ => null,
+  },
 );
 
 /// The Widget that configures your application.
@@ -74,7 +79,7 @@ class MyApp extends ConsumerWidget {
           // MaterialApp to restore the navigation stack when a user leaves and
           // returns to the app after it has been killed while running in the
           // background.
-          restorationScopeId: 'app',
+          restorationScopeId: 'robtheskai',
 
           // Provide the generated AppLocalizations to the MaterialApp. This
           // allows descendant Widgets to display the correct translations
