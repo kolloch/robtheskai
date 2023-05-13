@@ -18,8 +18,8 @@ dependencies:
     sdk: flutter
 
   # Recommended dependencies for drift
-  drift: &drift ^2.8.0
-  drift_dev: *drift
+  drift: ^2.8.0
+  drift_dev: ^2.8.0
   sqlite3: ^1.11.0
   sqlite3_flutter_libs: ^0.5.0
   path_provider: ^2.0.0
