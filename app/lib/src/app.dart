@@ -3,13 +3,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:robokru/src/data/uuid.dart';
 import 'package:robokru/src/settings/settings_service.dart';
+import 'package:robokru/src/settings/settings_view.dart';
 
-import 'projects/project_scene_list.dart';
 import 'projects/project_list.dart';
 import 'settings/settings_controller.dart';
-import 'settings/settings_view.dart';
 
 final FutureProvider<SettingsController> settingsControllerFutureProvider =
     FutureProvider((ref) async {
@@ -28,10 +26,8 @@ final GoRouter _router = GoRouter(
   routes: [
     GoRoute(
       name: ProjectListView.routeName,
-      path: '/projects/:projectId',
-      builder: (context, state) => ProjectSceneList(
-        projectId: uuidFromString(state.pathParameters['projectId']!),
-      ),
+      path: '/projects',
+      builder: (context, state) => const ProjectListView(),
     ),
     GoRoute(
       name: SettingsView.routeName,

@@ -5,7 +5,9 @@ import 'package:robokru/src/data/tables.dart';
 import 'package:robokru/src/skeleton/consumer_async_value_widget.dart';
 
 import '../data/query/projects.dart';
+import '../data/uuid.dart';
 import '../settings/settings_view.dart';
+import '../skeleton/top_level_navigation_drawer.dart';
 import 'project_scene_list.dart';
 
 final projectsProvider = StreamProvider.autoDispose((ref) {
@@ -19,11 +21,12 @@ class ProjectListView extends ConsumerWidget {
     super.key,
   });
 
-  static const routeName = '/';
+  static const routeName = '/projects';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final projects = ref.watch(projectsProvider);
+    final UuidV? selectedProjectId = ref.watch(selectedProjectIdProvider);
 
     return ConsumerAsyncValueWidget(
       asyncValue: projects,
@@ -91,6 +94,9 @@ class ProjectListView extends ConsumerWidget {
           // building all Widgets up front, the ListView.builder constructor lazily
           // builds Widgets as they’re scrolled into view.
           body: body,
+
+          drawer:
+              TopLevelNavigationDrawer(selectedProjectId: selectedProjectId),
         );
       },
     );
