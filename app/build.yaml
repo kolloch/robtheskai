@@ -4,7 +4,7 @@ targets:
       - $package$
       - pubspec.*
       - lib/$lib$
-      - lib/src/data/**.dart
+      - lib/**.dart
       - web/**
       - proto/** # Your .proto directory
     builders:

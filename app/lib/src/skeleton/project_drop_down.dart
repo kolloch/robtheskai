@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:robokru/src/data/query/projects.dart';
 import 'package:robokru/src/projects/selected_project.dart';
+import 'package:robokru/src/settings/settings_notifier.dart';
 import 'package:robokru/src/settings/settings_view.dart';
 import 'package:collection/collection.dart';
 
@@ -38,8 +39,11 @@ class ProjectDropDown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // TODO: Only load needed projects
     final projects = ref.watch(projectsProvider);
-    final selectedProjectId = ref.watch(selectedProjectProvider);
+    final selectedProjectId = ref.watch(selectedProjectNotifier).valueOrNull;
+    final lastProjects =
+        ref.watch(settingsNotifier).valueOrNull?.lastProjectIds ?? [];
 
     print('ProjectDropDown.build: selectedProjectId: $selectedProjectId');
 
@@ -47,7 +51,8 @@ class ProjectDropDown extends ConsumerWidget {
       asyncValue: projects,
       buildWithData: (context, ref, List<Project> projects) {
         final items = <_DropDownItem>[
-          for (final project in projects) _ProjectItem(project),
+          for (final project in projects)
+            if (lastProjects.contains(project.id)) _ProjectItem(project),
           const _CreateSampleProjectsItem(),
           const _ManageProjectsItem(),
         ];
@@ -66,7 +71,7 @@ class ProjectDropDown extends ConsumerWidget {
               switch (newValue) {
                 case _ProjectItem item:
                   ref
-                      .read(selectedProjectProvider.notifier)
+                      .read(selectedProjectNotifier.notifier)
                       .select(item.project.id);
                   break;
                 case _CreateSampleProjectsItem _:

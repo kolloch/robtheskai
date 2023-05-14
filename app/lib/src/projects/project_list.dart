@@ -27,7 +27,8 @@ class ProjectListView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final projects = ref.watch(projectsProvider);
-    final Id? selectedProjectId = ref.watch(selectedProjectProvider);
+    final Id? selectedProjectId =
+        ref.watch(selectedProjectNotifier).valueOrNull;
 
     return ConsumerAsyncValueWidget(
       asyncValue: projects,

@@ -22,7 +22,8 @@ class SettingsView extends ConsumerWidget {
     final controller =
         ref.watch(settingsControllerFutureProvider).asData!.value;
 
-    final Id? selectedProjectId = ref.watch(selectedProjectProvider);
+    final Id? selectedProjectId =
+        ref.watch(selectedProjectNotifier).valueOrNull;
 
     return Scaffold(
       appBar: AppBar(

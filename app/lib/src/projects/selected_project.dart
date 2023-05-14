@@ -1,17 +1,22 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:robokru/src/settings/settings_notifier.dart';
 
 import '../data/id.dart';
 
-class SelectedProjectNotifier extends Notifier<Id?> {
+class SelectedProjectNotifier extends AsyncNotifier<Id?> {
   @override
-  Id? build() => null;
+  Future<Id?> build() async =>
+      (await ref.read(settingsNotifier.future)).lastProjectId;
 
-  void select(Id id) {
-    state = id;
+  Future<void> select(Id id) async {
+    state = await AsyncValue.guard(() async {
+      await ref.read(settingsNotifier.notifier).addSelectedProject(id);
+      return id;
+    });
   }
 }
 
-final selectedProjectProvider =
-    NotifierProvider<SelectedProjectNotifier, Id?>(() {
+final selectedProjectNotifier =
+    AsyncNotifierProvider<SelectedProjectNotifier, Id?>(() {
   return SelectedProjectNotifier();
 });
