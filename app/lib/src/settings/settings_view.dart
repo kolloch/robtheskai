@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:robokru/src/data/id.dart';
+import 'package:robokru/src/projects/selected_project.dart';
 import 'package:robokru/src/skeleton/top_level_navigation_drawer.dart';
 
 import '../app.dart';
-
-/// riverpod provider for the currently selected project Id
-final selectedProjectIdProvider = StateProvider<Id?>((ref) => null);
 
 /// Displays the various settings that can be customized by the user.
 ///
@@ -24,7 +22,7 @@ class SettingsView extends ConsumerWidget {
     final controller =
         ref.watch(settingsControllerFutureProvider).asData!.value;
 
-    final Id? selectedProjectId = ref.watch(selectedProjectIdProvider);
+    final Id? selectedProjectId = ref.watch(selectedProjectProvider);
 
     return Scaffold(
       appBar: AppBar(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:robokru/src/data/tables.dart';
+import 'package:robokru/src/projects/selected_project.dart';
 import 'package:robokru/src/skeleton/consumer_async_value_widget.dart';
 
 import '../data/query/projects.dart';
@@ -26,7 +27,7 @@ class ProjectListView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final projects = ref.watch(projectsProvider);
-    final Id? selectedProjectId = ref.watch(selectedProjectIdProvider);
+    final Id? selectedProjectId = ref.watch(selectedProjectProvider);
 
     return ConsumerAsyncValueWidget(
       asyncValue: projects,

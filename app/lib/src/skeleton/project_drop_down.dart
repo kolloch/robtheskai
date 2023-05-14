@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:robokru/src/data/query/projects.dart';
+import 'package:robokru/src/projects/selected_project.dart';
 import 'package:robokru/src/settings/settings_view.dart';
 import 'package:collection/collection.dart';
 
@@ -38,7 +39,7 @@ class ProjectDropDown extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final projects = ref.watch(projectsProvider);
-    final selectedProjectId = ref.watch(selectedProjectIdProvider);
+    final selectedProjectId = ref.watch(selectedProjectProvider);
 
     print('ProjectDropDown.build: selectedProjectId: $selectedProjectId');
 
@@ -64,9 +65,9 @@ class ProjectDropDown extends ConsumerWidget {
             onChanged: (_DropDownItem? newValue) {
               switch (newValue) {
                 case _ProjectItem item:
-                  final selectedProjectId =
-                      ref.read(selectedProjectIdProvider.notifier);
-                  selectedProjectId.state = item.project.id;
+                  ref
+                      .read(selectedProjectProvider.notifier)
+                      .select(item.project.id);
                   break;
                 case _CreateSampleProjectsItem _:
                   ref.read(projectsDaoProvider).createSampleProjects();
