@@ -6,7 +6,6 @@ import 'package:robokru/src/settings/settings_view.dart';
 import 'package:collection/collection.dart';
 
 import '../data/tables.dart';
-import '../data/uuid.dart';
 import '../projects/project_list.dart';
 import 'consumer_async_value_widget.dart';
 
@@ -57,8 +56,7 @@ class ProjectDropDown extends ConsumerWidget {
                 ? null
                 : items.firstWhereOrNull((item) {
                     if (item is _ProjectItem) {
-                      final eq = const ListEquality().equals;
-                      return eq(item.project.id, selectedProjectId);
+                      return item.project.id == selectedProjectId;
                     } else {
                       return false;
                     }

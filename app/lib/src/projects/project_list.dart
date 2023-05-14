@@ -5,7 +5,7 @@ import 'package:robokru/src/data/tables.dart';
 import 'package:robokru/src/skeleton/consumer_async_value_widget.dart';
 
 import '../data/query/projects.dart';
-import '../data/uuid.dart';
+import '../data/id.dart';
 import '../settings/settings_view.dart';
 import '../skeleton/top_level_navigation_drawer.dart';
 import 'project_scene_list.dart';
@@ -26,7 +26,7 @@ class ProjectListView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final projects = ref.watch(projectsProvider);
-    final UuidV? selectedProjectId = ref.watch(selectedProjectIdProvider);
+    final Id? selectedProjectId = ref.watch(selectedProjectIdProvider);
 
     return ConsumerAsyncValueWidget(
       asyncValue: projects,

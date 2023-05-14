@@ -10,10 +10,10 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
   $ProjectsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumnWithTypeConverter<List<int>, String> id =
+  late final GeneratedColumnWithTypeConverter<Id, String> id =
       GeneratedColumn<String>('id', aliasedName, false,
               type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<List<int>>($ProjectsTable.$converterid);
+          .withConverter<Id>($ProjectsTable.$converterid);
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -74,11 +74,11 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
     return $ProjectsTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<List<int>, String> $converterid = const UuidConverter();
+  static TypeConverter<Id, String> $converterid = const UuidConverter();
 }
 
 class Project extends DataClass implements Insertable<Project> {
-  final List<int> id;
+  final Id id;
   final String name;
   final String description;
   const Project(
@@ -107,7 +107,7 @@ class Project extends DataClass implements Insertable<Project> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Project(
-      id: serializer.fromJson<List<int>>(json['id']),
+      id: serializer.fromJson<Id>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       description: serializer.fromJson<String>(json['description']),
     );
@@ -116,14 +116,13 @@ class Project extends DataClass implements Insertable<Project> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<List<int>>(id),
+      'id': serializer.toJson<Id>(id),
       'name': serializer.toJson<String>(name),
       'description': serializer.toJson<String>(description),
     };
   }
 
-  Project copyWith({List<int>? id, String? name, String? description}) =>
-      Project(
+  Project copyWith({Id? id, String? name, String? description}) => Project(
         id: id ?? this.id,
         name: name ?? this.name,
         description: description ?? this.description,
@@ -150,7 +149,7 @@ class Project extends DataClass implements Insertable<Project> {
 }
 
 class ProjectsCompanion extends UpdateCompanion<Project> {
-  final Value<List<int>> id;
+  final Value<Id> id;
   final Value<String> name;
   final Value<String> description;
   final Value<int> rowid;
@@ -161,7 +160,7 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
     this.rowid = const Value.absent(),
   });
   ProjectsCompanion.insert({
-    required List<int> id,
+    required Id id,
     required String name,
     required String description,
     this.rowid = const Value.absent(),
@@ -183,7 +182,7 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
   }
 
   ProjectsCompanion copyWith(
-      {Value<List<int>>? id,
+      {Value<Id>? id,
       Value<String>? name,
       Value<String>? description,
       Value<int>? rowid}) {
@@ -234,20 +233,20 @@ class $LocationsTable extends Locations
   $LocationsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumnWithTypeConverter<List<int>, String> id =
+  late final GeneratedColumnWithTypeConverter<Id, String> id =
       GeneratedColumn<String>('id', aliasedName, false,
               type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<List<int>>($LocationsTable.$converterid);
+          .withConverter<Id>($LocationsTable.$converterid);
   static const VerificationMeta _projectIdMeta =
       const VerificationMeta('projectId');
   @override
-  late final GeneratedColumnWithTypeConverter<List<int>, String> projectId =
+  late final GeneratedColumnWithTypeConverter<Id, String> projectId =
       GeneratedColumn<String>('project_id', aliasedName, false,
               type: DriftSqlType.string,
               requiredDuringInsert: true,
               defaultConstraints: GeneratedColumn.constraintIsAlways(
                   'REFERENCES projects (id)'))
-          .withConverter<List<int>>($LocationsTable.$converterprojectId);
+          .withConverter<Id>($LocationsTable.$converterprojectId);
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -296,14 +295,13 @@ class $LocationsTable extends Locations
     return $LocationsTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<List<int>, String> $converterid = const UuidConverter();
-  static TypeConverter<List<int>, String> $converterprojectId =
-      const UuidConverter();
+  static TypeConverter<Id, String> $converterid = const UuidConverter();
+  static TypeConverter<Id, String> $converterprojectId = const UuidConverter();
 }
 
 class Location extends DataClass implements Insertable<Location> {
-  final List<int> id;
-  final List<int> projectId;
+  final Id id;
+  final Id projectId;
   final String name;
   const Location(
       {required this.id, required this.projectId, required this.name});
@@ -334,8 +332,8 @@ class Location extends DataClass implements Insertable<Location> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Location(
-      id: serializer.fromJson<List<int>>(json['id']),
-      projectId: serializer.fromJson<List<int>>(json['projectId']),
+      id: serializer.fromJson<Id>(json['id']),
+      projectId: serializer.fromJson<Id>(json['projectId']),
       name: serializer.fromJson<String>(json['name']),
     );
   }
@@ -343,14 +341,13 @@ class Location extends DataClass implements Insertable<Location> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<List<int>>(id),
-      'projectId': serializer.toJson<List<int>>(projectId),
+      'id': serializer.toJson<Id>(id),
+      'projectId': serializer.toJson<Id>(projectId),
       'name': serializer.toJson<String>(name),
     };
   }
 
-  Location copyWith({List<int>? id, List<int>? projectId, String? name}) =>
-      Location(
+  Location copyWith({Id? id, Id? projectId, String? name}) => Location(
         id: id ?? this.id,
         projectId: projectId ?? this.projectId,
         name: name ?? this.name,
@@ -377,8 +374,8 @@ class Location extends DataClass implements Insertable<Location> {
 }
 
 class LocationsCompanion extends UpdateCompanion<Location> {
-  final Value<List<int>> id;
-  final Value<List<int>> projectId;
+  final Value<Id> id;
+  final Value<Id> projectId;
   final Value<String> name;
   final Value<int> rowid;
   const LocationsCompanion({
@@ -388,8 +385,8 @@ class LocationsCompanion extends UpdateCompanion<Location> {
     this.rowid = const Value.absent(),
   });
   LocationsCompanion.insert({
-    required List<int> id,
-    required List<int> projectId,
+    required Id id,
+    required Id projectId,
     required String name,
     this.rowid = const Value.absent(),
   })  : id = Value(id),
@@ -410,8 +407,8 @@ class LocationsCompanion extends UpdateCompanion<Location> {
   }
 
   LocationsCompanion copyWith(
-      {Value<List<int>>? id,
-      Value<List<int>>? projectId,
+      {Value<Id>? id,
+      Value<Id>? projectId,
       Value<String>? name,
       Value<int>? rowid}) {
     return LocationsCompanion(
@@ -461,30 +458,30 @@ class $ScenesTable extends Scenes with TableInfo<$ScenesTable, Scene> {
   $ScenesTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumnWithTypeConverter<List<int>, String> id =
+  late final GeneratedColumnWithTypeConverter<Id, String> id =
       GeneratedColumn<String>('id', aliasedName, false,
               type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<List<int>>($ScenesTable.$converterid);
+          .withConverter<Id>($ScenesTable.$converterid);
   static const VerificationMeta _projectIdMeta =
       const VerificationMeta('projectId');
   @override
-  late final GeneratedColumnWithTypeConverter<List<int>, String> projectId =
+  late final GeneratedColumnWithTypeConverter<Id, String> projectId =
       GeneratedColumn<String>('project_id', aliasedName, false,
               type: DriftSqlType.string,
               requiredDuringInsert: true,
               defaultConstraints: GeneratedColumn.constraintIsAlways(
                   'REFERENCES projects (id)'))
-          .withConverter<List<int>>($ScenesTable.$converterprojectId);
+          .withConverter<Id>($ScenesTable.$converterprojectId);
   static const VerificationMeta _locationIdMeta =
       const VerificationMeta('locationId');
   @override
-  late final GeneratedColumnWithTypeConverter<List<int>, String> locationId =
+  late final GeneratedColumnWithTypeConverter<Id, String> locationId =
       GeneratedColumn<String>('location_id', aliasedName, false,
               type: DriftSqlType.string,
               requiredDuringInsert: true,
               defaultConstraints: GeneratedColumn.constraintIsAlways(
                   'REFERENCES locations (id)'))
-          .withConverter<List<int>>($ScenesTable.$converterlocationId);
+          .withConverter<Id>($ScenesTable.$converterlocationId);
   static const VerificationMeta _numberMeta = const VerificationMeta('number');
   @override
   late final GeneratedColumn<int> number = GeneratedColumn<int>(
@@ -551,17 +548,15 @@ class $ScenesTable extends Scenes with TableInfo<$ScenesTable, Scene> {
     return $ScenesTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<List<int>, String> $converterid = const UuidConverter();
-  static TypeConverter<List<int>, String> $converterprojectId =
-      const UuidConverter();
-  static TypeConverter<List<int>, String> $converterlocationId =
-      const UuidConverter();
+  static TypeConverter<Id, String> $converterid = const UuidConverter();
+  static TypeConverter<Id, String> $converterprojectId = const UuidConverter();
+  static TypeConverter<Id, String> $converterlocationId = const UuidConverter();
 }
 
 class Scene extends DataClass implements Insertable<Scene> {
-  final List<int> id;
-  final List<int> projectId;
-  final List<int> locationId;
+  final Id id;
+  final Id projectId;
+  final Id locationId;
   final int number;
   final String name;
   const Scene(
@@ -604,9 +599,9 @@ class Scene extends DataClass implements Insertable<Scene> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Scene(
-      id: serializer.fromJson<List<int>>(json['id']),
-      projectId: serializer.fromJson<List<int>>(json['projectId']),
-      locationId: serializer.fromJson<List<int>>(json['locationId']),
+      id: serializer.fromJson<Id>(json['id']),
+      projectId: serializer.fromJson<Id>(json['projectId']),
+      locationId: serializer.fromJson<Id>(json['locationId']),
       number: serializer.fromJson<int>(json['number']),
       name: serializer.fromJson<String>(json['name']),
     );
@@ -615,20 +610,16 @@ class Scene extends DataClass implements Insertable<Scene> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<List<int>>(id),
-      'projectId': serializer.toJson<List<int>>(projectId),
-      'locationId': serializer.toJson<List<int>>(locationId),
+      'id': serializer.toJson<Id>(id),
+      'projectId': serializer.toJson<Id>(projectId),
+      'locationId': serializer.toJson<Id>(locationId),
       'number': serializer.toJson<int>(number),
       'name': serializer.toJson<String>(name),
     };
   }
 
   Scene copyWith(
-          {List<int>? id,
-          List<int>? projectId,
-          List<int>? locationId,
-          int? number,
-          String? name}) =>
+          {Id? id, Id? projectId, Id? locationId, int? number, String? name}) =>
       Scene(
         id: id ?? this.id,
         projectId: projectId ?? this.projectId,
@@ -662,9 +653,9 @@ class Scene extends DataClass implements Insertable<Scene> {
 }
 
 class ScenesCompanion extends UpdateCompanion<Scene> {
-  final Value<List<int>> id;
-  final Value<List<int>> projectId;
-  final Value<List<int>> locationId;
+  final Value<Id> id;
+  final Value<Id> projectId;
+  final Value<Id> locationId;
   final Value<int> number;
   final Value<String> name;
   final Value<int> rowid;
@@ -677,9 +668,9 @@ class ScenesCompanion extends UpdateCompanion<Scene> {
     this.rowid = const Value.absent(),
   });
   ScenesCompanion.insert({
-    required List<int> id,
-    required List<int> projectId,
-    required List<int> locationId,
+    required Id id,
+    required Id projectId,
+    required Id locationId,
     required int number,
     required String name,
     this.rowid = const Value.absent(),
@@ -707,9 +698,9 @@ class ScenesCompanion extends UpdateCompanion<Scene> {
   }
 
   ScenesCompanion copyWith(
-      {Value<List<int>>? id,
-      Value<List<int>>? projectId,
-      Value<List<int>>? locationId,
+      {Value<Id>? id,
+      Value<Id>? projectId,
+      Value<Id>? locationId,
       Value<int>? number,
       Value<String>? name,
       Value<int>? rowid}) {
@@ -771,20 +762,20 @@ class $ShotsTable extends Shots with TableInfo<$ShotsTable, Shot> {
   $ShotsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumnWithTypeConverter<List<int>, String> id =
+  late final GeneratedColumnWithTypeConverter<Id, String> id =
       GeneratedColumn<String>('id', aliasedName, false,
               type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<List<int>>($ShotsTable.$converterid);
+          .withConverter<Id>($ShotsTable.$converterid);
   static const VerificationMeta _sceneIdMeta =
       const VerificationMeta('sceneId');
   @override
-  late final GeneratedColumnWithTypeConverter<List<int>, String> sceneId =
+  late final GeneratedColumnWithTypeConverter<Id, String> sceneId =
       GeneratedColumn<String>('scene_id', aliasedName, false,
               type: DriftSqlType.string,
               requiredDuringInsert: true,
               defaultConstraints:
                   GeneratedColumn.constraintIsAlways('REFERENCES scenes (id)'))
-          .withConverter<List<int>>($ShotsTable.$convertersceneId);
+          .withConverter<Id>($ShotsTable.$convertersceneId);
   static const VerificationMeta _numberMeta = const VerificationMeta('number');
   @override
   late final GeneratedColumn<int> number = GeneratedColumn<int>(
@@ -846,14 +837,13 @@ class $ShotsTable extends Shots with TableInfo<$ShotsTable, Shot> {
     return $ShotsTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<List<int>, String> $converterid = const UuidConverter();
-  static TypeConverter<List<int>, String> $convertersceneId =
-      const UuidConverter();
+  static TypeConverter<Id, String> $converterid = const UuidConverter();
+  static TypeConverter<Id, String> $convertersceneId = const UuidConverter();
 }
 
 class Shot extends DataClass implements Insertable<Shot> {
-  final List<int> id;
-  final List<int> sceneId;
+  final Id id;
+  final Id sceneId;
   final int number;
   final String name;
   const Shot(
@@ -890,8 +880,8 @@ class Shot extends DataClass implements Insertable<Shot> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Shot(
-      id: serializer.fromJson<List<int>>(json['id']),
-      sceneId: serializer.fromJson<List<int>>(json['sceneId']),
+      id: serializer.fromJson<Id>(json['id']),
+      sceneId: serializer.fromJson<Id>(json['sceneId']),
       number: serializer.fromJson<int>(json['number']),
       name: serializer.fromJson<String>(json['name']),
     );
@@ -900,16 +890,14 @@ class Shot extends DataClass implements Insertable<Shot> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<List<int>>(id),
-      'sceneId': serializer.toJson<List<int>>(sceneId),
+      'id': serializer.toJson<Id>(id),
+      'sceneId': serializer.toJson<Id>(sceneId),
       'number': serializer.toJson<int>(number),
       'name': serializer.toJson<String>(name),
     };
   }
 
-  Shot copyWith(
-          {List<int>? id, List<int>? sceneId, int? number, String? name}) =>
-      Shot(
+  Shot copyWith({Id? id, Id? sceneId, int? number, String? name}) => Shot(
         id: id ?? this.id,
         sceneId: sceneId ?? this.sceneId,
         number: number ?? this.number,
@@ -939,8 +927,8 @@ class Shot extends DataClass implements Insertable<Shot> {
 }
 
 class ShotsCompanion extends UpdateCompanion<Shot> {
-  final Value<List<int>> id;
-  final Value<List<int>> sceneId;
+  final Value<Id> id;
+  final Value<Id> sceneId;
   final Value<int> number;
   final Value<String> name;
   final Value<int> rowid;
@@ -952,8 +940,8 @@ class ShotsCompanion extends UpdateCompanion<Shot> {
     this.rowid = const Value.absent(),
   });
   ShotsCompanion.insert({
-    required List<int> id,
-    required List<int> sceneId,
+    required Id id,
+    required Id sceneId,
     required int number,
     required String name,
     this.rowid = const Value.absent(),
@@ -978,8 +966,8 @@ class ShotsCompanion extends UpdateCompanion<Shot> {
   }
 
   ShotsCompanion copyWith(
-      {Value<List<int>>? id,
-      Value<List<int>>? sceneId,
+      {Value<Id>? id,
+      Value<Id>? sceneId,
       Value<int>? number,
       Value<String>? name,
       Value<int>? rowid}) {

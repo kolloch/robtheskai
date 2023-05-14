@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:robokru/src/data/uuid.dart';
+import 'package:robokru/src/data/id.dart';
 
 class ProjectSceneList extends StatelessWidget {
-  final UuidV projectId;
+  final Id projectId;
 
   const ProjectSceneList({super.key, required this.projectId});
 

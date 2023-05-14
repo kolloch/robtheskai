@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:robokru/connection/connection.dart';
 import 'package:robokru/src/data/query/locations.dart';
@@ -8,7 +7,7 @@ import 'package:robokru/src/data/query/projects.dart';
 import 'package:robokru/src/data/query/scenes.dart';
 import 'package:robokru/src/data/query/shots.dart';
 
-import 'uuid.dart';
+import 'id.dart';
 
 part 'tables.g.dart';
 
@@ -98,3 +97,17 @@ class SkaiDb extends _$SkaiDb {
 }
 
 final skaiDbProvider = Provider((ref) => SkaiDb());
+
+class UuidConverter extends TypeConverter<Id, String> {
+  const UuidConverter();
+
+  @override
+  Id fromSql(String fromDb) {
+    return Id.fromString(fromDb);
+  }
+
+  @override
+  String toSql(Id value) {
+    return value.toString();
+  }
+}

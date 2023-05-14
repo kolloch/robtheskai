@@ -2,7 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../tables.dart';
-import '../uuid.dart';
+import '../id.dart';
 
 part 'locations.g.dart';
 
@@ -12,16 +12,16 @@ class LocationsDao extends DatabaseAccessor<SkaiDb> with _$LocationsDaoMixin {
 
   Stream<List<Location>> getAllLocations() => select(locations).watch();
 
-  Future<Location> insertSampleBeachHouse(UuidV projectId) async {
+  Future<Location> insertSampleBeachHouse(Id projectId) async {
     return await into(locations).insertReturning(LocationsCompanion(
-        id: Value(randomUuid()),
+        id: Value(Id.random()),
         projectId: Value(projectId),
         name: const Value('Sunny Beach House, Front Bench')));
   }
 
-  Future<Location> insertSampleVilla(UuidV projectId) async {
+  Future<Location> insertSampleVilla(Id projectId) async {
     return await into(locations).insertReturning(LocationsCompanion(
-        id: Value(randomUuid()),
+        id: Value(Id.random()),
         projectId: Value(projectId),
         name: const Value('Villa in the Woods, Office')));
   }

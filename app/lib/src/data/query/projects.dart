@@ -2,7 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../tables.dart';
-import '../uuid.dart';
+import '../id.dart';
 
 part 'projects.g.dart';
 
@@ -16,7 +16,7 @@ class ProjectsDao extends DatabaseAccessor<SkaiDb> with _$ProjectsDaoMixin {
 
   Future<Project> insertEmptySampleProject(int projectNum) async {
     return await into(projects).insertReturning(ProjectsCompanion(
-        id: Value(randomUuid()),
+        id: Value(Id.random()),
         name: Value('Project $projectNum'),
         description: const Value('This is a sample project description.')));
   }
@@ -38,13 +38,13 @@ class ProjectsDao extends DatabaseAccessor<SkaiDb> with _$ProjectsDaoMixin {
           await db.locationsDao.insertSampleBeachHouse(project.id);
 
       await into(db.scenes).insert(ScenesCompanion(
-          id: Value(randomUuid()),
+          id: Value(Id.random()),
           projectId: Value(project.id),
           locationId: Value(villa.id),
           number: const Value(1),
           name: const Value('A normal day at work')));
       await into(db.scenes).insert(ScenesCompanion(
-          id: Value(randomUuid()),
+          id: Value(Id.random()),
           projectId: Value(project.id),
           locationId: Value(sunnyBeachHouse.id),
           number: const Value(2),
@@ -54,7 +54,7 @@ class ProjectsDao extends DatabaseAccessor<SkaiDb> with _$ProjectsDaoMixin {
     });
   }
 
-  Future<void> deleteProject(UuidV id) async {
+  Future<void> deleteProject(Id id) async {
     await delete(projects).delete(ProjectsCompanion(id: Value(id)));
   }
 }
