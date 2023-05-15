@@ -59,8 +59,9 @@ class ProjectListView extends ConsumerWidget {
                   onTap: () {
                     context
                         .pushNamed(ProjectSceneList.routeName, pathParameters: {
-                      'id': item.id.toString(),
+                      'projectId': item.id.toString(),
                     });
+                    ref.read(selectedProjectNotifier.notifier).select(item.id);
                   });
             },
           );

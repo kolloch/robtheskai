@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../id.dart';
 import '../tables.dart';
 
 part 'scenes.g.dart';
@@ -9,7 +10,9 @@ part 'scenes.g.dart';
 class ScenesDao extends DatabaseAccessor<SkaiDb> with _$ScenesDaoMixin {
   ScenesDao(super.attachedDatabase);
 
-  Stream<List<Scene>> getAllScenes() => select(scenes).watch();
+  Stream<List<Scene>> getScenesForProject(Id projectId) => (select(scenes)
+        ..where((scene) => scene.projectId.equals(projectId.toString())))
+      .watch();
 }
 
 final scenesDaoProvider = Provider((ref) {

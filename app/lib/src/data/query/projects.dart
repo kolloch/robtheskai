@@ -14,6 +14,16 @@ class ProjectsDao extends DatabaseAccessor<SkaiDb> with _$ProjectsDaoMixin {
 
   Stream<List<Project>> getAllProjects() => select(projects).watch();
 
+  Stream<Map<Id, Project>> getProjectsById(
+          List<Id> projectIds) =>
+      (select(projects)
+            ..where((project) =>
+                project.id.isIn(projectIds.map((e) => e.toString()))))
+          .watch()
+          .map((projects) => {
+                for (final project in projects) project.id: project,
+              });
+
   Future<Project> insertEmptySampleProject(int projectNum) async {
     return await into(projects).insertReturning(ProjectsCompanion(
         id: Value(Id.random()),

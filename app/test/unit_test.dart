@@ -5,11 +5,15 @@
 // https://flutter.dev/docs/cookbook/testing/unit/introduction
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:robokru/src/data/id.dart';
 
 void main() {
-  group('Plus Operator', () {
-    test('should add two numbers together', () {
-      expect(1 + 1, 2);
+  group('Id', () {
+    test('with the same string should be equal', () {
+      final id1 = Id.random();
+      final id2 = Id.fromString(id1.toString());
+
+      expect(id1, id2);
     });
   });
 }

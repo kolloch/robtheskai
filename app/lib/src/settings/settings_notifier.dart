@@ -39,10 +39,14 @@ class SettingsNotifier extends AsyncNotifier<Settings> {
     final sharedPreferences = await ref.read(sharedPreferencesProvider.future);
 
     state = await AsyncValue.guard(() async {
+      print("addSelectedProject: $projectId to ${value.lastProjectIds}");
+
       final lastProjectIds = [
         projectId,
         ...value.lastProjectIds.where((id) => id != projectId),
       ].take(3).toList();
+
+      print("addSelectedProject: $projectId to $lastProjectIds (after)");
 
       await sharedPreferences.setStringList(
         'lastProjectIds',

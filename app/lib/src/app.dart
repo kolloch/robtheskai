@@ -3,9 +3,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:robokru/src/projects/project_scene_list.dart';
 import 'package:robokru/src/settings/settings_notifier.dart';
 import 'package:robokru/src/settings/settings_view.dart';
 
+import 'data/id.dart';
 import 'projects/project_list.dart';
 
 final GoRouter _router = GoRouter(
@@ -14,6 +16,13 @@ final GoRouter _router = GoRouter(
       name: ProjectListView.routeName,
       path: '/projects',
       builder: (context, state) => const ProjectListView(),
+    ),
+    GoRoute(
+      name: ProjectSceneList.routeName,
+      path: '/projects/:projectId/scenes',
+      builder: (context, state) => ProjectSceneList(
+        projectId: Id.fromString(state.pathParameters['projectId']!),
+      ),
     ),
     GoRoute(
       name: SettingsView.routeName,

@@ -6,8 +6,10 @@ import 'package:robokru/src/projects/selected_project.dart';
 import 'package:robokru/src/settings/settings_notifier.dart';
 import 'package:collection/collection.dart';
 
+import '../data/id.dart';
 import '../data/tables.dart';
 import '../projects/project_list.dart';
+import '../projects/project_scene_list.dart';
 import 'consumer_async_value_widget.dart';
 
 sealed class _DropDownItem {
@@ -27,6 +29,13 @@ class _CreateSampleProjectsItem extends _DropDownItem {
   const _CreateSampleProjectsItem();
 }
 
+final projectsByIdStreamProvider = StreamProvider.autoDispose.family(
+  (ref, List<Id> projectIds) {
+    final projectsDao = ref.watch(projectsDaoProvider);
+    return projectsDao.getProjectsById(projectIds);
+  },
+);
+
 /// Drop down for selecting a project.
 ///
 /// This is a [ConsumerWidget] that listens to the [projectsDaoProvider] and
@@ -38,20 +47,19 @@ class ProjectDropDown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO: Only load needed projects
-    final projects = ref.watch(projectsProvider);
     final selectedProjectId = ref.watch(selectedProjectNotifier).valueOrNull;
     final lastProjects =
         ref.watch(settingsNotifier).valueOrNull?.lastProjectIds ?? [];
+    final projects = ref.watch(projectsByIdStreamProvider(lastProjects));
 
     print('ProjectDropDown.build: selectedProjectId: $selectedProjectId');
 
     return ConsumerAsyncValueWidget(
       asyncValue: projects,
-      buildWithData: (context, ref, List<Project> projects) {
+      buildWithData: (context, ref, Map<Id, Project> projects) {
         final items = <_DropDownItem>[
-          for (final project in projects)
-            if (lastProjects.contains(project.id)) _ProjectItem(project),
+          for (final id in lastProjects)
+            if (projects[id] case Project project) _ProjectItem(project),
           const _CreateSampleProjectsItem(),
           const _ManageProjectsItem(),
         ];
@@ -72,6 +80,10 @@ class ProjectDropDown extends ConsumerWidget {
                   ref
                       .read(selectedProjectNotifier.notifier)
                       .select(item.project.id);
+                  context
+                      .pushNamed(ProjectSceneList.routeName, pathParameters: {
+                    'projectId': item.project.id.toString(),
+                  });
                   break;
                 case _CreateSampleProjectsItem _:
                   ref.read(projectsDaoProvider).createSampleProjects();
