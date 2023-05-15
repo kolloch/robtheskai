@@ -3,31 +3,74 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:robokru/src/data/id.dart';
 
 import '../data/query/scenes.dart';
-import '../data/tables.dart';
+import '../skeleton/consumer_async_value_widget.dart';
 
 final projectScenesProvider =
-    StreamProvider.autoDispose.family<List<Scene>, Id>(
+    StreamProvider.autoDispose.family<List<SceneWithLocation>, Id>(
   (ref, projectId) {
     final scenesDao = ref.watch(scenesDaoProvider);
     return scenesDao.getScenesForProject(projectId);
   },
 );
 
-class ProjectSceneList extends StatelessWidget {
+/// Displays a list of scenes for the project with the given id.
+class ProjectSceneList extends ConsumerWidget {
+  static const routeName = '/projects/:projectId/scenes';
+
   final Id projectId;
 
-  const ProjectSceneList({super.key, required this.projectId});
-
-  static const routeName = '/project_scene_list';
+  const ProjectSceneList({
+    Key? key,
+    required this.projectId,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final scenes = ref.watch(projectScenesProvider(projectId));
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Item Details'),
+        title: const Text('Scenes'),
       ),
-      body: const Center(
-        child: Text('More Information Here'),
+      body: ConsumerAsyncValueWidget(
+        asyncValue: scenes,
+        buildWithData: (context, ref, List<SceneWithLocation> scenes) {
+          final Widget body;
+          if (scenes.isNotEmpty) {
+            body = ListView.builder(
+              // Providing a restorationId allows the ListView to restore the
+              // scroll position when a user leaves and returns to the app after it
+              // has been killed while running in the background.
+              restorationId: 'sceneList',
+              itemCount: scenes.length,
+              itemBuilder: (BuildContext context, int index) {
+                final sceneWithLocation = scenes[index];
+                final scene = sceneWithLocation.scene;
+
+                return ListTile(
+                  key: Key('scene-${scene.id}'),
+                  title: Text(sceneWithLocation.location.name),
+                  subtitle: Text(scene.name),
+                  // trailing delete button
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () async {
+                      final skaidb = ref.read(scenesDaoProvider);
+                      await skaidb.deleteScene(scene.id);
+                    },
+                  ),
+                  onTap: () {},
+                );
+              },
+            );
+          } else {
+            body = const Center(
+              child: Text('No scenes found'),
+            );
+          }
+
+          return body;
+        },
       ),
     );
   }
