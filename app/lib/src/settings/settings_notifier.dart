@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:robokru/src/settings/settings.dart';
@@ -25,13 +24,13 @@ class SettingsNotifier extends AsyncNotifier<Settings> {
     return Settings(themeMode: themeMode, lastProjectIds: []);
   }
 
-  Future<void> updateThemeMode(ThemeMode theme) async {
+  Future<void> updateThemeMode(ThemeMode? theme) async {
     final value = await future;
     final sharedPreferences = await ref.read(sharedPreferencesProvider.future);
 
     state = await AsyncValue.guard(() async {
       await sharedPreferences.setString('theme', theme.toString());
-      return value.copyWith(themeMode: theme);
+      return value.copyWith(themeMode: theme ?? ThemeMode.system);
     });
   }
 

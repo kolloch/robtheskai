@@ -8,6 +8,7 @@
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
 import 'dart:typed_data' as $typed_data;
+
 @$core.Deprecated('Use testDescriptor instead')
 const test$json = const {
   '1': 'test',
@@ -17,4 +18,5 @@ const test$json = const {
 };
 
 /// Descriptor for `test`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List testDescriptor = $convert.base64Decode('CgR0ZXN0EhQKBXBldGVyGAEgASgJUgVwZXRlcg==');
+final $typed_data.Uint8List testDescriptor =
+    $convert.base64Decode('CgR0ZXN0EhQKBXBldGVyGAEgASgJUgVwZXRlcg==');

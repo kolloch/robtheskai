@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:robokru/src/data/query/projects.dart';
 import 'package:robokru/src/projects/selected_project.dart';
 import 'package:robokru/src/settings/settings_notifier.dart';
-import 'package:robokru/src/settings/settings_view.dart';
 import 'package:collection/collection.dart';
 
 import '../data/tables.dart';
