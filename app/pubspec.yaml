@@ -40,6 +40,7 @@ dependencies:
   collection: ^1.17.1
   freezed_annotation: ^2.2.0
   json_annotation: ^4.8.1
+  pretty_diff_text: ^1.0.0
 
 dev_dependencies:
   flutter_test:
