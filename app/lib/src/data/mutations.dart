@@ -27,7 +27,7 @@ class UpdateField<T> with _$UpdateField<T> {
 }
 
 @freezed
-class UpdateCommand extends Command {
+class UpdateCommand extends Command with _$UpdateCommand {
   factory UpdateCommand({
     required String table,
     required List<Id> ids,
@@ -44,7 +44,7 @@ class InsertField<T> with _$InsertField<T> {
 }
 
 @freezed
-class InsertCommand extends Command {
+class InsertCommand extends Command with _$InsertCommand {
   factory InsertCommand({
     required String table,
     required List<InsertField> fields,
