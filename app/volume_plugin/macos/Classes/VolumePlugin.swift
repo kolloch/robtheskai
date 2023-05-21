@@ -73,6 +73,7 @@ class VolumeEventStreamHandler: NSObject, FlutterStreamHandler {
     
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         print("onListen")
+        fflush(stdout)
 
         volumesEventSink = events
         session = DASessionCreate(kCFAllocatorDefault)
@@ -88,6 +89,7 @@ class VolumeEventStreamHandler: NSObject, FlutterStreamHandler {
 
     func onCancel(withArguments arguments: Any?) -> FlutterError? {
         print("onCancel")
+        fflush(stdout)
         volumesEventSink = nil
         session = nil
         return nil
@@ -95,24 +97,28 @@ class VolumeEventStreamHandler: NSObject, FlutterStreamHandler {
 
     private let onDiscDescriptionChanged: DADiskDescriptionChangedCallback = { disk, keys, context in
         print("onDiscDescriptionChanged")
+        fflush(stdout)
         let this = Unmanaged<VolumeEventStreamHandler>.fromOpaque(context!).takeUnretainedValue()
         this.diskEvent("changed")
     }
 
     private let onDiskAppeared: DADiskAppearedCallback = { disk, context in
         print("onDiskAppeared")
+        fflush(stdout)
         let this = Unmanaged<VolumeEventStreamHandler>.fromOpaque(context!).takeUnretainedValue()
         this.diskEvent("appeared")
     }
 
     private let onDiskDisappeared: DADiskDisappearedCallback = { disk, context in
         print("onDiskDisappeared")
+        fflush(stdout)
         let this = Unmanaged<VolumeEventStreamHandler>.fromOpaque(context!).takeUnretainedValue()
         this.diskEvent("disappeared")
     }
 
     private func diskEvent(_ event: String) {
-      print("diskEvent: \(event)")
+        print("diskEvent: \(event)")
+        fflush(stdout)
         volumesEventSink?([
             "event": event,
             // Add the other properties here if needed.

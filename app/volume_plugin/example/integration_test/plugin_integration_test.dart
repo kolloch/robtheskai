@@ -16,7 +16,7 @@ void main() {
 
   testWidgets('getPlatformVersion test', (WidgetTester tester) async {
     final VolumePlugin plugin = VolumePlugin();
-    final List<String> version = await plugin.getVolumes();
+    final List<Volume> version = await plugin.getVolumes();
     // The version string depends on the host platform running the test, so
     // just assert that some non-empty string is returned.
     expect(version.isNotEmpty, true);
