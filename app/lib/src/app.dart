@@ -7,6 +7,7 @@ import 'package:robokru/src/projects/project_scene_list.dart';
 import 'package:robokru/src/settings/settings_notifier.dart';
 import 'package:robokru/src/settings/settings_view.dart';
 
+import 'copy/copy_volumes_view.dart';
 import 'data/id.dart';
 import 'projects/project_list.dart';
 
@@ -21,6 +22,13 @@ final GoRouter _router = GoRouter(
       name: ProjectSceneList.routeName,
       path: '/projects/:projectId/scenes',
       builder: (context, state) => ProjectSceneList(
+        projectId: Id.fromString(state.pathParameters['projectId']!),
+      ),
+    ),
+    GoRoute(
+      name: CopyVolumesView.routeName,
+      path: '/projects/:projectId/copyVolumes',
+      builder: (context, state) => CopyVolumesView(
         projectId: Id.fromString(state.pathParameters['projectId']!),
       ),
     ),

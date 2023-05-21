@@ -57,3 +57,10 @@ class Volume with _$Volume {
 
   factory Volume.fromJson(Map<String, dynamic> json) => _$VolumeFromJson(json);
 }
+
+extension VolumeExtension on Volume {
+  String? get volumeDirectory =>
+      volumePath == null ? null : Uri.parse(volumePath!).toFilePath();
+
+  bool get isRemovable => mediaEjectable == true || mediaRemovable == true;
+}

@@ -42,6 +42,11 @@ dependencies:
   json_annotation: ^4.8.1
   pretty_diff_text: ^1.0.0
   http: ^0.13.6
+  file: ^6.1.4
+  glob: ^2.1.2
+
+  volume_plugin:
+    path: volume_plugin
 
 dev_dependencies:
   flutter_test:

@@ -46,23 +46,23 @@ mixin _$CopyEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_CopyStarted value) copyStarted,
-    required TResult Function(_ScanningFiles value) scanningFiles,
-    required TResult Function(_CopyProgress value) copyProgress,
+    required TResult Function(CopyStarted value) copyStarted,
+    required TResult Function(ScanningFiles value) scanningFiles,
+    required TResult Function(CopyProgress value) copyProgress,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_CopyStarted value)? copyStarted,
-    TResult? Function(_ScanningFiles value)? scanningFiles,
-    TResult? Function(_CopyProgress value)? copyProgress,
+    TResult? Function(CopyStarted value)? copyStarted,
+    TResult? Function(ScanningFiles value)? scanningFiles,
+    TResult? Function(CopyProgress value)? copyProgress,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_CopyStarted value)? copyStarted,
-    TResult Function(_ScanningFiles value)? scanningFiles,
-    TResult Function(_CopyProgress value)? copyProgress,
+    TResult Function(CopyStarted value)? copyStarted,
+    TResult Function(ScanningFiles value)? scanningFiles,
+    TResult Function(CopyProgress value)? copyProgress,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -86,25 +86,25 @@ class _$CopyEventCopyWithImpl<$Res, $Val extends CopyEvent>
 }
 
 /// @nodoc
-abstract class _$$_CopyStartedCopyWith<$Res> {
-  factory _$$_CopyStartedCopyWith(
-          _$_CopyStarted value, $Res Function(_$_CopyStarted) then) =
-      __$$_CopyStartedCopyWithImpl<$Res>;
+abstract class _$$CopyStartedCopyWith<$Res> {
+  factory _$$CopyStartedCopyWith(
+          _$CopyStarted value, $Res Function(_$CopyStarted) then) =
+      __$$CopyStartedCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_CopyStartedCopyWithImpl<$Res>
-    extends _$CopyEventCopyWithImpl<$Res, _$_CopyStarted>
-    implements _$$_CopyStartedCopyWith<$Res> {
-  __$$_CopyStartedCopyWithImpl(
-      _$_CopyStarted _value, $Res Function(_$_CopyStarted) _then)
+class __$$CopyStartedCopyWithImpl<$Res>
+    extends _$CopyEventCopyWithImpl<$Res, _$CopyStarted>
+    implements _$$CopyStartedCopyWith<$Res> {
+  __$$CopyStartedCopyWithImpl(
+      _$CopyStarted _value, $Res Function(_$CopyStarted) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_CopyStarted implements _CopyStarted {
-  const _$_CopyStarted();
+class _$CopyStarted extends CopyStarted {
+  const _$CopyStarted() : super._();
 
   @override
   String toString() {
@@ -114,7 +114,7 @@ class _$_CopyStarted implements _CopyStarted {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_CopyStarted);
+        (other.runtimeType == runtimeType && other is _$CopyStarted);
   }
 
   @override
@@ -163,9 +163,9 @@ class _$_CopyStarted implements _CopyStarted {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_CopyStarted value) copyStarted,
-    required TResult Function(_ScanningFiles value) scanningFiles,
-    required TResult Function(_CopyProgress value) copyProgress,
+    required TResult Function(CopyStarted value) copyStarted,
+    required TResult Function(ScanningFiles value) scanningFiles,
+    required TResult Function(CopyProgress value) copyProgress,
   }) {
     return copyStarted(this);
   }
@@ -173,9 +173,9 @@ class _$_CopyStarted implements _CopyStarted {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_CopyStarted value)? copyStarted,
-    TResult? Function(_ScanningFiles value)? scanningFiles,
-    TResult? Function(_CopyProgress value)? copyProgress,
+    TResult? Function(CopyStarted value)? copyStarted,
+    TResult? Function(ScanningFiles value)? scanningFiles,
+    TResult? Function(CopyProgress value)? copyProgress,
   }) {
     return copyStarted?.call(this);
   }
@@ -183,9 +183,9 @@ class _$_CopyStarted implements _CopyStarted {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_CopyStarted value)? copyStarted,
-    TResult Function(_ScanningFiles value)? scanningFiles,
-    TResult Function(_CopyProgress value)? copyProgress,
+    TResult Function(CopyStarted value)? copyStarted,
+    TResult Function(ScanningFiles value)? scanningFiles,
+    TResult Function(CopyProgress value)? copyProgress,
     required TResult orElse(),
   }) {
     if (copyStarted != null) {
@@ -195,25 +195,26 @@ class _$_CopyStarted implements _CopyStarted {
   }
 }
 
-abstract class _CopyStarted implements CopyEvent {
-  const factory _CopyStarted() = _$_CopyStarted;
+abstract class CopyStarted extends CopyEvent {
+  const factory CopyStarted() = _$CopyStarted;
+  const CopyStarted._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_ScanningFilesCopyWith<$Res> {
-  factory _$$_ScanningFilesCopyWith(
-          _$_ScanningFiles value, $Res Function(_$_ScanningFiles) then) =
-      __$$_ScanningFilesCopyWithImpl<$Res>;
+abstract class _$$ScanningFilesCopyWith<$Res> {
+  factory _$$ScanningFilesCopyWith(
+          _$ScanningFiles value, $Res Function(_$ScanningFiles) then) =
+      __$$ScanningFilesCopyWithImpl<$Res>;
   @useResult
   $Res call({int numberOfFiles});
 }
 
 /// @nodoc
-class __$$_ScanningFilesCopyWithImpl<$Res>
-    extends _$CopyEventCopyWithImpl<$Res, _$_ScanningFiles>
-    implements _$$_ScanningFilesCopyWith<$Res> {
-  __$$_ScanningFilesCopyWithImpl(
-      _$_ScanningFiles _value, $Res Function(_$_ScanningFiles) _then)
+class __$$ScanningFilesCopyWithImpl<$Res>
+    extends _$CopyEventCopyWithImpl<$Res, _$ScanningFiles>
+    implements _$$ScanningFilesCopyWith<$Res> {
+  __$$ScanningFilesCopyWithImpl(
+      _$ScanningFiles _value, $Res Function(_$ScanningFiles) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -221,7 +222,7 @@ class __$$_ScanningFilesCopyWithImpl<$Res>
   $Res call({
     Object? numberOfFiles = null,
   }) {
-    return _then(_$_ScanningFiles(
+    return _then(_$ScanningFiles(
       numberOfFiles: null == numberOfFiles
           ? _value.numberOfFiles
           : numberOfFiles // ignore: cast_nullable_to_non_nullable
@@ -232,8 +233,8 @@ class __$$_ScanningFilesCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ScanningFiles implements _ScanningFiles {
-  const _$_ScanningFiles({required this.numberOfFiles});
+class _$ScanningFiles extends ScanningFiles {
+  const _$ScanningFiles({required this.numberOfFiles}) : super._();
 
   @override
   final int numberOfFiles;
@@ -247,7 +248,7 @@ class _$_ScanningFiles implements _ScanningFiles {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ScanningFiles &&
+            other is _$ScanningFiles &&
             (identical(other.numberOfFiles, numberOfFiles) ||
                 other.numberOfFiles == numberOfFiles));
   }
@@ -258,8 +259,8 @@ class _$_ScanningFiles implements _ScanningFiles {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ScanningFilesCopyWith<_$_ScanningFiles> get copyWith =>
-      __$$_ScanningFilesCopyWithImpl<_$_ScanningFiles>(this, _$identity);
+  _$$ScanningFilesCopyWith<_$ScanningFiles> get copyWith =>
+      __$$ScanningFilesCopyWithImpl<_$ScanningFiles>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -304,9 +305,9 @@ class _$_ScanningFiles implements _ScanningFiles {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_CopyStarted value) copyStarted,
-    required TResult Function(_ScanningFiles value) scanningFiles,
-    required TResult Function(_CopyProgress value) copyProgress,
+    required TResult Function(CopyStarted value) copyStarted,
+    required TResult Function(ScanningFiles value) scanningFiles,
+    required TResult Function(CopyProgress value) copyProgress,
   }) {
     return scanningFiles(this);
   }
@@ -314,9 +315,9 @@ class _$_ScanningFiles implements _ScanningFiles {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_CopyStarted value)? copyStarted,
-    TResult? Function(_ScanningFiles value)? scanningFiles,
-    TResult? Function(_CopyProgress value)? copyProgress,
+    TResult? Function(CopyStarted value)? copyStarted,
+    TResult? Function(ScanningFiles value)? scanningFiles,
+    TResult? Function(CopyProgress value)? copyProgress,
   }) {
     return scanningFiles?.call(this);
   }
@@ -324,9 +325,9 @@ class _$_ScanningFiles implements _ScanningFiles {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_CopyStarted value)? copyStarted,
-    TResult Function(_ScanningFiles value)? scanningFiles,
-    TResult Function(_CopyProgress value)? copyProgress,
+    TResult Function(CopyStarted value)? copyStarted,
+    TResult Function(ScanningFiles value)? scanningFiles,
+    TResult Function(CopyProgress value)? copyProgress,
     required TResult orElse(),
   }) {
     if (scanningFiles != null) {
@@ -336,31 +337,32 @@ class _$_ScanningFiles implements _ScanningFiles {
   }
 }
 
-abstract class _ScanningFiles implements CopyEvent {
-  const factory _ScanningFiles({required final int numberOfFiles}) =
-      _$_ScanningFiles;
+abstract class ScanningFiles extends CopyEvent {
+  const factory ScanningFiles({required final int numberOfFiles}) =
+      _$ScanningFiles;
+  const ScanningFiles._() : super._();
 
   int get numberOfFiles;
   @JsonKey(ignore: true)
-  _$$_ScanningFilesCopyWith<_$_ScanningFiles> get copyWith =>
+  _$$ScanningFilesCopyWith<_$ScanningFiles> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_CopyProgressCopyWith<$Res> {
-  factory _$$_CopyProgressCopyWith(
-          _$_CopyProgress value, $Res Function(_$_CopyProgress) then) =
-      __$$_CopyProgressCopyWithImpl<$Res>;
+abstract class _$$CopyProgressCopyWith<$Res> {
+  factory _$$CopyProgressCopyWith(
+          _$CopyProgress value, $Res Function(_$CopyProgress) then) =
+      __$$CopyProgressCopyWithImpl<$Res>;
   @useResult
   $Res call({int totalBytes, int bytesCopied, int totalFiles, int filesCopied});
 }
 
 /// @nodoc
-class __$$_CopyProgressCopyWithImpl<$Res>
-    extends _$CopyEventCopyWithImpl<$Res, _$_CopyProgress>
-    implements _$$_CopyProgressCopyWith<$Res> {
-  __$$_CopyProgressCopyWithImpl(
-      _$_CopyProgress _value, $Res Function(_$_CopyProgress) _then)
+class __$$CopyProgressCopyWithImpl<$Res>
+    extends _$CopyEventCopyWithImpl<$Res, _$CopyProgress>
+    implements _$$CopyProgressCopyWith<$Res> {
+  __$$CopyProgressCopyWithImpl(
+      _$CopyProgress _value, $Res Function(_$CopyProgress) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -371,7 +373,7 @@ class __$$_CopyProgressCopyWithImpl<$Res>
     Object? totalFiles = null,
     Object? filesCopied = null,
   }) {
-    return _then(_$_CopyProgress(
+    return _then(_$CopyProgress(
       totalBytes: null == totalBytes
           ? _value.totalBytes
           : totalBytes // ignore: cast_nullable_to_non_nullable
@@ -394,12 +396,13 @@ class __$$_CopyProgressCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_CopyProgress implements _CopyProgress {
-  const _$_CopyProgress(
+class _$CopyProgress extends CopyProgress {
+  const _$CopyProgress(
       {required this.totalBytes,
       required this.bytesCopied,
       required this.totalFiles,
-      required this.filesCopied});
+      required this.filesCopied})
+      : super._();
 
   @override
   final int totalBytes;
@@ -419,7 +422,7 @@ class _$_CopyProgress implements _CopyProgress {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CopyProgress &&
+            other is _$CopyProgress &&
             (identical(other.totalBytes, totalBytes) ||
                 other.totalBytes == totalBytes) &&
             (identical(other.bytesCopied, bytesCopied) ||
@@ -437,8 +440,8 @@ class _$_CopyProgress implements _CopyProgress {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CopyProgressCopyWith<_$_CopyProgress> get copyWith =>
-      __$$_CopyProgressCopyWithImpl<_$_CopyProgress>(this, _$identity);
+  _$$CopyProgressCopyWith<_$CopyProgress> get copyWith =>
+      __$$CopyProgressCopyWithImpl<_$CopyProgress>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -483,9 +486,9 @@ class _$_CopyProgress implements _CopyProgress {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_CopyStarted value) copyStarted,
-    required TResult Function(_ScanningFiles value) scanningFiles,
-    required TResult Function(_CopyProgress value) copyProgress,
+    required TResult Function(CopyStarted value) copyStarted,
+    required TResult Function(ScanningFiles value) scanningFiles,
+    required TResult Function(CopyProgress value) copyProgress,
   }) {
     return copyProgress(this);
   }
@@ -493,9 +496,9 @@ class _$_CopyProgress implements _CopyProgress {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_CopyStarted value)? copyStarted,
-    TResult? Function(_ScanningFiles value)? scanningFiles,
-    TResult? Function(_CopyProgress value)? copyProgress,
+    TResult? Function(CopyStarted value)? copyStarted,
+    TResult? Function(ScanningFiles value)? scanningFiles,
+    TResult? Function(CopyProgress value)? copyProgress,
   }) {
     return copyProgress?.call(this);
   }
@@ -503,9 +506,9 @@ class _$_CopyProgress implements _CopyProgress {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_CopyStarted value)? copyStarted,
-    TResult Function(_ScanningFiles value)? scanningFiles,
-    TResult Function(_CopyProgress value)? copyProgress,
+    TResult Function(CopyStarted value)? copyStarted,
+    TResult Function(ScanningFiles value)? scanningFiles,
+    TResult Function(CopyProgress value)? copyProgress,
     required TResult orElse(),
   }) {
     if (copyProgress != null) {
@@ -515,18 +518,19 @@ class _$_CopyProgress implements _CopyProgress {
   }
 }
 
-abstract class _CopyProgress implements CopyEvent {
-  const factory _CopyProgress(
+abstract class CopyProgress extends CopyEvent {
+  const factory CopyProgress(
       {required final int totalBytes,
       required final int bytesCopied,
       required final int totalFiles,
-      required final int filesCopied}) = _$_CopyProgress;
+      required final int filesCopied}) = _$CopyProgress;
+  const CopyProgress._() : super._();
 
   int get totalBytes;
   int get bytesCopied;
   int get totalFiles;
   int get filesCopied;
   @JsonKey(ignore: true)
-  _$$_CopyProgressCopyWith<_$_CopyProgress> get copyWith =>
+  _$$CopyProgressCopyWith<_$CopyProgress> get copyWith =>
       throw _privateConstructorUsedError;
 }

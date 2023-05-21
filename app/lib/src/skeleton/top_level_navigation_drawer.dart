@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:robokru/src/copy/copy_volumes_view.dart';
 import 'package:robokru/src/data/id.dart';
 import 'package:robokru/src/settings/settings_view.dart';
 import 'package:robokru/src/skeleton/project_drop_down.dart';
@@ -27,6 +28,20 @@ class TopLevelNavigationDrawer extends ConsumerWidget {
           padding: edgeInsets,
           child: ProjectDropDown(),
         ),
+        if (selectedProjectId != null)
+          Padding(
+              padding: edgeInsets,
+              child: ListTile(
+                leading: const Icon(Icons.copy),
+                title: const Text('Copy Volumes'),
+                onTap: () {
+                  context.pushReplacementNamed(CopyVolumesView.routeName,
+                      pathParameters: {
+                        'projectId': selectedProjectId!.toString(),
+                      });
+                },
+              )),
+        const Divider(),
         Padding(
             padding: edgeInsets,
             child: ListTile(
