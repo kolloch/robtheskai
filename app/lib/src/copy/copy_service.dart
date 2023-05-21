@@ -27,13 +27,17 @@ class CopyService {
       return;
     }
 
-    final sourceFiles = (glob ?? Glob("**/*.wav")).listFileSystem(sourceFs);
+    final sourceFiles = (glob ?? Glob("**/*")).listFileSystem(sourceFs);
     int totalBytes = 0;
     int totalFiles = 0;
     List<File> filesToCopy = [];
     await for (var element in sourceFiles) {
       // ignore hidden files
       if (element.basename.startsWith(".")) {
+        continue;
+      }
+
+      if (element.path.contains("/.")) {
         continue;
       }
 
@@ -72,17 +76,33 @@ class CopyService {
       var tmpFile = destFs.file("${file.path}.tmp");
       await tmpFile.create(recursive: true);
       final IOSink outputFile = tmpFile.openWrite();
+      var finished = false;
       try {
         await for (var data in file.openRead()) {
+          if (token?.isCancellationRequested == true) {
+            return;
+          }
           outputFile.add(data);
           await outputFile.flush();
           copiedBytes += data.length;
+          yield CopyEvent.copyProgress(
+            totalBytes: totalBytes,
+            bytesCopied: copiedBytes,
+            totalFiles: totalFiles,
+            filesCopied: copiedFiles,
+          );
           if (token?.isCancellationRequested == true) {
             return;
           }
         }
+
+        finished = true;
       } finally {
         await outputFile.close();
+
+        if (!finished) {
+          await tmpFile.delete();
+        }
       }
       await tmpFile.rename(file.path);
       destFs.file(file.path).setLastModified(await file.lastModified());

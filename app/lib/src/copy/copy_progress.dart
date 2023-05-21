@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:glob/glob.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:robokru/src/copy/cancellation_token.dart';
 
 import 'copy_event.dart';
 import 'copy_service.dart';
@@ -14,6 +15,7 @@ class CopyDirectory with _$CopyDirectory {
   const factory CopyDirectory({
     required Directory sourceDir,
     required Directory destDir,
+    required CancellationToken token,
     Glob? glob,
   }) = _CopyDirectories;
 }
@@ -27,7 +29,8 @@ final copyEventStreamProviderFamily = StreamProvider.autoDispose
   final copyService = ref.watch(copyServiceProvider);
   final sourceDir = directories.sourceDir;
   final destDir = directories.destDir;
-  return copyService.copyDirectory(sourceDir, destDir, glob: directories.glob);
+  return copyService.copyDirectory(sourceDir, destDir,
+      glob: directories.glob, token: directories.token);
 });
 
 class CopyJobsNotifier extends Notifier<List<CopyDirectory>> {
@@ -72,6 +75,12 @@ class CopyProgressWidget extends ConsumerWidget {
               ),
               Text(
                 '${copyEvent.bytesCopied} out of ${copyEvent.totalBytes} bytes copied',
+              ),
+              IconButton(
+                icon: const Icon(Icons.cancel),
+                onPressed: () {
+                  directories.token.cancel();
+                },
               ),
             ],
           );

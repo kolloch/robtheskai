@@ -8,6 +8,7 @@ import 'package:volume_plugin/volume_plugin.dart';
 
 import '../projects/selected_project.dart';
 import '../skeleton/top_level_navigation_drawer.dart';
+import 'cancellation_token.dart';
 
 final volumesPluginProvider = Provider<VolumePlugin>((ref) {
   return VolumePlugin();
@@ -27,7 +28,9 @@ class CopyVolumesView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final volumes = ref.watch(volumesProvider).asData?.value ?? [];
+    final allVolumes = ref.watch(volumesProvider).asData?.value ?? [];
+    final volumes = allVolumes.where((element) => element.isRemovable).toList();
+
     final volumeList = ListView.builder(
       itemCount: volumes.length,
       itemBuilder: (context, index) {
@@ -43,7 +46,8 @@ class CopyVolumesView extends ConsumerWidget {
                 ref.watch(copyJobsNotifierProvider.notifier).add(CopyDirectory(
                     sourceDir: sourceDir,
                     destDir: const LocalFileSystem()
-                        .directory('/Users/peterkolloch/projects/files')));
+                        .directory('/Users/peterkolloch/projects/files'),
+                    token: CancellationToken()));
               }),
         );
       },

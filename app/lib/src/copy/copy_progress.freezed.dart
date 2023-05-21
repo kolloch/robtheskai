@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$CopyDirectory {
   Directory get sourceDir => throw _privateConstructorUsedError;
   Directory get destDir => throw _privateConstructorUsedError;
+  CancellationToken get token => throw _privateConstructorUsedError;
   Glob? get glob => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -31,7 +32,11 @@ abstract class $CopyDirectoryCopyWith<$Res> {
           CopyDirectory value, $Res Function(CopyDirectory) then) =
       _$CopyDirectoryCopyWithImpl<$Res, CopyDirectory>;
   @useResult
-  $Res call({Directory sourceDir, Directory destDir, Glob? glob});
+  $Res call(
+      {Directory sourceDir,
+      Directory destDir,
+      CancellationToken token,
+      Glob? glob});
 }
 
 /// @nodoc
@@ -49,6 +54,7 @@ class _$CopyDirectoryCopyWithImpl<$Res, $Val extends CopyDirectory>
   $Res call({
     Object? sourceDir = null,
     Object? destDir = null,
+    Object? token = null,
     Object? glob = freezed,
   }) {
     return _then(_value.copyWith(
@@ -60,6 +66,10 @@ class _$CopyDirectoryCopyWithImpl<$Res, $Val extends CopyDirectory>
           ? _value.destDir
           : destDir // ignore: cast_nullable_to_non_nullable
               as Directory,
+      token: null == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as CancellationToken,
       glob: freezed == glob
           ? _value.glob
           : glob // ignore: cast_nullable_to_non_nullable
@@ -76,7 +86,11 @@ abstract class _$$_CopyDirectoriesCopyWith<$Res>
       __$$_CopyDirectoriesCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Directory sourceDir, Directory destDir, Glob? glob});
+  $Res call(
+      {Directory sourceDir,
+      Directory destDir,
+      CancellationToken token,
+      Glob? glob});
 }
 
 /// @nodoc
@@ -92,6 +106,7 @@ class __$$_CopyDirectoriesCopyWithImpl<$Res>
   $Res call({
     Object? sourceDir = null,
     Object? destDir = null,
+    Object? token = null,
     Object? glob = freezed,
   }) {
     return _then(_$_CopyDirectories(
@@ -103,6 +118,10 @@ class __$$_CopyDirectoriesCopyWithImpl<$Res>
           ? _value.destDir
           : destDir // ignore: cast_nullable_to_non_nullable
               as Directory,
+      token: null == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as CancellationToken,
       glob: freezed == glob
           ? _value.glob
           : glob // ignore: cast_nullable_to_non_nullable
@@ -115,18 +134,23 @@ class __$$_CopyDirectoriesCopyWithImpl<$Res>
 
 class _$_CopyDirectories implements _CopyDirectories {
   const _$_CopyDirectories(
-      {required this.sourceDir, required this.destDir, this.glob});
+      {required this.sourceDir,
+      required this.destDir,
+      required this.token,
+      this.glob});
 
   @override
   final Directory sourceDir;
   @override
   final Directory destDir;
   @override
+  final CancellationToken token;
+  @override
   final Glob? glob;
 
   @override
   String toString() {
-    return 'CopyDirectory(sourceDir: $sourceDir, destDir: $destDir, glob: $glob)';
+    return 'CopyDirectory(sourceDir: $sourceDir, destDir: $destDir, token: $token, glob: $glob)';
   }
 
   @override
@@ -137,11 +161,12 @@ class _$_CopyDirectories implements _CopyDirectories {
             (identical(other.sourceDir, sourceDir) ||
                 other.sourceDir == sourceDir) &&
             (identical(other.destDir, destDir) || other.destDir == destDir) &&
+            (identical(other.token, token) || other.token == token) &&
             (identical(other.glob, glob) || other.glob == glob));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, sourceDir, destDir, glob);
+  int get hashCode => Object.hash(runtimeType, sourceDir, destDir, token, glob);
 
   @JsonKey(ignore: true)
   @override
@@ -154,12 +179,15 @@ abstract class _CopyDirectories implements CopyDirectory {
   const factory _CopyDirectories(
       {required final Directory sourceDir,
       required final Directory destDir,
+      required final CancellationToken token,
       final Glob? glob}) = _$_CopyDirectories;
 
   @override
   Directory get sourceDir;
   @override
   Directory get destDir;
+  @override
+  CancellationToken get token;
   @override
   Glob? get glob;
   @override
