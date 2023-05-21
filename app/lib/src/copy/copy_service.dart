@@ -51,10 +51,11 @@ class CopyService {
       }
       FileStat fileStat = await element.stat();
 
-      if (fileStat.type is FileSystemEntity) {
+      if (fileStat.type == FileSystemEntityType.file) {
         final existingFile = destFs.file(element.path);
         if (await existingFile.exists() &&
             (await existingFile.lastModified()) == fileStat.changed) {
+          print("Skipping ${element.path} because it already exists");
           continue;
         }
 
@@ -84,6 +85,7 @@ class CopyService {
         await outputFile.close();
       }
       await tmpFile.rename(file.path);
+      destFs.file(file.path).setLastModified(await file.lastModified());
       copiedFiles++;
       yield CopyEvent.copyProgress(
         totalBytes: totalBytes,
