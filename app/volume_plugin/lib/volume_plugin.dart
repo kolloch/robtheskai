@@ -32,12 +32,11 @@ class VolumePlugin {
 
 @freezed
 class Volume with _$Volume {
-  const factory Volume({
-    String? path,
-    String? kind,
-    String? name,
-    String? uuid,
-    String? icon,
+  factory Volume({
+    String? volumePath,
+    String? volumeKind,
+    String? volumeName,
+    String? volumeUUID,
     String? mediaName,
     String? mediaIcon,
     String? mediaKind,

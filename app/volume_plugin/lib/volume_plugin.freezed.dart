@@ -20,11 +20,10 @@ Volume _$VolumeFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Volume {
-  String? get path => throw _privateConstructorUsedError;
-  String? get kind => throw _privateConstructorUsedError;
-  String? get name => throw _privateConstructorUsedError;
-  String? get uuid => throw _privateConstructorUsedError;
-  String? get icon => throw _privateConstructorUsedError;
+  String? get volumePath => throw _privateConstructorUsedError;
+  String? get volumeKind => throw _privateConstructorUsedError;
+  String? get volumeName => throw _privateConstructorUsedError;
+  String? get volumeUUID => throw _privateConstructorUsedError;
   String? get mediaName => throw _privateConstructorUsedError;
   String? get mediaIcon => throw _privateConstructorUsedError;
   String? get mediaKind => throw _privateConstructorUsedError;
@@ -53,11 +52,10 @@ abstract class $VolumeCopyWith<$Res> {
       _$VolumeCopyWithImpl<$Res, Volume>;
   @useResult
   $Res call(
-      {String? path,
-      String? kind,
-      String? name,
-      String? uuid,
-      String? icon,
+      {String? volumePath,
+      String? volumeKind,
+      String? volumeName,
+      String? volumeUUID,
       String? mediaName,
       String? mediaIcon,
       String? mediaKind,
@@ -89,11 +87,10 @@ class _$VolumeCopyWithImpl<$Res, $Val extends Volume>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? path = freezed,
-    Object? kind = freezed,
-    Object? name = freezed,
-    Object? uuid = freezed,
-    Object? icon = freezed,
+    Object? volumePath = freezed,
+    Object? volumeKind = freezed,
+    Object? volumeName = freezed,
+    Object? volumeUUID = freezed,
     Object? mediaName = freezed,
     Object? mediaIcon = freezed,
     Object? mediaKind = freezed,
@@ -112,25 +109,21 @@ class _$VolumeCopyWithImpl<$Res, $Val extends Volume>
     Object? mediaWritable = freezed,
   }) {
     return _then(_value.copyWith(
-      path: freezed == path
-          ? _value.path
-          : path // ignore: cast_nullable_to_non_nullable
+      volumePath: freezed == volumePath
+          ? _value.volumePath
+          : volumePath // ignore: cast_nullable_to_non_nullable
               as String?,
-      kind: freezed == kind
-          ? _value.kind
-          : kind // ignore: cast_nullable_to_non_nullable
+      volumeKind: freezed == volumeKind
+          ? _value.volumeKind
+          : volumeKind // ignore: cast_nullable_to_non_nullable
               as String?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      volumeName: freezed == volumeName
+          ? _value.volumeName
+          : volumeName // ignore: cast_nullable_to_non_nullable
               as String?,
-      uuid: freezed == uuid
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
-              as String?,
-      icon: freezed == icon
-          ? _value.icon
-          : icon // ignore: cast_nullable_to_non_nullable
+      volumeUUID: freezed == volumeUUID
+          ? _value.volumeUUID
+          : volumeUUID // ignore: cast_nullable_to_non_nullable
               as String?,
       mediaName: freezed == mediaName
           ? _value.mediaName
@@ -207,11 +200,10 @@ abstract class _$$_VolumeCopyWith<$Res> implements $VolumeCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String? path,
-      String? kind,
-      String? name,
-      String? uuid,
-      String? icon,
+      {String? volumePath,
+      String? volumeKind,
+      String? volumeName,
+      String? volumeUUID,
       String? mediaName,
       String? mediaIcon,
       String? mediaKind,
@@ -240,11 +232,10 @@ class __$$_VolumeCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? path = freezed,
-    Object? kind = freezed,
-    Object? name = freezed,
-    Object? uuid = freezed,
-    Object? icon = freezed,
+    Object? volumePath = freezed,
+    Object? volumeKind = freezed,
+    Object? volumeName = freezed,
+    Object? volumeUUID = freezed,
     Object? mediaName = freezed,
     Object? mediaIcon = freezed,
     Object? mediaKind = freezed,
@@ -263,25 +254,21 @@ class __$$_VolumeCopyWithImpl<$Res>
     Object? mediaWritable = freezed,
   }) {
     return _then(_$_Volume(
-      path: freezed == path
-          ? _value.path
-          : path // ignore: cast_nullable_to_non_nullable
+      volumePath: freezed == volumePath
+          ? _value.volumePath
+          : volumePath // ignore: cast_nullable_to_non_nullable
               as String?,
-      kind: freezed == kind
-          ? _value.kind
-          : kind // ignore: cast_nullable_to_non_nullable
+      volumeKind: freezed == volumeKind
+          ? _value.volumeKind
+          : volumeKind // ignore: cast_nullable_to_non_nullable
               as String?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      volumeName: freezed == volumeName
+          ? _value.volumeName
+          : volumeName // ignore: cast_nullable_to_non_nullable
               as String?,
-      uuid: freezed == uuid
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
-              as String?,
-      icon: freezed == icon
-          ? _value.icon
-          : icon // ignore: cast_nullable_to_non_nullable
+      volumeUUID: freezed == volumeUUID
+          ? _value.volumeUUID
+          : volumeUUID // ignore: cast_nullable_to_non_nullable
               as String?,
       mediaName: freezed == mediaName
           ? _value.mediaName
@@ -354,12 +341,11 @@ class __$$_VolumeCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_Volume implements _Volume {
-  const _$_Volume(
-      {this.path,
-      this.kind,
-      this.name,
-      this.uuid,
-      this.icon,
+  _$_Volume(
+      {this.volumePath,
+      this.volumeKind,
+      this.volumeName,
+      this.volumeUUID,
       this.mediaName,
       this.mediaIcon,
       this.mediaKind,
@@ -381,15 +367,13 @@ class _$_Volume implements _Volume {
       _$$_VolumeFromJson(json);
 
   @override
-  final String? path;
+  final String? volumePath;
   @override
-  final String? kind;
+  final String? volumeKind;
   @override
-  final String? name;
+  final String? volumeName;
   @override
-  final String? uuid;
-  @override
-  final String? icon;
+  final String? volumeUUID;
   @override
   final String? mediaName;
   @override
@@ -425,7 +409,7 @@ class _$_Volume implements _Volume {
 
   @override
   String toString() {
-    return 'Volume(path: $path, kind: $kind, name: $name, uuid: $uuid, icon: $icon, mediaName: $mediaName, mediaIcon: $mediaIcon, mediaKind: $mediaKind, mediaBlockSize: $mediaBlockSize, mediaSize: $mediaSize, mediaUUID: $mediaUUID, devicePath: $devicePath, deviceProtocol: $deviceProtocol, deviceInternal: $deviceInternal, deviceModel: $deviceModel, deviceRevision: $deviceRevision, deviceVendor: $deviceVendor, mediaEjectable: $mediaEjectable, mediaRemovable: $mediaRemovable, mediaWhole: $mediaWhole, mediaWritable: $mediaWritable)';
+    return 'Volume(volumePath: $volumePath, volumeKind: $volumeKind, volumeName: $volumeName, volumeUUID: $volumeUUID, mediaName: $mediaName, mediaIcon: $mediaIcon, mediaKind: $mediaKind, mediaBlockSize: $mediaBlockSize, mediaSize: $mediaSize, mediaUUID: $mediaUUID, devicePath: $devicePath, deviceProtocol: $deviceProtocol, deviceInternal: $deviceInternal, deviceModel: $deviceModel, deviceRevision: $deviceRevision, deviceVendor: $deviceVendor, mediaEjectable: $mediaEjectable, mediaRemovable: $mediaRemovable, mediaWhole: $mediaWhole, mediaWritable: $mediaWritable)';
   }
 
   @override
@@ -433,11 +417,14 @@ class _$_Volume implements _Volume {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Volume &&
-            (identical(other.path, path) || other.path == path) &&
-            (identical(other.kind, kind) || other.kind == kind) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.uuid, uuid) || other.uuid == uuid) &&
-            (identical(other.icon, icon) || other.icon == icon) &&
+            (identical(other.volumePath, volumePath) ||
+                other.volumePath == volumePath) &&
+            (identical(other.volumeKind, volumeKind) ||
+                other.volumeKind == volumeKind) &&
+            (identical(other.volumeName, volumeName) ||
+                other.volumeName == volumeName) &&
+            (identical(other.volumeUUID, volumeUUID) ||
+                other.volumeUUID == volumeUUID) &&
             (identical(other.mediaName, mediaName) ||
                 other.mediaName == mediaName) &&
             (identical(other.mediaIcon, mediaIcon) ||
@@ -476,11 +463,10 @@ class _$_Volume implements _Volume {
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
-        path,
-        kind,
-        name,
-        uuid,
-        icon,
+        volumePath,
+        volumeKind,
+        volumeName,
+        volumeUUID,
         mediaName,
         mediaIcon,
         mediaKind,
@@ -514,12 +500,11 @@ class _$_Volume implements _Volume {
 }
 
 abstract class _Volume implements Volume {
-  const factory _Volume(
-      {final String? path,
-      final String? kind,
-      final String? name,
-      final String? uuid,
-      final String? icon,
+  factory _Volume(
+      {final String? volumePath,
+      final String? volumeKind,
+      final String? volumeName,
+      final String? volumeUUID,
       final String? mediaName,
       final String? mediaIcon,
       final String? mediaKind,
@@ -540,15 +525,13 @@ abstract class _Volume implements Volume {
   factory _Volume.fromJson(Map<String, dynamic> json) = _$_Volume.fromJson;
 
   @override
-  String? get path;
+  String? get volumePath;
   @override
-  String? get kind;
+  String? get volumeKind;
   @override
-  String? get name;
+  String? get volumeName;
   @override
-  String? get uuid;
-  @override
-  String? get icon;
+  String? get volumeUUID;
   @override
   String? get mediaName;
   @override

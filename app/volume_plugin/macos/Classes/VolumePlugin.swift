@@ -19,34 +19,43 @@ public class VolumePlugin: NSObject, FlutterPlugin {
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     if call.method == "getVolumes" {
       let session = DASessionCreate(kCFAllocatorDefault)
-      var volumes = [[String: Any]]()
 
-      let mountedVolumesURL = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: nil, options: [])
-      for volumeURL in mountedVolumesURL ?? [] {
+      let mountedVolumesURLs = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: nil, options: []) ?? []
+      var volumes = [[String: Any]]()
+      for volumeURL in mountedVolumesURLs {
         let disk = DADiskCreateFromVolumePath(kCFAllocatorDefault, session!, volumeURL as CFURL)
         let diskDescription = DADiskCopyDescription(disk!) as! NSDictionary
 
         var volumeData = [String: Any]()
-        volumeData["path"] = volumeURL.absoluteString
-        volumeData["kind"] = diskDescription[kDADiskDescriptionVolumeKindKey] as? String
-        volumeData["name"] = diskDescription[kDADiskDescriptionVolumeNameKey] as? String
-        volumeData["uuid"] = diskDescription[kDADiskDescriptionVolumeUUIDKey] as? String
+        volumeData["volumePath"] = volumeURL.absoluteString
+        volumeData["volumeKind"] = diskDescription[kDADiskDescriptionVolumeKindKey] as? String
+        volumeData["volumeName"] = diskDescription[kDADiskDescriptionVolumeNameKey] as? String
+        if let volumeUUID = diskDescription[kDADiskDescriptionVolumeUUIDKey] {
+            let uuidString = CFUUIDCreateString(nil, volumeUUID as! CFUUID) as String
+            volumeData["volumeUUID"] = uuidString
+        }
         volumeData["mediaName"] = diskDescription[kDADiskDescriptionMediaNameKey] as? String
-        volumeData["mediaIcon"] = diskDescription[kDADiskDescriptionMediaIconKey] as? String
+        if let mediaIcon = diskDescription[kDADiskDescriptionMediaIconKey] as? [String: Any] {
+            let mediaIconData = try? JSONSerialization.data(withJSONObject: mediaIcon)
+            volumeData["mediaIcon"] = String(data: mediaIconData!, encoding: .utf8)
+        }
         volumeData["mediaKind"] = diskDescription[kDADiskDescriptionMediaKindKey] as? String
-        volumeData["mediaBlockSize"] = diskDescription[kDADiskDescriptionMediaBlockSizeKey] as? Int
-        volumeData["mediaSize"] = diskDescription[kDADiskDescriptionMediaSizeKey] as? Int
-        volumeData["mediaUUID"] = diskDescription[kDADiskDescriptionMediaUUIDKey] as? String
+        volumeData["mediaBlockSize"] = (diskDescription[kDADiskDescriptionMediaBlockSizeKey] as? NSNumber)?.intValue
+        volumeData["mediaSize"] = (diskDescription[kDADiskDescriptionMediaSizeKey] as? NSNumber)?.intValue
+        if let mediaUUID = diskDescription[kDADiskDescriptionMediaUUIDKey] {
+            let uuidString = CFUUIDCreateString(nil, mediaUUID as! CFUUID) as String
+            volumeData["mediaUUID"] = uuidString
+        }
         volumeData["devicePath"] = diskDescription[kDADiskDescriptionDevicePathKey] as? String
         volumeData["deviceProtocol"] = diskDescription[kDADiskDescriptionDeviceProtocolKey] as? String
-        volumeData["deviceInternal"] = diskDescription[kDADiskDescriptionDeviceInternalKey] as? Bool
+        volumeData["deviceInternal"] = (diskDescription[kDADiskDescriptionDeviceInternalKey] as? NSNumber)?.boolValue
         volumeData["deviceModel"] = diskDescription[kDADiskDescriptionDeviceModelKey] as? String
         volumeData["deviceRevision"] = diskDescription[kDADiskDescriptionDeviceRevisionKey] as? String
         volumeData["deviceVendor"] = diskDescription[kDADiskDescriptionDeviceVendorKey] as? String
-        volumeData["mediaEjectable"] = diskDescription[kDADiskDescriptionMediaEjectableKey] as? Bool
-        volumeData["mediaRemovable"] = diskDescription[kDADiskDescriptionMediaRemovableKey] as? Bool
-        volumeData["mediaWhole"] = diskDescription[kDADiskDescriptionMediaWholeKey] as? Bool
-        volumeData["mediaWritable"] = diskDescription[kDADiskDescriptionMediaWritableKey] as? Bool
+        volumeData["mediaEjectable"] = (diskDescription[kDADiskDescriptionMediaEjectableKey] as? NSNumber)?.boolValue
+        volumeData["mediaRemovable"] = (diskDescription[kDADiskDescriptionMediaRemovableKey] as? NSNumber)?.boolValue
+        volumeData["mediaWhole"] = (diskDescription[kDADiskDescriptionMediaWholeKey] as? NSNumber)?.boolValue
+        volumeData["mediaWritable"] = (diskDescription[kDADiskDescriptionMediaWritableKey] as? NSNumber)?.boolValue
 
         volumes.append(volumeData)
       }
@@ -78,6 +87,7 @@ class VolumeEventStreamHandler: NSObject, FlutterStreamHandler {
     }
 
     func onCancel(withArguments arguments: Any?) -> FlutterError? {
+        print("onCancel")
         volumesEventSink = nil
         session = nil
         return nil

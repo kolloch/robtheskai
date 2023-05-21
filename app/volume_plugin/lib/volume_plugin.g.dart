@@ -7,11 +7,10 @@ part of 'volume_plugin.dart';
 // **************************************************************************
 
 _$_Volume _$$_VolumeFromJson(Map<String, dynamic> json) => _$_Volume(
-      path: json['path'] as String?,
-      kind: json['kind'] as String?,
-      name: json['name'] as String?,
-      uuid: json['uuid'] as String?,
-      icon: json['icon'] as String?,
+      volumePath: json['volumePath'] as String?,
+      volumeKind: json['volumeKind'] as String?,
+      volumeName: json['volumeName'] as String?,
+      volumeUUID: json['volumeUUID'] as String?,
       mediaName: json['mediaName'] as String?,
       mediaIcon: json['mediaIcon'] as String?,
       mediaKind: json['mediaKind'] as String?,
@@ -31,11 +30,10 @@ _$_Volume _$$_VolumeFromJson(Map<String, dynamic> json) => _$_Volume(
     );
 
 Map<String, dynamic> _$$_VolumeToJson(_$_Volume instance) => <String, dynamic>{
-      'path': instance.path,
-      'kind': instance.kind,
-      'name': instance.name,
-      'uuid': instance.uuid,
-      'icon': instance.icon,
+      'volumePath': instance.volumePath,
+      'volumeKind': instance.volumeKind,
+      'volumeName': instance.volumeName,
+      'volumeUUID': instance.volumeUUID,
       'mediaName': instance.mediaName,
       'mediaIcon': instance.mediaIcon,
       'mediaKind': instance.mediaKind,
