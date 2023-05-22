@@ -57,11 +57,8 @@ class ProjectListView extends ConsumerWidget {
                     },
                   ),
                   onTap: () {
-                    context
-                        .pushNamed(ProjectSceneList.routeName, pathParameters: {
-                      'projectId': item.id.toString(),
-                    });
                     ref.read(selectedProjectNotifier.notifier).select(item.id);
+                    Scaffold.of(context).openDrawer();
                   });
             },
           );

@@ -11,7 +11,7 @@ import 'copy/copy_volumes_view.dart';
 import 'data/id.dart';
 import 'projects/project_list.dart';
 
-final GoRouter _router = GoRouter(
+final GoRouter appRouter = GoRouter(
   routes: [
     GoRoute(
       name: ProjectListView.routeName,
@@ -47,7 +47,10 @@ final GoRouter _router = GoRouter(
 
 /// The Widget that configures your application.
 class MyApp extends ConsumerWidget {
+  final GoRouter router;
+
   const MyApp({
+    required this.router,
     super.key,
   });
 
@@ -106,7 +109,7 @@ class MyApp extends ConsumerWidget {
       darkTheme: ThemeData.dark(),
       themeMode: settings.themeMode,
 
-      routerConfig: _router,
+      routerConfig: router,
     );
   }
 

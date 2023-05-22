@@ -4,6 +4,7 @@ import 'package:robokru/src/data/id.dart';
 
 import '../data/query/scenes.dart';
 import '../skeleton/consumer_async_value_widget.dart';
+import '../skeleton/top_level_navigation_drawer.dart';
 
 final projectScenesProvider =
     StreamProvider.autoDispose.family<List<SceneWithLocation>, Id>(
@@ -32,6 +33,7 @@ class ProjectSceneList extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Scenes'),
       ),
+      drawer: TopLevelNavigationDrawer(selectedProjectId: projectId),
       body: ConsumerAsyncValueWidget(
         asyncValue: scenes,
         buildWithData: (context, ref, List<SceneWithLocation> scenes) {

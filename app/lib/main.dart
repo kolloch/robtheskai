@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:robokru/src/app.dart';
 
 void main() async {
-  runApp(const ProviderScope(
-    child: MyApp(),
+  runApp(ProviderScope(
+    child: MyApp(router: appRouter),
   ));
 }
