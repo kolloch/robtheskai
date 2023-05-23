@@ -36,7 +36,7 @@ class Scenes extends Table {
       text().map(const UuidConverter()).references(Projects, #id)();
   TextColumn get locationId =>
       text().map(const UuidConverter()).references(Locations, #id)();
-  IntColumn get number => integer()();
+  TextColumn get number => text()();
   TextColumn get name => text()();
 }
 

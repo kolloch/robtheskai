@@ -12,6 +12,10 @@ class LocationsDao extends DatabaseAccessor<SkaiDb> with _$LocationsDaoMixin {
 
   Stream<List<Location>> getAllLocations() => select(locations).watch();
 
+  Stream<List<Location>> getProjectLocations(Id projectId) => (select(locations)
+        ..where((location) => location.projectId.equals(projectId.toString())))
+      .watch();
+
   Future<Location> insertSampleBeachHouse(Id projectId) async {
     return await into(locations).insertReturning(LocationsCompanion(
         id: Value(Id.random()),
@@ -31,3 +35,11 @@ final locationsDaoProvider = Provider((ref) {
   final db = ref.watch(skaiDbProvider);
   return db.locationsDao;
 });
+
+final projectLocationsProvider =
+    StreamProvider.autoDispose.family<List<Location>, Id>(
+  (ref, projectId) {
+    final locationsDao = ref.watch(locationsDaoProvider);
+    return locationsDao.getProjectLocations(projectId);
+  },
+);

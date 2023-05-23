@@ -6,7 +6,6 @@ import 'package:robokru/src/copy/copy_progress.dart';
 import 'package:robokru/src/data/id.dart';
 import 'package:volume_plugin/volume_plugin.dart';
 
-import '../projects/selected_project.dart';
 import '../skeleton/top_level_navigation_drawer.dart';
 import 'cancellation_token.dart';
 

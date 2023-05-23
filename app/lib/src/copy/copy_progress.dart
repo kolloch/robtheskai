@@ -52,7 +52,7 @@ final copyJobsNotifierProvider =
 class CopyProgressWidget extends ConsumerWidget {
   final CopyDirectory directories;
 
-  const CopyProgressWidget({
+  const CopyProgressWidget({super.key, 
     required this.directories,
   });
 

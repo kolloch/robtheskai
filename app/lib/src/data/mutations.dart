@@ -1,5 +1,3 @@
-import 'package:drift/src/runtime/query_builder/query_builder.dart';
-import 'package:robokru/src/data/tables.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'id.dart';

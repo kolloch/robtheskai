@@ -51,13 +51,13 @@ class ProjectsDao extends DatabaseAccessor<SkaiDb> with _$ProjectsDaoMixin {
           id: Value(Id.random()),
           projectId: Value(project.id),
           locationId: Value(villa.id),
-          number: const Value(1),
+          number: const Value("1"),
           name: const Value('A normal day at work')));
       await into(db.scenes).insert(ScenesCompanion(
           id: Value(Id.random()),
           projectId: Value(project.id),
           locationId: Value(sunnyBeachHouse.id),
-          number: const Value(2),
+          number: const Value("2"),
           name: const Value('Epethany at the beach')));
 
       return project;

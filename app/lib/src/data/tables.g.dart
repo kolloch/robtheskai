@@ -484,9 +484,9 @@ class $ScenesTable extends Scenes with TableInfo<$ScenesTable, Scene> {
           .withConverter<Id>($ScenesTable.$converterlocationId);
   static const VerificationMeta _numberMeta = const VerificationMeta('number');
   @override
-  late final GeneratedColumn<int> number = GeneratedColumn<int>(
+  late final GeneratedColumn<String> number = GeneratedColumn<String>(
       'number', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -537,7 +537,7 @@ class $ScenesTable extends Scenes with TableInfo<$ScenesTable, Scene> {
           .typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}location_id'])!),
       number: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}number'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}number'])!,
       name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
     );
@@ -557,7 +557,7 @@ class Scene extends DataClass implements Insertable<Scene> {
   final Id id;
   final Id projectId;
   final Id locationId;
-  final int number;
+  final String number;
   final String name;
   const Scene(
       {required this.id,
@@ -580,7 +580,7 @@ class Scene extends DataClass implements Insertable<Scene> {
       final converter = $ScenesTable.$converterlocationId;
       map['location_id'] = Variable<String>(converter.toSql(locationId));
     }
-    map['number'] = Variable<int>(number);
+    map['number'] = Variable<String>(number);
     map['name'] = Variable<String>(name);
     return map;
   }
@@ -602,7 +602,7 @@ class Scene extends DataClass implements Insertable<Scene> {
       id: serializer.fromJson<Id>(json['id']),
       projectId: serializer.fromJson<Id>(json['projectId']),
       locationId: serializer.fromJson<Id>(json['locationId']),
-      number: serializer.fromJson<int>(json['number']),
+      number: serializer.fromJson<String>(json['number']),
       name: serializer.fromJson<String>(json['name']),
     );
   }
@@ -613,13 +613,17 @@ class Scene extends DataClass implements Insertable<Scene> {
       'id': serializer.toJson<Id>(id),
       'projectId': serializer.toJson<Id>(projectId),
       'locationId': serializer.toJson<Id>(locationId),
-      'number': serializer.toJson<int>(number),
+      'number': serializer.toJson<String>(number),
       'name': serializer.toJson<String>(name),
     };
   }
 
   Scene copyWith(
-          {Id? id, Id? projectId, Id? locationId, int? number, String? name}) =>
+          {Id? id,
+          Id? projectId,
+          Id? locationId,
+          String? number,
+          String? name}) =>
       Scene(
         id: id ?? this.id,
         projectId: projectId ?? this.projectId,
@@ -656,7 +660,7 @@ class ScenesCompanion extends UpdateCompanion<Scene> {
   final Value<Id> id;
   final Value<Id> projectId;
   final Value<Id> locationId;
-  final Value<int> number;
+  final Value<String> number;
   final Value<String> name;
   final Value<int> rowid;
   const ScenesCompanion({
@@ -671,7 +675,7 @@ class ScenesCompanion extends UpdateCompanion<Scene> {
     required Id id,
     required Id projectId,
     required Id locationId,
-    required int number,
+    required String number,
     required String name,
     this.rowid = const Value.absent(),
   })  : id = Value(id),
@@ -683,7 +687,7 @@ class ScenesCompanion extends UpdateCompanion<Scene> {
     Expression<String>? id,
     Expression<String>? projectId,
     Expression<String>? locationId,
-    Expression<int>? number,
+    Expression<String>? number,
     Expression<String>? name,
     Expression<int>? rowid,
   }) {
@@ -701,7 +705,7 @@ class ScenesCompanion extends UpdateCompanion<Scene> {
       {Value<Id>? id,
       Value<Id>? projectId,
       Value<Id>? locationId,
-      Value<int>? number,
+      Value<String>? number,
       Value<String>? name,
       Value<int>? rowid}) {
     return ScenesCompanion(
@@ -730,7 +734,7 @@ class ScenesCompanion extends UpdateCompanion<Scene> {
       map['location_id'] = Variable<String>(converter.toSql(locationId.value));
     }
     if (number.present) {
-      map['number'] = Variable<int>(number.value);
+      map['number'] = Variable<String>(number.value);
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);

@@ -26,7 +26,7 @@ dependencies:
   path: ^1.8.2
 
   # Riverpod dependencies
-  flutter_hooks: ^0.18.0
+  flutter_hooks: ^0.18.6
   hooks_riverpod: ^2.3.6
 
   # Navigation

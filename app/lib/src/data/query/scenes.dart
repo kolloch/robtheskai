@@ -39,6 +39,11 @@ class ScenesDao extends DatabaseAccessor<SkaiDb> with _$ScenesDaoMixin {
     await (delete(scenes)..where((scene) => scene.id.equals(id.toString())))
         .go();
   }
+
+  Future<void> upsertScene(ScenesCompanion scene) async {
+    print("scenesCompanion: $scene");
+    await into(scenes).insert(scene, mode: InsertMode.insertOrReplace);
+  }
 }
 
 final scenesDaoProvider = Provider((ref) {
