@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:file/chroot.dart';
 import 'package:file/file.dart';
 import 'package:glob/glob.dart';
-import 'package:robokru/src/copy/copy_event.dart';
+import 'package:robokru/src/copy/model.dart';
 
 import 'cancellation_token.dart';
 
@@ -73,6 +73,7 @@ class CopyService {
     int copiedBytes = 0;
     int copiedFiles = 0;
     for (var file in filesToCopy) {
+      final copiedBytesBeforeFile = copiedBytes;
       var tmpFile = destFs.file("${file.path}.tmp");
       await tmpFile.create(recursive: true);
       final IOSink outputFile = tmpFile.openWrite();
@@ -102,6 +103,13 @@ class CopyService {
 
         if (!finished) {
           await tmpFile.delete();
+          copiedBytes = copiedBytesBeforeFile;
+          yield CopyEvent.copyProgress(
+            totalBytes: totalBytes,
+            bytesCopied: copiedBytes,
+            totalFiles: totalFiles,
+            filesCopied: copiedFiles,
+          );
         }
       }
       await tmpFile.rename(file.path);

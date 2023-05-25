@@ -17,14 +17,20 @@ public class VolumePlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    if call.method == "getVolumes" {
+    if call.method == "eject" {
+      eject(call, result: result)
+    } else if call.method == "getVolumes" {
       let session = DASessionCreate(kCFAllocatorDefault)
 
       let mountedVolumesURLs = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: nil, options: []) ?? []
       var volumes = [[String: Any]]()
       for volumeURL in mountedVolumesURLs {
         let disk = DADiskCreateFromVolumePath(kCFAllocatorDefault, session!, volumeURL as CFURL)
-        let diskDescription = DADiskCopyDescription(disk!) as! NSDictionary
+        let diskDescriptionNullable = DADiskCopyDescription(disk!)
+        if diskDescriptionNullable == nil {
+          continue
+        }
+        let diskDescription = diskDescriptionNullable! as NSDictionary
 
         var volumeData = [String: Any]()
         volumeData["volumePath"] = volumeURL.absoluteString
@@ -64,6 +70,66 @@ public class VolumePlugin: NSObject, FlutterPlugin {
       result(FlutterMethodNotImplemented)
     }
   }
+
+  public func eject(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+    guard let args = call.arguments as? [String: Any],
+          let uuidString = args["uuid"] as? String else {
+        result(FlutterError(code: "INVALID_ARGUMENTS",
+                            message: "Invalid arguments",
+                            details: nil))
+        return
+    }
+
+    guard let session = DASessionCreate(kCFAllocatorDefault) else {
+        result(FlutterError(code: "SESSION_CREATION_FAILED",
+                            message: "Failed to create DA session",
+                            details: nil))
+        return
+    }
+
+    let mountedVolumesURLs = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: nil, options: []) ?? []
+      for volumeURL in mountedVolumesURLs {
+        guard let disk = DADiskCreateFromVolumePath(kCFAllocatorDefault, session, volumeURL as CFURL) else {
+          continue
+        }
+        guard let diskDescription = DADiskCopyDescription(disk) as? NSDictionary else {
+          continue
+        }
+        if let mediaUUID = diskDescription[kDADiskDescriptionVolumeUUIDKey] {
+            let uuid = CFUUIDCreateString(nil, mediaUUID as! CFUUID) as String
+            if uuid == uuidString {
+                let result = FlutterResultWrapper(result: result)
+                DADiskEject(disk, DADiskEjectOptions(kDADiskEjectOptionDefault), { (disk, dissenter, context) in
+                    let result = Unmanaged<FlutterResultWrapper>.fromOpaque(context!).takeUnretainedValue()
+
+                    if dissenter != nil {
+                        print("Failed to eject volume: \(dissenter!)")
+                        result.result(FlutterError(code: "EJECT_FAILED",
+                                            message: "Failed to eject volume",
+                                            details: nil))
+                    } else {
+                      print("Ejected volume successfully")
+                      result.result(nil)
+                    }
+                    // flush stdout
+                    fflush(stdout)
+                }, Unmanaged<FlutterResultWrapper>.passUnretained(result).toOpaque())
+                return
+            }
+        }
+    }
+
+    result(FlutterError(code: "INVALID_UUID",
+                        message: "Disk with specified UUID not found",
+                        details: nil))
+  }
+}
+
+class FlutterResultWrapper: NSObject {
+    let result: FlutterResult
+    init(result: @escaping FlutterResult) {
+        self.result = result
+    }
 }
 
 class VolumeEventStreamHandler: NSObject, FlutterStreamHandler {

@@ -47,6 +47,7 @@ dependencies:
 
   volume_plugin:
     path: volume_plugin
+  pretty_bytes: ^6.1.0
 
 dev_dependencies:
   flutter_test:

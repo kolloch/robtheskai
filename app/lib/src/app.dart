@@ -26,9 +26,9 @@ final GoRouter appRouter = GoRouter(
       ),
     ),
     GoRoute(
-      name: CopyVolumesView.routeName,
+      name: CopyFilesView.routeName,
       path: '/projects/:projectId/copyVolumes',
-      builder: (context, state) => CopyVolumesView(
+      builder: (context, state) => CopyFilesView(
         projectId: Id.fromString(state.pathParameters['projectId']!),
       ),
     ),
@@ -103,10 +103,13 @@ class MyApp extends ConsumerWidget {
       // Define a light and dark color theme. Then, read the user's
       // preferred ThemeMode (light, dark, or system default) from the
       // SettingsController to display the correct theme.
-      theme: ThemeData(
+      theme: ThemeData.from(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurpleAccent),
         useMaterial3: true,
       ),
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData.dark(
+        useMaterial3: true,
+      ),
       themeMode: settings.themeMode,
 
       routerConfig: router,

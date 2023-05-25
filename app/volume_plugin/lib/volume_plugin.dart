@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -27,6 +29,10 @@ class VolumePlugin {
     await for (final _ in events) {
       yield await getVolumes();
     }
+  }
+
+  Future<void> eject(String volumeUuid) async {
+    await _methodChannel.invokeMethod('eject', {'uuid': volumeUuid});
   }
 }
 
@@ -63,4 +69,9 @@ extension VolumeExtension on Volume {
       volumePath == null ? null : Uri.parse(volumePath!).toFilePath();
 
   bool get isRemovable => mediaEjectable == true || mediaRemovable == true;
+
+  String get prettyJson {
+    const encoder = JsonEncoder.withIndent("     ");
+    return encoder.convert(toJson());
+  }
 }

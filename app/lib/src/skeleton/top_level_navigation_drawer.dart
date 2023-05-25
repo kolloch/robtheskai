@@ -50,7 +50,7 @@ class TopLevelNavigationDrawer extends ConsumerWidget {
                   leading: const Icon(Icons.storage),
                   title: const Text('Copy Files'),
                   onTap: () {
-                    context.pushReplacementNamed(CopyVolumesView.routeName,
+                    context.pushReplacementNamed(CopyFilesView.routeName,
                         pathParameters: {
                           'projectId': selectedProjectId!.toString(),
                         });

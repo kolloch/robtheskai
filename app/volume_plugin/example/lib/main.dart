@@ -35,9 +35,10 @@ class _MyAppState extends State<MyApp> {
               }
 
               final volumes = snapshot.data!
-                  .where((element) =>
-                      element.mediaEjectable == true ||
-                      element.mediaRemovable == true)
+                  .where((element) => true
+                      // element.mediaEjectable == true ||
+                      // element.mediaRemovable == true
+                      )
                   .toList();
 
               return ListView.builder(

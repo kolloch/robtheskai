@@ -1,8 +1,8 @@
 import 'package:file/memory.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:robokru/src/copy/cancellation_token.dart';
-import 'package:robokru/src/copy/copy_event.dart';
 import 'package:robokru/src/copy/copy_service.dart';
+import 'package:robokru/src/copy/model.dart';
 
 void main() {
   group('CopyService', () {
