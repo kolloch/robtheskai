@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:async/async.dart';
 import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -21,19 +22,27 @@ class VolumePlugin {
 
   Stream<void> get events {
     _events ??= _eventChannel.receiveBroadcastStream();
+
     return _events!;
   }
 
   Stream<List<Volume>> get uptodateVolumes async* {
+    final merged = StreamGroup.merge(
+            <Stream<void>>[events, Stream.periodic(const Duration(seconds: 5))])
+        // already listen so we don't miss anything.
+        .listenAndBuffer();
+
     yield await getVolumes();
-    await for (final _ in events) {
+
+    await for (final _ in merged) {
       yield await getVolumes();
     }
   }
 
-  Future<void> eject(String volumeUuid) async {
-    await _methodChannel.invokeMethod('eject', {'uuid': volumeUuid});
-  }
+  // does not work
+  // Future<void> eject(String volumeUuid) async {
+  //   await _methodChannel2.invokeMethod('eject', {'uuid': volumeUuid});
+  // }
 }
 
 @freezed

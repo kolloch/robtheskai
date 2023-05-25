@@ -14,9 +14,12 @@ public class VolumePlugin: NSObject, FlutterPlugin {
 
     let channel = FlutterMethodChannel(name: "volume_plugin", binaryMessenger: registrar.messenger)
     registrar.addMethodCallDelegate(instance, channel: channel)
-  }
+ }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+    print("handle call \(call.method)")
+    fflush(stdout)
+
     if call.method == "eject" {
       eject(call, result: result)
     } else if call.method == "getVolumes" {
@@ -25,12 +28,15 @@ public class VolumePlugin: NSObject, FlutterPlugin {
       let mountedVolumesURLs = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: nil, options: []) ?? []
       var volumes = [[String: Any]]()
       for volumeURL in mountedVolumesURLs {
-        let disk = DADiskCreateFromVolumePath(kCFAllocatorDefault, session!, volumeURL as CFURL)
-        let diskDescriptionNullable = DADiskCopyDescription(disk!)
-        if diskDescriptionNullable == nil {
+        guard let disk = DADiskCreateFromVolumePath(kCFAllocatorDefault, session!, volumeURL as CFURL) else {
           continue
         }
-        let diskDescription = diskDescriptionNullable! as NSDictionary
+        guard let diskDescriptionNullable = DADiskCopyDescription(disk) else {
+          continue
+        }
+        guard let diskDescription = diskDescriptionNullable as NSDictionary? else {
+          continue
+        }
 
         var volumeData = [String: Any]()
         volumeData["volumePath"] = volumeURL.absoluteString
@@ -72,6 +78,8 @@ public class VolumePlugin: NSObject, FlutterPlugin {
   }
 
   public func eject(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+    print("eject call \(call.method)")
+
     guard let args = call.arguments as? [String: Any],
           let uuidString = args["uuid"] as? String else {
         result(FlutterError(code: "INVALID_ARGUMENTS",
@@ -148,7 +156,13 @@ class VolumeEventStreamHandler: NSObject, FlutterStreamHandler {
         DARegisterDiskAppearedCallback(session!, nil as CFDictionary?, onDiskAppeared, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
         DARegisterDiskDisappearedCallback(session!, nil as CFDictionary?, onDiskDisappeared, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
 
-        DASessionScheduleWithRunLoop(session!, CFRunLoopGetMain(), CFRunLoopMode.defaultMode.rawValue);
+        print("before runloop")
+        DASessionScheduleWithRunLoop(session!, CFRunLoopGetMain(), CFRunLoopMode.defaultMode.rawValue)
+        print("after runloop")
+        fflush(stdout)
+
+        // let runloop = RunLoop.current
+        // DASessionScheduleWithRunLoop(session!, runloop.getCFRunLoop(), runloop.currentMode!.rawValue as CFString)
         
         return nil
     }

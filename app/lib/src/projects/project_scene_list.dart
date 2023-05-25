@@ -86,6 +86,7 @@ class ProjectSceneList extends HookConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SegmentedButton(
+                    showSelectedIcon: false,
                     segments: const <ButtonSegment<EditMode>>[
                       ButtonSegment(
                           value: EditMode.view,

@@ -48,6 +48,8 @@ dependencies:
   volume_plugin:
     path: volume_plugin
   pretty_bytes: ^6.1.0
+  async: ^2.11.0
+  file_picker: ^5.3.1
 
 dev_dependencies:
   flutter_test:
