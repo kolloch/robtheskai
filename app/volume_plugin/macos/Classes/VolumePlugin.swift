@@ -23,53 +23,70 @@ public class VolumePlugin: NSObject, FlutterPlugin {
     if call.method == "eject" {
       eject(call, result: result)
     } else if call.method == "getVolumes" {
-      let session = DASessionCreate(kCFAllocatorDefault)
-
-      let mountedVolumesURLs = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: nil, options: [
+      let fm = FileManager.default
+      let mountedVolumesURLs = fm.mountedVolumeURLs(includingResourceValuesForKeys: nil, options: [
         .skipHiddenVolumes,
       ]) ?? []
+
       var volumes = [[String: Any]]()
       for volumeURL in mountedVolumesURLs {
-        guard let disk = DADiskCreateFromVolumePath(kCFAllocatorDefault, session!, volumeURL as CFURL) else {
-          continue
-        }
-        guard let diskDescriptionNullable = DADiskCopyDescription(disk) else {
-          continue
-        }
-        guard let diskDescription = diskDescriptionNullable as NSDictionary? else {
+        var values: URLResourceValues
+        do {
+          values = try volumeURL.resourceValues(forKeys: [
+            .volumeNameKey,
+            .volumeIsBrowsableKey,
+            .volumeIsEjectableKey,
+            .volumeIsRemovableKey, 
+            .volumeIsInternalKey,
+            .volumeIsAutomountedKey,
+            .volumeIsLocalKey,
+            .volumeIsReadOnlyKey,
+            .volumeIsRootFileSystemKey,
+            .volumeSupportsPersistentIDsKey,
+            .volumeSupportsRenamingKey,
+            .volumeCreationDateKey,
+            .volumeIdentifierKey,
+            .volumeLocalizedFormatDescriptionKey,
+            .volumeLocalizedNameKey,
+            .volumeURLKey,
+            .volumeUUIDStringKey, 
+            // .volumeTypeNameKey,
+            // .volumeSubtypeKey,
+            .volumeSupportsCasePreservedNamesKey,
+            .volumeAvailableCapacityForImportantUsageKey,
+            .volumeTotalCapacityKey,
+          ])
+        } catch {
           continue
         }
 
         var volumeData = [String: Any]()
-        volumeData["volumePath"] = volumeURL.absoluteString
-        volumeData["volumeKind"] = diskDescription[kDADiskDescriptionVolumeKindKey] as? String
-        volumeData["volumeName"] = diskDescription[kDADiskDescriptionVolumeNameKey] as? String
-        if let volumeUUID = diskDescription[kDADiskDescriptionVolumeUUIDKey] {
-            let uuidString = CFUUIDCreateString(nil, volumeUUID as! CFUUID) as String
-            volumeData["volumeUUID"] = uuidString
+
+        volumeData["url"] = volumeURL.absoluteString
+        volumeData["name"] = values.volumeName
+        volumeData["isBrowsable"] = values.volumeIsBrowsable
+        volumeData["isEjectable"] = values.volumeIsEjectable
+        volumeData["isRemovable"] = values.volumeIsRemovable
+        volumeData["isInternal"] = values.volumeIsInternal
+        volumeData["isAutomounted"] = values.volumeIsAutomounted
+        volumeData["isLocal"] = values.volumeIsLocal
+        volumeData["isReadOnly"] = values.volumeIsReadOnly
+        volumeData["isRootFileSystem"] = values.volumeIsRootFileSystem
+        volumeData["supportsPersistentIDs"] = values.volumeSupportsPersistentIDs
+        volumeData["supportsRenaming"] = values.volumeSupportsRenaming
+        volumeData["creationDate"] = values.volumeCreationDate.map { 
+          // format as date string
+          $0.description(with: Locale.current)
         }
-        volumeData["mediaName"] = diskDescription[kDADiskDescriptionMediaNameKey] as? String
-        if let mediaIcon = diskDescription[kDADiskDescriptionMediaIconKey] as? [String: Any] {
-            let mediaIconData = try? JSONSerialization.data(withJSONObject: mediaIcon)
-            volumeData["mediaIcon"] = String(data: mediaIconData!, encoding: .utf8)
-        }
-        volumeData["mediaKind"] = diskDescription[kDADiskDescriptionMediaKindKey] as? String
-        volumeData["mediaBlockSize"] = (diskDescription[kDADiskDescriptionMediaBlockSizeKey] as? NSNumber)?.intValue
-        volumeData["mediaSize"] = (diskDescription[kDADiskDescriptionMediaSizeKey] as? NSNumber)?.intValue
-        if let mediaUUID = diskDescription[kDADiskDescriptionMediaUUIDKey] {
-            let uuidString = CFUUIDCreateString(nil, mediaUUID as! CFUUID) as String
-            volumeData["mediaUUID"] = uuidString
-        }
-        volumeData["devicePath"] = diskDescription[kDADiskDescriptionDevicePathKey] as? String
-        volumeData["deviceProtocol"] = diskDescription[kDADiskDescriptionDeviceProtocolKey] as? String
-        volumeData["deviceInternal"] = (diskDescription[kDADiskDescriptionDeviceInternalKey] as? NSNumber)?.boolValue
-        volumeData["deviceModel"] = diskDescription[kDADiskDescriptionDeviceModelKey] as? String
-        volumeData["deviceRevision"] = diskDescription[kDADiskDescriptionDeviceRevisionKey] as? String
-        volumeData["deviceVendor"] = diskDescription[kDADiskDescriptionDeviceVendorKey] as? String
-        volumeData["mediaEjectable"] = (diskDescription[kDADiskDescriptionMediaEjectableKey] as? NSNumber)?.boolValue
-        volumeData["mediaRemovable"] = (diskDescription[kDADiskDescriptionMediaRemovableKey] as? NSNumber)?.boolValue
-        volumeData["mediaWhole"] = (diskDescription[kDADiskDescriptionMediaWholeKey] as? NSNumber)?.boolValue
-        volumeData["mediaWritable"] = (diskDescription[kDADiskDescriptionMediaWritableKey] as? NSNumber)?.boolValue
+        volumeData["identifier"] = values.volumeIdentifier?.description
+        volumeData["localizedFormatDescription"] = values.volumeLocalizedFormatDescription
+        volumeData["localizedName"] = values.volumeLocalizedName
+        volumeData["uuidString"] = values.volumeUUIDString
+        // volumeData["type"] = values.volumeType
+        // volumeData["subtype"] = values.volumeSubtype
+        volumeData["supportsCasePreservedNames"] = values.volumeSupportsCasePreservedNames
+        volumeData["availableCapacityForImportantUsage"] = values.volumeAvailableCapacityForImportantUsage
+        volumeData["totalCapacity"] = values.volumeTotalCapacity
 
         volumes.append(volumeData)
       }
@@ -83,9 +100,9 @@ public class VolumePlugin: NSObject, FlutterPlugin {
     print("eject call \(call.method)")
 
     guard let args = call.arguments as? [String: Any],
-        let volumePathString = args["volumePath"] as? String else {
+        let volumePathString = args["url"] as? String else {
         result(FlutterError(code: "INVALID_ARGUMENTS",
-                            message: "Invalid arguments, expected volumePath",
+                            message: "Invalid arguments, expected url",
                             details: nil))
         return
     }
@@ -113,27 +130,34 @@ class FlutterResultWrapper: NSObject {
 class VolumeEventStreamHandler: NSObject, FlutterStreamHandler {
     
     var volumesEventSink: FlutterEventSink?
-    var session: DASession?
     
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         print("onListen")
         fflush(stdout)
 
-        volumesEventSink = events
-        session = DASessionCreate(kCFAllocatorDefault)
-        
-        DARegisterDiskDescriptionChangedCallback(session!, nil as CFDictionary?, nil as CFArray?, onDiscDescriptionChanged, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
-        DARegisterDiskAppearedCallback(session!, nil as CFDictionary?, onDiskAppeared, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
-        DARegisterDiskDisappearedCallback(session!, nil as CFDictionary?, onDiskDisappeared, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
+        let notificationCenter: NotificationCenter = NSWorkspace.shared.notificationCenter
+        notificationCenter.addObserver(forName: NSWorkspace.didMountNotification, object: nil, queue: nil) { notification in
+            print("didMountNotification")
+            fflush(stdout)
+            events([
+                "event": "mounted",
+            ])
+        }
+        notificationCenter.addObserver(forName: NSWorkspace.didUnmountNotification, object: nil, queue: nil) { notification in
+            print("didUnmountNotification")
+            fflush(stdout)
+            events([
+                "event": "unmounted",
+            ])
+        }
+        notificationCenter.addObserver(forName: NSWorkspace.didRenameVolumeNotification, object: nil, queue: nil) { notification in
+            print("didRenameVolumeNotification")
+            fflush(stdout)
+            events([
+                "event": "renamed",
+            ])
+        }
 
-        print("before runloop")
-        DASessionScheduleWithRunLoop(session!, CFRunLoopGetMain(), CFRunLoopMode.defaultMode.rawValue)
-        print("after runloop")
-        fflush(stdout)
-
-        // let runloop = RunLoop.current
-        // DASessionScheduleWithRunLoop(session!, runloop.getCFRunLoop(), runloop.currentMode!.rawValue as CFString)
-        
         return nil
     }
 
@@ -141,37 +165,6 @@ class VolumeEventStreamHandler: NSObject, FlutterStreamHandler {
         print("onCancel")
         fflush(stdout)
         volumesEventSink = nil
-        session = nil
         return nil
-    }
-
-    private let onDiscDescriptionChanged: DADiskDescriptionChangedCallback = { disk, keys, context in
-        print("onDiscDescriptionChanged")
-        fflush(stdout)
-        let this = Unmanaged<VolumeEventStreamHandler>.fromOpaque(context!).takeUnretainedValue()
-        this.diskEvent("changed")
-    }
-
-    private let onDiskAppeared: DADiskAppearedCallback = { disk, context in
-        print("onDiskAppeared")
-        fflush(stdout)
-        let this = Unmanaged<VolumeEventStreamHandler>.fromOpaque(context!).takeUnretainedValue()
-        this.diskEvent("appeared")
-    }
-
-    private let onDiskDisappeared: DADiskDisappearedCallback = { disk, context in
-        print("onDiskDisappeared")
-        fflush(stdout)
-        let this = Unmanaged<VolumeEventStreamHandler>.fromOpaque(context!).takeUnretainedValue()
-        this.diskEvent("disappeared")
-    }
-
-    private func diskEvent(_ event: String) {
-        print("diskEvent: \(event)")
-        fflush(stdout)
-        volumesEventSink?([
-            "event": event,
-            // Add the other properties here if needed.
-        ])
     }
 }

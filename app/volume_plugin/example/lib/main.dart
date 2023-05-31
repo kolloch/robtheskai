@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
                 itemBuilder: (context, index) {
                   final volume = volumes[index];
                   return ListTile(
-                    title: Text(volume.mediaName ?? "No name"),
+                    title: Text(volume.name ?? "No name"),
                     subtitle: Text(volume.toString()),
                   );
                 },

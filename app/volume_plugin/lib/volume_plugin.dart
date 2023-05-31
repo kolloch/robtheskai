@@ -41,34 +41,36 @@ class VolumePlugin {
 
   // does not work
   Future<void> eject(Volume volume) async {
-    await _methodChannel
-        .invokeMethod('eject', {'volumePath': volume.volumePath});
+    await _methodChannel.invokeMethod('eject', {'url': volume.url});
   }
 }
 
 @freezed
 class Volume with _$Volume {
   factory Volume({
-    String? volumePath,
-    String? volumeKind,
-    String? volumeName,
-    String? volumeUUID,
-    String? mediaName,
-    String? mediaIcon,
-    String? mediaKind,
-    int? mediaBlockSize,
-    int? mediaSize,
-    String? mediaUUID,
-    String? devicePath,
-    String? deviceProtocol,
-    bool? deviceInternal,
-    String? deviceModel,
-    String? deviceRevision,
-    String? deviceVendor,
-    bool? mediaEjectable,
-    bool? mediaRemovable,
-    bool? mediaWhole,
-    bool? mediaWritable,
+    String? name,
+    bool? isBrowsable,
+    bool? isEjectable,
+    bool? isRemovable,
+    bool? isInternal,
+    bool? isAutomounted,
+    bool? isLocal,
+    bool? isReadOnly,
+    bool? isRootFileSystem,
+    bool? supportsPersistentIDs,
+    bool? supportsCasePreservedNames,
+    bool? supportsRenaming,
+    String? creationDate,
+    String? modificationDate,
+    String? identifier,
+    String? localizedFormatDescription,
+    String? localizedName,
+    String? url,
+    String? uuidString,
+    String? type,
+    String? subtype,
+    int? availableCapacityForImportantUsage,
+    int? totalCapacity,
   }) = _Volume;
 
   factory Volume.fromJson(Map<String, dynamic> json) => _$VolumeFromJson(json);
@@ -76,9 +78,7 @@ class Volume with _$Volume {
 
 extension VolumeExtension on Volume {
   String? get volumeDirectory =>
-      volumePath == null ? null : Uri.parse(volumePath!).toFilePath();
-
-  bool get isRemovable => mediaEjectable == true || mediaRemovable == true;
+      url == null ? null : Uri.parse(url!).toFilePath();
 
   String get prettyJson {
     const encoder = JsonEncoder.withIndent("     ");

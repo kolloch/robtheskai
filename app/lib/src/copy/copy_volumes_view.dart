@@ -45,16 +45,15 @@ class CopyFilesView extends HookConsumerWidget {
 
     final volumes = allVolumes
         .where((element) =>
-            (element.volumeDirectory != "autofs" ||
-                element.deviceInternal == false) &&
-            element.volumeDirectory != null &&
-            (element.volumeUUID ?? element.mediaUUID) != null &&
+            // (element.volumeDirectory != "autofs" ||
+            //     element.deviceInternal == false) &&
+            // element.volumeDirectory != null &&
+            (element.uuidString) != null &&
             ((showExternal.value &&
-                    (element.isRemovable ||
-                        element.deviceProtocol == "USB" ||
-                        element.deviceInternal == false)) ||
-                (showEjectable.value && element.mediaEjectable != false) ||
-                (showInternal.value && element.deviceInternal != false)))
+                    ((element.isRemovable ?? false) ||
+                        element.isInternal == false) ||
+                (showEjectable.value && element.isEjectable != false) ||
+                (showInternal.value && element.isInternal != false))))
         .toList();
     final rule = useState(CopyRule(
       srcGlob: Glob('**/*'),
@@ -67,16 +66,18 @@ class CopyFilesView extends HookConsumerWidget {
       itemCount: volumes.length,
       itemBuilder: (context, index) {
         final volume = volumes[index];
-        final mediaUUID = volume.mediaUUID ?? volume.volumeUUID;
-        final job = mediaUUID == null
-            ? null
-            : ref.watch(copyJobsNotifierProvider)[Id.fromString(mediaUUID)];
-        var name = volume.volumeName ?? volume.mediaName ?? "No name";
-        final prettySize = volume.mediaSize != null
-            ? "${prettyBytes(volume.mediaSize?.toDouble() ?? 0)} "
+        final mediaUUID = volume.uuidString!;
+        final job =
+            ref.watch(copyJobsNotifierProvider)[Id.fromString(mediaUUID)];
+        var name = volume.localizedName ??
+            volume.name ??
+            volume.localizedFormatDescription ??
+            "No name";
+        final prettySize = volume.totalCapacity != null
+            ? prettyBytes(volume.totalCapacity?.toDouble() ?? 0)
             : '';
         return ListTile(
-          title: Text("${name} ($prettySize${volume.volumeKind})"),
+          title: Text("${name} ($prettySize)"),
           subtitle: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,21 +124,19 @@ class CopyFilesView extends HookConsumerWidget {
                       ),
                     );
                   }),
-              // does not work
-              if (volume.mediaEjectable == true)
+              if (volume.isEjectable == true)
                 IconButton(
                     icon: const Icon(Icons.eject),
                     onPressed: () {
-                      print("Ejecting ${volume.volumeUUID} initiated");
-                      ref.read(volumesPluginProvider).eject(volume!).then(
-                          (value) => print("Ejected ${volume.volumeUUID}"),
+                      print("Ejecting ${volume.uuidString} initiated");
+                      ref.read(volumesPluginProvider).eject(volume).then(
+                          (value) => print("Ejected ${volume.uuidString}"),
                           onError: (e, s) => print(
-                              "(NOT WORKING PROPERLY) ejected ${e} ${volume.volumeUUID}"));
+                              "(NOT WORKING PROPERLY) ejected ${e} ${volume.uuidString}"));
                     }),
               IconButton(
                   icon: const Icon(Icons.copy),
-                  onPressed: mediaUUID != null &&
-                          projectDestinationFolder.value != null
+                  onPressed: projectDestinationFolder.value != null
                       ? () {
                           final Directory sourceDir = const LocalFileSystem()
                               .directory(volume.volumeDirectory);

@@ -20,26 +20,30 @@ Volume _$VolumeFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Volume {
-  String? get volumePath => throw _privateConstructorUsedError;
-  String? get volumeKind => throw _privateConstructorUsedError;
-  String? get volumeName => throw _privateConstructorUsedError;
-  String? get volumeUUID => throw _privateConstructorUsedError;
-  String? get mediaName => throw _privateConstructorUsedError;
-  String? get mediaIcon => throw _privateConstructorUsedError;
-  String? get mediaKind => throw _privateConstructorUsedError;
-  int? get mediaBlockSize => throw _privateConstructorUsedError;
-  int? get mediaSize => throw _privateConstructorUsedError;
-  String? get mediaUUID => throw _privateConstructorUsedError;
-  String? get devicePath => throw _privateConstructorUsedError;
-  String? get deviceProtocol => throw _privateConstructorUsedError;
-  bool? get deviceInternal => throw _privateConstructorUsedError;
-  String? get deviceModel => throw _privateConstructorUsedError;
-  String? get deviceRevision => throw _privateConstructorUsedError;
-  String? get deviceVendor => throw _privateConstructorUsedError;
-  bool? get mediaEjectable => throw _privateConstructorUsedError;
-  bool? get mediaRemovable => throw _privateConstructorUsedError;
-  bool? get mediaWhole => throw _privateConstructorUsedError;
-  bool? get mediaWritable => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  bool? get isBrowsable => throw _privateConstructorUsedError;
+  bool? get isEjectable => throw _privateConstructorUsedError;
+  bool? get isRemovable => throw _privateConstructorUsedError;
+  bool? get isInternal => throw _privateConstructorUsedError;
+  bool? get isAutomounted => throw _privateConstructorUsedError;
+  bool? get isLocal => throw _privateConstructorUsedError;
+  bool? get isReadOnly => throw _privateConstructorUsedError;
+  bool? get isRootFileSystem => throw _privateConstructorUsedError;
+  bool? get supportsPersistentIDs => throw _privateConstructorUsedError;
+  bool? get supportsCasePreservedNames => throw _privateConstructorUsedError;
+  bool? get supportsRenaming => throw _privateConstructorUsedError;
+  String? get creationDate => throw _privateConstructorUsedError;
+  String? get modificationDate => throw _privateConstructorUsedError;
+  String? get identifier => throw _privateConstructorUsedError;
+  String? get localizedFormatDescription => throw _privateConstructorUsedError;
+  String? get localizedName => throw _privateConstructorUsedError;
+  String? get url => throw _privateConstructorUsedError;
+  String? get uuidString => throw _privateConstructorUsedError;
+  String? get type => throw _privateConstructorUsedError;
+  String? get subtype => throw _privateConstructorUsedError;
+  int? get availableCapacityForImportantUsage =>
+      throw _privateConstructorUsedError;
+  int? get totalCapacity => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -52,26 +56,29 @@ abstract class $VolumeCopyWith<$Res> {
       _$VolumeCopyWithImpl<$Res, Volume>;
   @useResult
   $Res call(
-      {String? volumePath,
-      String? volumeKind,
-      String? volumeName,
-      String? volumeUUID,
-      String? mediaName,
-      String? mediaIcon,
-      String? mediaKind,
-      int? mediaBlockSize,
-      int? mediaSize,
-      String? mediaUUID,
-      String? devicePath,
-      String? deviceProtocol,
-      bool? deviceInternal,
-      String? deviceModel,
-      String? deviceRevision,
-      String? deviceVendor,
-      bool? mediaEjectable,
-      bool? mediaRemovable,
-      bool? mediaWhole,
-      bool? mediaWritable});
+      {String? name,
+      bool? isBrowsable,
+      bool? isEjectable,
+      bool? isRemovable,
+      bool? isInternal,
+      bool? isAutomounted,
+      bool? isLocal,
+      bool? isReadOnly,
+      bool? isRootFileSystem,
+      bool? supportsPersistentIDs,
+      bool? supportsCasePreservedNames,
+      bool? supportsRenaming,
+      String? creationDate,
+      String? modificationDate,
+      String? identifier,
+      String? localizedFormatDescription,
+      String? localizedName,
+      String? url,
+      String? uuidString,
+      String? type,
+      String? subtype,
+      int? availableCapacityForImportantUsage,
+      int? totalCapacity});
 }
 
 /// @nodoc
@@ -87,108 +94,124 @@ class _$VolumeCopyWithImpl<$Res, $Val extends Volume>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? volumePath = freezed,
-    Object? volumeKind = freezed,
-    Object? volumeName = freezed,
-    Object? volumeUUID = freezed,
-    Object? mediaName = freezed,
-    Object? mediaIcon = freezed,
-    Object? mediaKind = freezed,
-    Object? mediaBlockSize = freezed,
-    Object? mediaSize = freezed,
-    Object? mediaUUID = freezed,
-    Object? devicePath = freezed,
-    Object? deviceProtocol = freezed,
-    Object? deviceInternal = freezed,
-    Object? deviceModel = freezed,
-    Object? deviceRevision = freezed,
-    Object? deviceVendor = freezed,
-    Object? mediaEjectable = freezed,
-    Object? mediaRemovable = freezed,
-    Object? mediaWhole = freezed,
-    Object? mediaWritable = freezed,
+    Object? name = freezed,
+    Object? isBrowsable = freezed,
+    Object? isEjectable = freezed,
+    Object? isRemovable = freezed,
+    Object? isInternal = freezed,
+    Object? isAutomounted = freezed,
+    Object? isLocal = freezed,
+    Object? isReadOnly = freezed,
+    Object? isRootFileSystem = freezed,
+    Object? supportsPersistentIDs = freezed,
+    Object? supportsCasePreservedNames = freezed,
+    Object? supportsRenaming = freezed,
+    Object? creationDate = freezed,
+    Object? modificationDate = freezed,
+    Object? identifier = freezed,
+    Object? localizedFormatDescription = freezed,
+    Object? localizedName = freezed,
+    Object? url = freezed,
+    Object? uuidString = freezed,
+    Object? type = freezed,
+    Object? subtype = freezed,
+    Object? availableCapacityForImportantUsage = freezed,
+    Object? totalCapacity = freezed,
   }) {
     return _then(_value.copyWith(
-      volumePath: freezed == volumePath
-          ? _value.volumePath
-          : volumePath // ignore: cast_nullable_to_non_nullable
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      volumeKind: freezed == volumeKind
-          ? _value.volumeKind
-          : volumeKind // ignore: cast_nullable_to_non_nullable
+      isBrowsable: freezed == isBrowsable
+          ? _value.isBrowsable
+          : isBrowsable // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isEjectable: freezed == isEjectable
+          ? _value.isEjectable
+          : isEjectable // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isRemovable: freezed == isRemovable
+          ? _value.isRemovable
+          : isRemovable // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isInternal: freezed == isInternal
+          ? _value.isInternal
+          : isInternal // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isAutomounted: freezed == isAutomounted
+          ? _value.isAutomounted
+          : isAutomounted // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isLocal: freezed == isLocal
+          ? _value.isLocal
+          : isLocal // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isReadOnly: freezed == isReadOnly
+          ? _value.isReadOnly
+          : isReadOnly // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isRootFileSystem: freezed == isRootFileSystem
+          ? _value.isRootFileSystem
+          : isRootFileSystem // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      supportsPersistentIDs: freezed == supportsPersistentIDs
+          ? _value.supportsPersistentIDs
+          : supportsPersistentIDs // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      supportsCasePreservedNames: freezed == supportsCasePreservedNames
+          ? _value.supportsCasePreservedNames
+          : supportsCasePreservedNames // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      supportsRenaming: freezed == supportsRenaming
+          ? _value.supportsRenaming
+          : supportsRenaming // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      creationDate: freezed == creationDate
+          ? _value.creationDate
+          : creationDate // ignore: cast_nullable_to_non_nullable
               as String?,
-      volumeName: freezed == volumeName
-          ? _value.volumeName
-          : volumeName // ignore: cast_nullable_to_non_nullable
+      modificationDate: freezed == modificationDate
+          ? _value.modificationDate
+          : modificationDate // ignore: cast_nullable_to_non_nullable
               as String?,
-      volumeUUID: freezed == volumeUUID
-          ? _value.volumeUUID
-          : volumeUUID // ignore: cast_nullable_to_non_nullable
+      identifier: freezed == identifier
+          ? _value.identifier
+          : identifier // ignore: cast_nullable_to_non_nullable
               as String?,
-      mediaName: freezed == mediaName
-          ? _value.mediaName
-          : mediaName // ignore: cast_nullable_to_non_nullable
+      localizedFormatDescription: freezed == localizedFormatDescription
+          ? _value.localizedFormatDescription
+          : localizedFormatDescription // ignore: cast_nullable_to_non_nullable
               as String?,
-      mediaIcon: freezed == mediaIcon
-          ? _value.mediaIcon
-          : mediaIcon // ignore: cast_nullable_to_non_nullable
+      localizedName: freezed == localizedName
+          ? _value.localizedName
+          : localizedName // ignore: cast_nullable_to_non_nullable
               as String?,
-      mediaKind: freezed == mediaKind
-          ? _value.mediaKind
-          : mediaKind // ignore: cast_nullable_to_non_nullable
+      url: freezed == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
               as String?,
-      mediaBlockSize: freezed == mediaBlockSize
-          ? _value.mediaBlockSize
-          : mediaBlockSize // ignore: cast_nullable_to_non_nullable
+      uuidString: freezed == uuidString
+          ? _value.uuidString
+          : uuidString // ignore: cast_nullable_to_non_nullable
+              as String?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
+      subtype: freezed == subtype
+          ? _value.subtype
+          : subtype // ignore: cast_nullable_to_non_nullable
+              as String?,
+      availableCapacityForImportantUsage: freezed ==
+              availableCapacityForImportantUsage
+          ? _value.availableCapacityForImportantUsage
+          : availableCapacityForImportantUsage // ignore: cast_nullable_to_non_nullable
               as int?,
-      mediaSize: freezed == mediaSize
-          ? _value.mediaSize
-          : mediaSize // ignore: cast_nullable_to_non_nullable
+      totalCapacity: freezed == totalCapacity
+          ? _value.totalCapacity
+          : totalCapacity // ignore: cast_nullable_to_non_nullable
               as int?,
-      mediaUUID: freezed == mediaUUID
-          ? _value.mediaUUID
-          : mediaUUID // ignore: cast_nullable_to_non_nullable
-              as String?,
-      devicePath: freezed == devicePath
-          ? _value.devicePath
-          : devicePath // ignore: cast_nullable_to_non_nullable
-              as String?,
-      deviceProtocol: freezed == deviceProtocol
-          ? _value.deviceProtocol
-          : deviceProtocol // ignore: cast_nullable_to_non_nullable
-              as String?,
-      deviceInternal: freezed == deviceInternal
-          ? _value.deviceInternal
-          : deviceInternal // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      deviceModel: freezed == deviceModel
-          ? _value.deviceModel
-          : deviceModel // ignore: cast_nullable_to_non_nullable
-              as String?,
-      deviceRevision: freezed == deviceRevision
-          ? _value.deviceRevision
-          : deviceRevision // ignore: cast_nullable_to_non_nullable
-              as String?,
-      deviceVendor: freezed == deviceVendor
-          ? _value.deviceVendor
-          : deviceVendor // ignore: cast_nullable_to_non_nullable
-              as String?,
-      mediaEjectable: freezed == mediaEjectable
-          ? _value.mediaEjectable
-          : mediaEjectable // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      mediaRemovable: freezed == mediaRemovable
-          ? _value.mediaRemovable
-          : mediaRemovable // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      mediaWhole: freezed == mediaWhole
-          ? _value.mediaWhole
-          : mediaWhole // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      mediaWritable: freezed == mediaWritable
-          ? _value.mediaWritable
-          : mediaWritable // ignore: cast_nullable_to_non_nullable
-              as bool?,
     ) as $Val);
   }
 }
@@ -200,26 +223,29 @@ abstract class _$$_VolumeCopyWith<$Res> implements $VolumeCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String? volumePath,
-      String? volumeKind,
-      String? volumeName,
-      String? volumeUUID,
-      String? mediaName,
-      String? mediaIcon,
-      String? mediaKind,
-      int? mediaBlockSize,
-      int? mediaSize,
-      String? mediaUUID,
-      String? devicePath,
-      String? deviceProtocol,
-      bool? deviceInternal,
-      String? deviceModel,
-      String? deviceRevision,
-      String? deviceVendor,
-      bool? mediaEjectable,
-      bool? mediaRemovable,
-      bool? mediaWhole,
-      bool? mediaWritable});
+      {String? name,
+      bool? isBrowsable,
+      bool? isEjectable,
+      bool? isRemovable,
+      bool? isInternal,
+      bool? isAutomounted,
+      bool? isLocal,
+      bool? isReadOnly,
+      bool? isRootFileSystem,
+      bool? supportsPersistentIDs,
+      bool? supportsCasePreservedNames,
+      bool? supportsRenaming,
+      String? creationDate,
+      String? modificationDate,
+      String? identifier,
+      String? localizedFormatDescription,
+      String? localizedName,
+      String? url,
+      String? uuidString,
+      String? type,
+      String? subtype,
+      int? availableCapacityForImportantUsage,
+      int? totalCapacity});
 }
 
 /// @nodoc
@@ -232,108 +258,124 @@ class __$$_VolumeCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? volumePath = freezed,
-    Object? volumeKind = freezed,
-    Object? volumeName = freezed,
-    Object? volumeUUID = freezed,
-    Object? mediaName = freezed,
-    Object? mediaIcon = freezed,
-    Object? mediaKind = freezed,
-    Object? mediaBlockSize = freezed,
-    Object? mediaSize = freezed,
-    Object? mediaUUID = freezed,
-    Object? devicePath = freezed,
-    Object? deviceProtocol = freezed,
-    Object? deviceInternal = freezed,
-    Object? deviceModel = freezed,
-    Object? deviceRevision = freezed,
-    Object? deviceVendor = freezed,
-    Object? mediaEjectable = freezed,
-    Object? mediaRemovable = freezed,
-    Object? mediaWhole = freezed,
-    Object? mediaWritable = freezed,
+    Object? name = freezed,
+    Object? isBrowsable = freezed,
+    Object? isEjectable = freezed,
+    Object? isRemovable = freezed,
+    Object? isInternal = freezed,
+    Object? isAutomounted = freezed,
+    Object? isLocal = freezed,
+    Object? isReadOnly = freezed,
+    Object? isRootFileSystem = freezed,
+    Object? supportsPersistentIDs = freezed,
+    Object? supportsCasePreservedNames = freezed,
+    Object? supportsRenaming = freezed,
+    Object? creationDate = freezed,
+    Object? modificationDate = freezed,
+    Object? identifier = freezed,
+    Object? localizedFormatDescription = freezed,
+    Object? localizedName = freezed,
+    Object? url = freezed,
+    Object? uuidString = freezed,
+    Object? type = freezed,
+    Object? subtype = freezed,
+    Object? availableCapacityForImportantUsage = freezed,
+    Object? totalCapacity = freezed,
   }) {
     return _then(_$_Volume(
-      volumePath: freezed == volumePath
-          ? _value.volumePath
-          : volumePath // ignore: cast_nullable_to_non_nullable
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      volumeKind: freezed == volumeKind
-          ? _value.volumeKind
-          : volumeKind // ignore: cast_nullable_to_non_nullable
+      isBrowsable: freezed == isBrowsable
+          ? _value.isBrowsable
+          : isBrowsable // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isEjectable: freezed == isEjectable
+          ? _value.isEjectable
+          : isEjectable // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isRemovable: freezed == isRemovable
+          ? _value.isRemovable
+          : isRemovable // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isInternal: freezed == isInternal
+          ? _value.isInternal
+          : isInternal // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isAutomounted: freezed == isAutomounted
+          ? _value.isAutomounted
+          : isAutomounted // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isLocal: freezed == isLocal
+          ? _value.isLocal
+          : isLocal // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isReadOnly: freezed == isReadOnly
+          ? _value.isReadOnly
+          : isReadOnly // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isRootFileSystem: freezed == isRootFileSystem
+          ? _value.isRootFileSystem
+          : isRootFileSystem // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      supportsPersistentIDs: freezed == supportsPersistentIDs
+          ? _value.supportsPersistentIDs
+          : supportsPersistentIDs // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      supportsCasePreservedNames: freezed == supportsCasePreservedNames
+          ? _value.supportsCasePreservedNames
+          : supportsCasePreservedNames // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      supportsRenaming: freezed == supportsRenaming
+          ? _value.supportsRenaming
+          : supportsRenaming // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      creationDate: freezed == creationDate
+          ? _value.creationDate
+          : creationDate // ignore: cast_nullable_to_non_nullable
               as String?,
-      volumeName: freezed == volumeName
-          ? _value.volumeName
-          : volumeName // ignore: cast_nullable_to_non_nullable
+      modificationDate: freezed == modificationDate
+          ? _value.modificationDate
+          : modificationDate // ignore: cast_nullable_to_non_nullable
               as String?,
-      volumeUUID: freezed == volumeUUID
-          ? _value.volumeUUID
-          : volumeUUID // ignore: cast_nullable_to_non_nullable
+      identifier: freezed == identifier
+          ? _value.identifier
+          : identifier // ignore: cast_nullable_to_non_nullable
               as String?,
-      mediaName: freezed == mediaName
-          ? _value.mediaName
-          : mediaName // ignore: cast_nullable_to_non_nullable
+      localizedFormatDescription: freezed == localizedFormatDescription
+          ? _value.localizedFormatDescription
+          : localizedFormatDescription // ignore: cast_nullable_to_non_nullable
               as String?,
-      mediaIcon: freezed == mediaIcon
-          ? _value.mediaIcon
-          : mediaIcon // ignore: cast_nullable_to_non_nullable
+      localizedName: freezed == localizedName
+          ? _value.localizedName
+          : localizedName // ignore: cast_nullable_to_non_nullable
               as String?,
-      mediaKind: freezed == mediaKind
-          ? _value.mediaKind
-          : mediaKind // ignore: cast_nullable_to_non_nullable
+      url: freezed == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
               as String?,
-      mediaBlockSize: freezed == mediaBlockSize
-          ? _value.mediaBlockSize
-          : mediaBlockSize // ignore: cast_nullable_to_non_nullable
+      uuidString: freezed == uuidString
+          ? _value.uuidString
+          : uuidString // ignore: cast_nullable_to_non_nullable
+              as String?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
+      subtype: freezed == subtype
+          ? _value.subtype
+          : subtype // ignore: cast_nullable_to_non_nullable
+              as String?,
+      availableCapacityForImportantUsage: freezed ==
+              availableCapacityForImportantUsage
+          ? _value.availableCapacityForImportantUsage
+          : availableCapacityForImportantUsage // ignore: cast_nullable_to_non_nullable
               as int?,
-      mediaSize: freezed == mediaSize
-          ? _value.mediaSize
-          : mediaSize // ignore: cast_nullable_to_non_nullable
+      totalCapacity: freezed == totalCapacity
+          ? _value.totalCapacity
+          : totalCapacity // ignore: cast_nullable_to_non_nullable
               as int?,
-      mediaUUID: freezed == mediaUUID
-          ? _value.mediaUUID
-          : mediaUUID // ignore: cast_nullable_to_non_nullable
-              as String?,
-      devicePath: freezed == devicePath
-          ? _value.devicePath
-          : devicePath // ignore: cast_nullable_to_non_nullable
-              as String?,
-      deviceProtocol: freezed == deviceProtocol
-          ? _value.deviceProtocol
-          : deviceProtocol // ignore: cast_nullable_to_non_nullable
-              as String?,
-      deviceInternal: freezed == deviceInternal
-          ? _value.deviceInternal
-          : deviceInternal // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      deviceModel: freezed == deviceModel
-          ? _value.deviceModel
-          : deviceModel // ignore: cast_nullable_to_non_nullable
-              as String?,
-      deviceRevision: freezed == deviceRevision
-          ? _value.deviceRevision
-          : deviceRevision // ignore: cast_nullable_to_non_nullable
-              as String?,
-      deviceVendor: freezed == deviceVendor
-          ? _value.deviceVendor
-          : deviceVendor // ignore: cast_nullable_to_non_nullable
-              as String?,
-      mediaEjectable: freezed == mediaEjectable
-          ? _value.mediaEjectable
-          : mediaEjectable // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      mediaRemovable: freezed == mediaRemovable
-          ? _value.mediaRemovable
-          : mediaRemovable // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      mediaWhole: freezed == mediaWhole
-          ? _value.mediaWhole
-          : mediaWhole // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      mediaWritable: freezed == mediaWritable
-          ? _value.mediaWritable
-          : mediaWritable // ignore: cast_nullable_to_non_nullable
-              as bool?,
     ));
   }
 }
@@ -342,74 +384,83 @@ class __$$_VolumeCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Volume implements _Volume {
   _$_Volume(
-      {this.volumePath,
-      this.volumeKind,
-      this.volumeName,
-      this.volumeUUID,
-      this.mediaName,
-      this.mediaIcon,
-      this.mediaKind,
-      this.mediaBlockSize,
-      this.mediaSize,
-      this.mediaUUID,
-      this.devicePath,
-      this.deviceProtocol,
-      this.deviceInternal,
-      this.deviceModel,
-      this.deviceRevision,
-      this.deviceVendor,
-      this.mediaEjectable,
-      this.mediaRemovable,
-      this.mediaWhole,
-      this.mediaWritable});
+      {this.name,
+      this.isBrowsable,
+      this.isEjectable,
+      this.isRemovable,
+      this.isInternal,
+      this.isAutomounted,
+      this.isLocal,
+      this.isReadOnly,
+      this.isRootFileSystem,
+      this.supportsPersistentIDs,
+      this.supportsCasePreservedNames,
+      this.supportsRenaming,
+      this.creationDate,
+      this.modificationDate,
+      this.identifier,
+      this.localizedFormatDescription,
+      this.localizedName,
+      this.url,
+      this.uuidString,
+      this.type,
+      this.subtype,
+      this.availableCapacityForImportantUsage,
+      this.totalCapacity});
 
   factory _$_Volume.fromJson(Map<String, dynamic> json) =>
       _$$_VolumeFromJson(json);
 
   @override
-  final String? volumePath;
+  final String? name;
   @override
-  final String? volumeKind;
+  final bool? isBrowsable;
   @override
-  final String? volumeName;
+  final bool? isEjectable;
   @override
-  final String? volumeUUID;
+  final bool? isRemovable;
   @override
-  final String? mediaName;
+  final bool? isInternal;
   @override
-  final String? mediaIcon;
+  final bool? isAutomounted;
   @override
-  final String? mediaKind;
+  final bool? isLocal;
   @override
-  final int? mediaBlockSize;
+  final bool? isReadOnly;
   @override
-  final int? mediaSize;
+  final bool? isRootFileSystem;
   @override
-  final String? mediaUUID;
+  final bool? supportsPersistentIDs;
   @override
-  final String? devicePath;
+  final bool? supportsCasePreservedNames;
   @override
-  final String? deviceProtocol;
+  final bool? supportsRenaming;
   @override
-  final bool? deviceInternal;
+  final String? creationDate;
   @override
-  final String? deviceModel;
+  final String? modificationDate;
   @override
-  final String? deviceRevision;
+  final String? identifier;
   @override
-  final String? deviceVendor;
+  final String? localizedFormatDescription;
   @override
-  final bool? mediaEjectable;
+  final String? localizedName;
   @override
-  final bool? mediaRemovable;
+  final String? url;
   @override
-  final bool? mediaWhole;
+  final String? uuidString;
   @override
-  final bool? mediaWritable;
+  final String? type;
+  @override
+  final String? subtype;
+  @override
+  final int? availableCapacityForImportantUsage;
+  @override
+  final int? totalCapacity;
 
   @override
   String toString() {
-    return 'Volume(volumePath: $volumePath, volumeKind: $volumeKind, volumeName: $volumeName, volumeUUID: $volumeUUID, mediaName: $mediaName, mediaIcon: $mediaIcon, mediaKind: $mediaKind, mediaBlockSize: $mediaBlockSize, mediaSize: $mediaSize, mediaUUID: $mediaUUID, devicePath: $devicePath, deviceProtocol: $deviceProtocol, deviceInternal: $deviceInternal, deviceModel: $deviceModel, deviceRevision: $deviceRevision, deviceVendor: $deviceVendor, mediaEjectable: $mediaEjectable, mediaRemovable: $mediaRemovable, mediaWhole: $mediaWhole, mediaWritable: $mediaWritable)';
+    return 'Volume(name: $name, isBrowsable: $isBrowsable, isEjectable: $isEjectable, isRemovable: $isRemovable, isInternal: $isInternal, isAutomounted: $isAutomounted, isLocal: $isLocal, isReadOnly: $isReadOnly, isRootFileSystem: $isRootFileSystem, supportsPersistentIDs: $supportsPersistentIDs, supportsCasePreservedNames: $supportsCasePreservedNames, supportsRenaming: $supportsRenaming, creationDate: $creationDate, modificationDate: $modificationDate, identifier: $identifier, localizedFormatDescription: $localizedFormatDescription, localizedName: $localizedName, url: $url, uuidString: $uuidString, type: $type, subtype: $subtype, availableCapacityForImportantUsage: $availableCapacityForImportantUsage, totalCapacity: $totalCapacity)';
   }
 
   @override
@@ -417,72 +468,82 @@ class _$_Volume implements _Volume {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Volume &&
-            (identical(other.volumePath, volumePath) ||
-                other.volumePath == volumePath) &&
-            (identical(other.volumeKind, volumeKind) ||
-                other.volumeKind == volumeKind) &&
-            (identical(other.volumeName, volumeName) ||
-                other.volumeName == volumeName) &&
-            (identical(other.volumeUUID, volumeUUID) ||
-                other.volumeUUID == volumeUUID) &&
-            (identical(other.mediaName, mediaName) ||
-                other.mediaName == mediaName) &&
-            (identical(other.mediaIcon, mediaIcon) ||
-                other.mediaIcon == mediaIcon) &&
-            (identical(other.mediaKind, mediaKind) ||
-                other.mediaKind == mediaKind) &&
-            (identical(other.mediaBlockSize, mediaBlockSize) ||
-                other.mediaBlockSize == mediaBlockSize) &&
-            (identical(other.mediaSize, mediaSize) ||
-                other.mediaSize == mediaSize) &&
-            (identical(other.mediaUUID, mediaUUID) ||
-                other.mediaUUID == mediaUUID) &&
-            (identical(other.devicePath, devicePath) ||
-                other.devicePath == devicePath) &&
-            (identical(other.deviceProtocol, deviceProtocol) ||
-                other.deviceProtocol == deviceProtocol) &&
-            (identical(other.deviceInternal, deviceInternal) ||
-                other.deviceInternal == deviceInternal) &&
-            (identical(other.deviceModel, deviceModel) ||
-                other.deviceModel == deviceModel) &&
-            (identical(other.deviceRevision, deviceRevision) ||
-                other.deviceRevision == deviceRevision) &&
-            (identical(other.deviceVendor, deviceVendor) ||
-                other.deviceVendor == deviceVendor) &&
-            (identical(other.mediaEjectable, mediaEjectable) ||
-                other.mediaEjectable == mediaEjectable) &&
-            (identical(other.mediaRemovable, mediaRemovable) ||
-                other.mediaRemovable == mediaRemovable) &&
-            (identical(other.mediaWhole, mediaWhole) ||
-                other.mediaWhole == mediaWhole) &&
-            (identical(other.mediaWritable, mediaWritable) ||
-                other.mediaWritable == mediaWritable));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.isBrowsable, isBrowsable) ||
+                other.isBrowsable == isBrowsable) &&
+            (identical(other.isEjectable, isEjectable) ||
+                other.isEjectable == isEjectable) &&
+            (identical(other.isRemovable, isRemovable) ||
+                other.isRemovable == isRemovable) &&
+            (identical(other.isInternal, isInternal) ||
+                other.isInternal == isInternal) &&
+            (identical(other.isAutomounted, isAutomounted) ||
+                other.isAutomounted == isAutomounted) &&
+            (identical(other.isLocal, isLocal) || other.isLocal == isLocal) &&
+            (identical(other.isReadOnly, isReadOnly) ||
+                other.isReadOnly == isReadOnly) &&
+            (identical(other.isRootFileSystem, isRootFileSystem) ||
+                other.isRootFileSystem == isRootFileSystem) &&
+            (identical(other.supportsPersistentIDs, supportsPersistentIDs) ||
+                other.supportsPersistentIDs == supportsPersistentIDs) &&
+            (identical(other.supportsCasePreservedNames,
+                    supportsCasePreservedNames) ||
+                other.supportsCasePreservedNames ==
+                    supportsCasePreservedNames) &&
+            (identical(other.supportsRenaming, supportsRenaming) ||
+                other.supportsRenaming == supportsRenaming) &&
+            (identical(other.creationDate, creationDate) ||
+                other.creationDate == creationDate) &&
+            (identical(other.modificationDate, modificationDate) ||
+                other.modificationDate == modificationDate) &&
+            (identical(other.identifier, identifier) ||
+                other.identifier == identifier) &&
+            (identical(other.localizedFormatDescription,
+                    localizedFormatDescription) ||
+                other.localizedFormatDescription ==
+                    localizedFormatDescription) &&
+            (identical(other.localizedName, localizedName) ||
+                other.localizedName == localizedName) &&
+            (identical(other.url, url) || other.url == url) &&
+            (identical(other.uuidString, uuidString) ||
+                other.uuidString == uuidString) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.subtype, subtype) || other.subtype == subtype) &&
+            (identical(other.availableCapacityForImportantUsage,
+                    availableCapacityForImportantUsage) ||
+                other.availableCapacityForImportantUsage ==
+                    availableCapacityForImportantUsage) &&
+            (identical(other.totalCapacity, totalCapacity) ||
+                other.totalCapacity == totalCapacity));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
-        volumePath,
-        volumeKind,
-        volumeName,
-        volumeUUID,
-        mediaName,
-        mediaIcon,
-        mediaKind,
-        mediaBlockSize,
-        mediaSize,
-        mediaUUID,
-        devicePath,
-        deviceProtocol,
-        deviceInternal,
-        deviceModel,
-        deviceRevision,
-        deviceVendor,
-        mediaEjectable,
-        mediaRemovable,
-        mediaWhole,
-        mediaWritable
+        name,
+        isBrowsable,
+        isEjectable,
+        isRemovable,
+        isInternal,
+        isAutomounted,
+        isLocal,
+        isReadOnly,
+        isRootFileSystem,
+        supportsPersistentIDs,
+        supportsCasePreservedNames,
+        supportsRenaming,
+        creationDate,
+        modificationDate,
+        identifier,
+        localizedFormatDescription,
+        localizedName,
+        url,
+        uuidString,
+        type,
+        subtype,
+        availableCapacityForImportantUsage,
+        totalCapacity
       ]);
 
   @JsonKey(ignore: true)
@@ -501,69 +562,78 @@ class _$_Volume implements _Volume {
 
 abstract class _Volume implements Volume {
   factory _Volume(
-      {final String? volumePath,
-      final String? volumeKind,
-      final String? volumeName,
-      final String? volumeUUID,
-      final String? mediaName,
-      final String? mediaIcon,
-      final String? mediaKind,
-      final int? mediaBlockSize,
-      final int? mediaSize,
-      final String? mediaUUID,
-      final String? devicePath,
-      final String? deviceProtocol,
-      final bool? deviceInternal,
-      final String? deviceModel,
-      final String? deviceRevision,
-      final String? deviceVendor,
-      final bool? mediaEjectable,
-      final bool? mediaRemovable,
-      final bool? mediaWhole,
-      final bool? mediaWritable}) = _$_Volume;
+      {final String? name,
+      final bool? isBrowsable,
+      final bool? isEjectable,
+      final bool? isRemovable,
+      final bool? isInternal,
+      final bool? isAutomounted,
+      final bool? isLocal,
+      final bool? isReadOnly,
+      final bool? isRootFileSystem,
+      final bool? supportsPersistentIDs,
+      final bool? supportsCasePreservedNames,
+      final bool? supportsRenaming,
+      final String? creationDate,
+      final String? modificationDate,
+      final String? identifier,
+      final String? localizedFormatDescription,
+      final String? localizedName,
+      final String? url,
+      final String? uuidString,
+      final String? type,
+      final String? subtype,
+      final int? availableCapacityForImportantUsage,
+      final int? totalCapacity}) = _$_Volume;
 
   factory _Volume.fromJson(Map<String, dynamic> json) = _$_Volume.fromJson;
 
   @override
-  String? get volumePath;
+  String? get name;
   @override
-  String? get volumeKind;
+  bool? get isBrowsable;
   @override
-  String? get volumeName;
+  bool? get isEjectable;
   @override
-  String? get volumeUUID;
+  bool? get isRemovable;
   @override
-  String? get mediaName;
+  bool? get isInternal;
   @override
-  String? get mediaIcon;
+  bool? get isAutomounted;
   @override
-  String? get mediaKind;
+  bool? get isLocal;
   @override
-  int? get mediaBlockSize;
+  bool? get isReadOnly;
   @override
-  int? get mediaSize;
+  bool? get isRootFileSystem;
   @override
-  String? get mediaUUID;
+  bool? get supportsPersistentIDs;
   @override
-  String? get devicePath;
+  bool? get supportsCasePreservedNames;
   @override
-  String? get deviceProtocol;
+  bool? get supportsRenaming;
   @override
-  bool? get deviceInternal;
+  String? get creationDate;
   @override
-  String? get deviceModel;
+  String? get modificationDate;
   @override
-  String? get deviceRevision;
+  String? get identifier;
   @override
-  String? get deviceVendor;
+  String? get localizedFormatDescription;
   @override
-  bool? get mediaEjectable;
+  String? get localizedName;
   @override
-  bool? get mediaRemovable;
+  String? get url;
   @override
-  bool? get mediaWhole;
+  String? get uuidString;
   @override
-  bool? get mediaWritable;
+  String? get type;
+  @override
+  String? get subtype;
+  @override
+  int? get availableCapacityForImportantUsage;
+  @override
+  int? get totalCapacity;
   @override
   @JsonKey(ignore: true)
   _$$_VolumeCopyWith<_$_Volume> get copyWith =>
