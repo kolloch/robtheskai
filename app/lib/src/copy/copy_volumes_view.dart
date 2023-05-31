@@ -45,8 +45,14 @@ class CopyFilesView extends HookConsumerWidget {
 
     final volumes = allVolumes
         .where((element) =>
-            element.volumeKind != "autofs" &&
-            ((showExternal.value && element.isRemovable) ||
+            (element.volumeDirectory != "autofs" ||
+                element.deviceInternal == false) &&
+            element.volumeDirectory != null &&
+            (element.volumeUUID ?? element.mediaUUID) != null &&
+            ((showExternal.value &&
+                    (element.isRemovable ||
+                        element.deviceProtocol == "USB" ||
+                        element.deviceInternal == false)) ||
                 (showEjectable.value && element.mediaEjectable != false) ||
                 (showInternal.value && element.deviceInternal != false)))
         .toList();
@@ -70,7 +76,7 @@ class CopyFilesView extends HookConsumerWidget {
             ? "${prettyBytes(volume.mediaSize?.toDouble() ?? 0)} "
             : '';
         return ListTile(
-          title: Text("${name} ($prettySize ${volume.volumeKind})"),
+          title: Text("${name} ($prettySize${volume.volumeKind})"),
           subtitle: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +109,7 @@ class CopyFilesView extends HookConsumerWidget {
                         title: const Text('Volume Info'),
                         // volume.prettyJson in a scrollable text widget monospace
                         content: SingleChildScrollView(
-                          child: Text(
+                          child: SelectableText(
                             volume.prettyJson,
                             style: const TextStyle(fontFamily: 'monospace'),
                           ),
@@ -118,18 +124,15 @@ class CopyFilesView extends HookConsumerWidget {
                     );
                   }),
               // does not work
-              if (false && volume.mediaEjectable == true)
+              if (volume.mediaEjectable == true)
                 IconButton(
                     icon: const Icon(Icons.eject),
                     onPressed: () {
                       print("Ejecting ${volume.volumeUUID} initiated");
-                      // ref
-                      //     .read(volumesPluginProvider)
-                      //     .eject(volume.volumeUUID!)
-                      //     .then(
-                      //         (value) => print("Ejected ${volume.volumeUUID}"),
-                      //         onError: (e, s) => print(
-                      //             "(NOT WORKING PROPERLY) ejected ${e} ${volume.volumeUUID}"));
+                      ref.read(volumesPluginProvider).eject(volume!).then(
+                          (value) => print("Ejected ${volume.volumeUUID}"),
+                          onError: (e, s) => print(
+                              "(NOT WORKING PROPERLY) ejected ${e} ${volume.volumeUUID}"));
                     }),
               IconButton(
                   icon: const Icon(Icons.copy),

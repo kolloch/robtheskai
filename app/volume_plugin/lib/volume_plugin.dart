@@ -40,9 +40,10 @@ class VolumePlugin {
   }
 
   // does not work
-  // Future<void> eject(String volumeUuid) async {
-  //   await _methodChannel2.invokeMethod('eject', {'uuid': volumeUuid});
-  // }
+  Future<void> eject(Volume volume) async {
+    await _methodChannel
+        .invokeMethod('eject', {'volumePath': volume.volumePath});
+  }
 }
 
 @freezed
