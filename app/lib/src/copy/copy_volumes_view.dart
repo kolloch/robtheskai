@@ -23,7 +23,7 @@ final volumesProvider = StreamProvider.autoDispose<List<Volume>>((ref) {
   return plugin.uptodateVolumes;
 });
 
-enum VolumeFilter { external, ejectable, internal }
+enum VolumeFilter { ejectable, internal }
 
 class CopyFilesView extends HookConsumerWidget {
   static const routeName = '/project/copyFiles';
@@ -39,21 +39,14 @@ class CopyFilesView extends HookConsumerWidget {
     final allVolumes = ref.watch(volumesProvider).asData?.value ?? [];
 
     // Volume filters. Show volume if any of these match.
-    final showExternal = useState(true);
     final showEjectable = useState(true);
     final showInternal = useState(false);
 
     final volumes = allVolumes
         .where((element) =>
-            // (element.volumeDirectory != "autofs" ||
-            //     element.deviceInternal == false) &&
-            // element.volumeDirectory != null &&
             (element.uuidString) != null &&
-            ((showExternal.value &&
-                    ((element.isRemovable ?? false) ||
-                        element.isInternal == false) ||
-                (showEjectable.value && element.isEjectable != false) ||
-                (showInternal.value && element.isInternal != false))))
+            ((showEjectable.value && element.isEjectable != false) ||
+                (showInternal.value && element.isInternal != false)))
         .toList();
     final rule = useState(CopyRule(
       srcGlob: Glob('**/*'),
@@ -94,7 +87,7 @@ class CopyFilesView extends HookConsumerWidget {
               // add theme appropriate padding
               SizedBox(height: Theme.of(context).dividerTheme.space ?? 8),
               if (job != null)
-                CopyProgressWidget(ruleId: Id.fromString(mediaUUID!)),
+                CopyProgressWidget(ruleId: Id.fromString(mediaUUID)),
             ],
           ),
           trailing: Row(
@@ -199,16 +192,10 @@ class CopyFilesView extends HookConsumerWidget {
                 emptySelectionAllowed: true,
                 showSelectedIcon: false,
                 selected: <VolumeFilter>{
-                  if (showExternal.value) VolumeFilter.external,
                   if (showEjectable.value) VolumeFilter.ejectable,
                   if (showInternal.value) VolumeFilter.internal,
                 },
                 segments: const <ButtonSegment<VolumeFilter>>[
-                  ButtonSegment(
-                    value: VolumeFilter.external,
-                    label: Text('External'),
-                    icon: Icon(Icons.sd_card),
-                  ),
                   ButtonSegment(
                     value: VolumeFilter.ejectable,
                     label: Text('Ejectable'),
@@ -221,7 +208,6 @@ class CopyFilesView extends HookConsumerWidget {
                   ),
                 ],
                 onSelectionChanged: (Set<VolumeFilter> selected) {
-                  showExternal.value = selected.contains(VolumeFilter.external);
                   showEjectable.value =
                       selected.contains(VolumeFilter.ejectable);
                   showInternal.value = selected.contains(VolumeFilter.internal);
