@@ -35,6 +35,7 @@ class CopyFilesView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final projectDestinationFolder = useState<Directory?>(null);
+    final volumePlugin = ref.watch(volumesPluginProvider);
 
     final allVolumes = ref.watch(volumesProvider).asData?.value ?? [];
 
@@ -187,32 +188,36 @@ class CopyFilesView extends HookConsumerWidget {
           ),
           Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SegmentedButton(
-                multiSelectionEnabled: true,
-                emptySelectionAllowed: true,
-                showSelectedIcon: false,
-                selected: <VolumeFilter>{
-                  if (showEjectable.value) VolumeFilter.ejectable,
-                  if (showInternal.value) VolumeFilter.internal,
-                },
-                segments: const <ButtonSegment<VolumeFilter>>[
-                  ButtonSegment(
-                    value: VolumeFilter.ejectable,
-                    label: Text('Ejectable'),
-                    icon: Icon(Icons.eject),
-                  ),
-                  ButtonSegment(
-                    value: VolumeFilter.internal,
-                    label: Text('Internal'),
-                    icon: Icon(Icons.storage),
-                  ),
-                ],
-                onSelectionChanged: (Set<VolumeFilter> selected) {
-                  showEjectable.value =
-                      selected.contains(VolumeFilter.ejectable);
-                  showInternal.value = selected.contains(VolumeFilter.internal);
-                },
-              )),
+              child: !volumePlugin.supported
+                  ? const Text(
+                      'Volume plugin is NOT supported on this platform.')
+                  : SegmentedButton(
+                      multiSelectionEnabled: true,
+                      emptySelectionAllowed: true,
+                      showSelectedIcon: false,
+                      selected: <VolumeFilter>{
+                        if (showEjectable.value) VolumeFilter.ejectable,
+                        if (showInternal.value) VolumeFilter.internal,
+                      },
+                      segments: const <ButtonSegment<VolumeFilter>>[
+                        ButtonSegment(
+                          value: VolumeFilter.ejectable,
+                          label: Text('Ejectable'),
+                          icon: Icon(Icons.eject),
+                        ),
+                        ButtonSegment(
+                          value: VolumeFilter.internal,
+                          label: Text('Internal'),
+                          icon: Icon(Icons.storage),
+                        ),
+                      ],
+                      onSelectionChanged: (Set<VolumeFilter> selected) {
+                        showEjectable.value =
+                            selected.contains(VolumeFilter.ejectable);
+                        showInternal.value =
+                            selected.contains(VolumeFilter.internal);
+                      },
+                    )),
           Expanded(child: volumeList)
         ],
       ),

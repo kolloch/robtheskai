@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'volume_plugin.dart';
 
 class VolumePlugin {
-  static const bool supported = true;
+  final bool supported = true;
 
   static const MethodChannel _methodChannel = MethodChannel('volume_plugin');
   static const EventChannel _eventChannel = EventChannel('volumesEventChannel');
