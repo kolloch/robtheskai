@@ -192,19 +192,7 @@ class SceneWithShotList extends HookConsumerWidget {
               _createSceneEditButton(context, scene, ref),
               _createShotAddButton(context, scene, ref),
               // expand button
-              IconButton(
-                icon: expanded.value
-                    ? const Icon(Icons.expand_less)
-                    : const Icon(Icons.expand_more),
-                onPressed: () {
-                  var controller = ExpansionTileController.of(context);
-                  if (expanded.value) {
-                    controller.collapse();
-                  } else {
-                    controller.expand();
-                  }
-                },
-              ),
+              ToggleExpandableWidget(expanded: expanded),
             ],
           ),
         EditMode.delete => _createSceneDeleteButton(context, scene, ref),
@@ -233,6 +221,32 @@ class SceneWithShotList extends HookConsumerWidget {
           },
         ),
       ],
+    );
+  }
+}
+
+class ToggleExpandableWidget extends StatelessWidget {
+  const ToggleExpandableWidget({
+    super.key,
+    required this.expanded,
+  });
+
+  final ValueNotifier<bool> expanded;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: expanded.value
+          ? const Icon(Icons.expand_less)
+          : const Icon(Icons.expand_more),
+      onPressed: () {
+        var controller = ExpansionTileController.of(context);
+        if (expanded.value) {
+          controller.collapse();
+        } else {
+          controller.expand();
+        }
+      },
     );
   }
 }
