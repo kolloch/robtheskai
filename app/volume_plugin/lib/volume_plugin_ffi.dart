@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'volume_plugin.dart';
 
 class VolumePlugin {
-  final bool supported = true;
+  final bool supported = Platform.isMacOS;
 
   static const MethodChannel _methodChannel = MethodChannel('volume_plugin');
   static const EventChannel _eventChannel = EventChannel('volumesEventChannel');
@@ -14,7 +15,11 @@ class VolumePlugin {
   Stream<bool>? _events;
 
   Future<List<Volume>> getVolumes() async {
-    final List volumes = await _methodChannel.invokeMethod('getVolumes');
+    if (!supported) {
+      return [];
+    }
+
+    final volumes = await _methodChannel.invokeMethod('getVolumes');
     return volumes
         .map((v) => Volume.fromJson(Map<String, dynamic>.from(v)))
         .toList();
@@ -27,6 +32,10 @@ class VolumePlugin {
   }
 
   Stream<List<Volume>> get uptodateVolumes async* {
+    if (!supported) {
+      return;
+    }
+
     final timer = _IrregularTimingStream(
       excitedInterval: const Duration(seconds: 1),
       excitedEvents: 10,
@@ -50,6 +59,10 @@ class VolumePlugin {
 
   // does not work
   Future<void> eject(Volume volume) async {
+    if (!supported) {
+      throw UnsupportedError('This platform is not supported.');
+    }
+
     await _methodChannel.invokeMethod('eject', {'url': volume.url});
   }
 }

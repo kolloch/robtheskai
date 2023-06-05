@@ -232,10 +232,10 @@ class __$$CopyCancelledCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? lastEvent = null,
+    Object? lastEvent = freezed,
   }) {
     return _then(_$CopyCancelled(
-      null == lastEvent
+      freezed == lastEvent
           ? _value.lastEvent
           : lastEvent // ignore: cast_nullable_to_non_nullable
               as CopyProgress,
@@ -261,12 +261,12 @@ class _$CopyCancelled extends CopyCancelled {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CopyCancelled &&
-            (identical(other.lastEvent, lastEvent) ||
-                other.lastEvent == lastEvent));
+            const DeepCollectionEquality().equals(other.lastEvent, lastEvent));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, lastEvent);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(lastEvent));
 
   @JsonKey(ignore: true)
   @override

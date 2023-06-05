@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 export 'volume_plugin_unsupported.dart'
-    if (Platform.isMacOS) 'volume_plugin_mac_os.dart';
+    if (dart.library.ffi) 'volume_plugin_ffi.dart';
 
 part 'volume_plugin.freezed.dart';
 part 'volume_plugin.g.dart';
