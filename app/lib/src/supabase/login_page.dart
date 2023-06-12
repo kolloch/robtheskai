@@ -3,22 +3,23 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'account_page.dart';
 import 'show_snack_bar.dart';
 import 'supabase.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   static const routeName = '/login';
 
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   bool _isLoading = false;
   bool _redirecting = false;
   late final TextEditingController _emailController;
@@ -29,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
       _isLoading = true;
     });
     try {
+      final supabase = ref.read(supabaseProvider);
       await supabase.auth.signInWithOtp(
         email: _emailController.text.trim(),
         emailRedirectTo: kIsWeb ? null : 'one.hi2.robtheskai://login-callback/',
@@ -51,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     _emailController = TextEditingController();
+    final supabase = ref.read(supabaseProvider);
     _authStateSubscription = supabase.auth.onAuthStateChange.listen((data) {
       if (_redirecting) return;
       final session = data.session;

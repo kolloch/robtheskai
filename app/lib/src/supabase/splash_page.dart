@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:robokru/src/supabase/account_page.dart';
 import 'package:robokru/src/supabase/supabase.dart';
 
 import 'login_page.dart';
 
-class SplashPage extends StatefulWidget {
+class SplashPage extends ConsumerStatefulWidget {
   static const routeName = '/splash';
 
   const SplashPage({super.key});
 
   @override
-  Widget createState() => _SplashPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _SplashPageState();
+  }
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends ConsumerState<SplashPage> {
   bool _redirectCalled = false;
   @override
   void didChangeDependencies() {
@@ -29,6 +32,7 @@ class _SplashPageState extends State<SplashPage> {
     }
 
     _redirectCalled = true;
+    final supabase = ref.read(supabaseProvider);
     final session = supabase.auth.currentSession;
     if (session != null) {
       context.pushReplacementNamed(AccountPage.routeName);
