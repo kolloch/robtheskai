@@ -6,13 +6,38 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:robokru/src/projects/project_scene_list.dart';
 import 'package:robokru/src/settings/settings_notifier.dart';
 import 'package:robokru/src/settings/settings_view.dart';
+import 'package:robokru/src/supabase/account_page.dart';
+import 'package:robokru/src/supabase/login_page.dart';
+import 'package:robokru/src/supabase/splash_page.dart';
 
 import 'copy/copy_volumes_view.dart';
 import 'data/id.dart';
 import 'projects/project_list.dart';
 
 final GoRouter appRouter = GoRouter(
+/** Convert to GoRouter:
+ * 
+ *         '/': (_) => const SplashPage(),
+        '/login': (_) => const LoginPage(),
+        '/account': (_) => const AccountPage(),
+ */
+
   routes: [
+    GoRoute(
+      name: SplashPage.routeName,
+      path: "/",
+      builder: (context, state) => const SplashPage(),
+    ),
+    GoRoute(
+      name: LoginPage.routeName,
+      path: "/login",
+      builder: (context, state) => const LoginPage(),
+    ),
+    GoRoute(
+      name: AccountPage.routeName,
+      path: "/account",
+      builder: (context, state) => const AccountPage(),
+    ),
     GoRoute(
       name: ProjectListView.routeName,
       path: '/projects',
@@ -38,7 +63,7 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const SettingsView(),
     ),
   ],
-  initialLocation: '/settings',
+  initialLocation: '/',
   redirect: (context, state) => switch (state.location) {
     // '/' => SettingsView.routeName,
     _ => null,
