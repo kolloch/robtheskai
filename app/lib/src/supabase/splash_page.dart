@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:robokru/src/supabase/account_page.dart';
+import 'package:robokru/src/supabase/supabase.dart';
 
-import 'constants.dart';
 import 'login_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -11,7 +11,7 @@ class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
 
   @override
-  _SplashPageState createState() => _SplashPageState();
+  Widget createState() => _SplashPageState();
 }
 
 class _SplashPageState extends State<SplashPage> {

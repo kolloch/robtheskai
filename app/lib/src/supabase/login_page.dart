@@ -6,7 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'account_page.dart';
-import 'constants.dart';
+import 'show_snack_bar.dart';
+import 'supabase.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/login';
@@ -14,7 +15,7 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {

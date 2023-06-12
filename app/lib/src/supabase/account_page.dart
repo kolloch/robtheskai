@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:robokru/src/supabase/splash_page.dart';
+import 'package:robokru/src/supabase/supabase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'constants.dart';
+import 'show_snack_bar.dart';
 
 class AccountPage extends StatefulWidget {
   static const routeName = '/account';
@@ -11,7 +12,7 @@ class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
 
   @override
-  _AccountPageState createState() => _AccountPageState();
+  State<AccountPage> createState() => _AccountPageState();
 }
 
 class _AccountPageState extends State<AccountPage> {
