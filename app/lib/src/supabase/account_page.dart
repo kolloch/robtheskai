@@ -5,6 +5,9 @@ import 'package:robokru/src/supabase/splash_page.dart';
 import 'package:robokru/src/supabase/supabase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../data/id.dart';
+import '../projects/selected_project.dart';
+import '../skeleton/top_level_navigation_drawer.dart';
 import 'show_snack_bar.dart';
 
 class AccountPage extends ConsumerStatefulWidget {
@@ -91,7 +94,7 @@ class _AccountPageState extends ConsumerState<AccountPage> {
       context.showErrorSnackBar(message: 'Unexpected error occurred');
     }
     if (mounted) {
-      context.pushReplacementNamed(SplashPage.routeName);
+      context.pushReplacementNamed(AccountSplashPage.routeName);
     }
   }
 
@@ -110,8 +113,11 @@ class _AccountPageState extends ConsumerState<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Id? selectedProjectId =
+        ref.watch(selectedProjectNotifier).valueOrNull;
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
+      drawer: TopLevelNavigationDrawer(selectedProjectId: selectedProjectId),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
         children: [

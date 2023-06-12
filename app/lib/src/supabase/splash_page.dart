@@ -6,10 +6,10 @@ import 'package:robokru/src/supabase/supabase.dart';
 
 import 'login_page.dart';
 
-class SplashPage extends ConsumerStatefulWidget {
+class AccountSplashPage extends ConsumerStatefulWidget {
   static const routeName = '/splash';
 
-  const SplashPage({super.key});
+  const AccountSplashPage({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() {
@@ -17,7 +17,7 @@ class SplashPage extends ConsumerStatefulWidget {
   }
 }
 
-class _SplashPageState extends ConsumerState<SplashPage> {
+class _SplashPageState extends ConsumerState<AccountSplashPage> {
   bool _redirectCalled = false;
   @override
   void didChangeDependencies() {

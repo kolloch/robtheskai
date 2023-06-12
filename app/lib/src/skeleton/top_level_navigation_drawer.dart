@@ -10,6 +10,9 @@ import 'package:robokru/src/projects/project_scene_list.dart';
 import 'package:robokru/src/settings/settings_view.dart';
 
 import '../projects/selected_project.dart';
+import '../supabase/account_page.dart';
+import '../supabase/splash_page.dart';
+import '../supabase/supabase.dart';
 
 final selectedProjectProvider = StreamProvider<Project?>((ref) {
   final ProjectsDao projectsDao = ref.watch(projectsDaoProvider);
@@ -59,24 +62,48 @@ class TopLevelNavigationDrawer extends ConsumerWidget {
           ]
         : [];
 
+    final authState = ref.watch(authStateProvider).asData?.value;
+    final session = authState?.session;
+    final user = session?.user;
+    final email = user?.email;
+
     return NavigationDrawer(
       children: [
-        Padding(
-            padding: edgeInsets,
-            child: Column(
-              children: [
+        DrawerHeader(
+          decoration: const BoxDecoration(
+            color: Colors.blue,
+          ),
+          child: Column(
+            children: [
+              Text(
+                'Rob the Skai',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              if (email != null) const SizedBox(height: 8),
+              if (email == null)
+                TextButton.icon(
+                    onPressed: () {
+                      context.pushReplacementNamed(AccountSplashPage.routeName);
+                    },
+                    icon: const Icon(Icons.login),
+                    label: const Text('Login'))
+              else
+                // current logged in email, on tap go to account page
+                TextButton.icon(
+                    onPressed: () {
+                      context.pushReplacementNamed(AccountPage.routeName);
+                    },
+                    icon: const Icon(Icons.account_circle),
+                    label: Text(email)),
+              if (project != null) const SizedBox(height: 8),
+              if (project != null)
                 Text(
-                  'Rob the Skai',
-                  style: Theme.of(context).textTheme.titleMedium,
+                  project.name,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
-                if (project != null) const SizedBox(height: 8),
-                if (project != null)
-                  Text(
-                    project.name,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-              ],
-            )),
+            ],
+          ),
+        ),
         Padding(
             padding: edgeInsets,
             child: ListTile(

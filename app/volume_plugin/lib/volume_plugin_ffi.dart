@@ -20,9 +20,9 @@ class VolumePlugin {
     }
 
     final volumes = await _methodChannel.invokeMethod('getVolumes');
-    return volumes
-        .map((v) => Volume.fromJson(Map<String, dynamic>.from(v)))
-        .toList();
+    final List<Volume> list =
+        volumes.map((v) => Volume.fromJson(Map<String, Object?>.from(v)));
+    return list.toList();
   }
 
   Stream<bool> get _currentEvents {

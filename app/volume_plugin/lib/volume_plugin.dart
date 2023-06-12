@@ -35,7 +35,7 @@ class Volume with _$Volume {
     int? totalCapacity,
   }) = _Volume;
 
-  factory Volume.fromJson(Map<String, dynamic> json) => _$VolumeFromJson(json);
+  factory Volume.fromJson(Map<String, Object?> json) => _$VolumeFromJson(json);
 }
 
 extension VolumeExtension on Volume {

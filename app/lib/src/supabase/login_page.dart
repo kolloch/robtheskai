@@ -4,8 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:robokru/src/skeleton/top_level_navigation_drawer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../data/id.dart';
+import '../projects/selected_project.dart';
 import 'account_page.dart';
 import 'show_snack_bar.dart';
 import 'supabase.dart';
@@ -74,8 +77,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Id? selectedProjectId =
+        ref.watch(selectedProjectNotifier).valueOrNull;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Sign In')),
+      drawer: TopLevelNavigationDrawer(selectedProjectId: selectedProjectId),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
         children: [

@@ -15,27 +15,20 @@ import 'data/id.dart';
 import 'projects/project_list.dart';
 
 final GoRouter appRouter = GoRouter(
-/** Convert to GoRouter:
- * 
- *         '/': (_) => const SplashPage(),
-        '/login': (_) => const LoginPage(),
-        '/account': (_) => const AccountPage(),
- */
-
   routes: [
     GoRoute(
-      name: SplashPage.routeName,
-      path: "/",
-      builder: (context, state) => const SplashPage(),
+      name: AccountSplashPage.routeName,
+      path: "/account",
+      builder: (context, state) => const AccountSplashPage(),
     ),
     GoRoute(
       name: LoginPage.routeName,
-      path: "/login",
+      path: "/account/login",
       builder: (context, state) => const LoginPage(),
     ),
     GoRoute(
       name: AccountPage.routeName,
-      path: "/account",
+      path: "/account/signup",
       builder: (context, state) => const AccountPage(),
     ),
     GoRoute(
@@ -63,7 +56,7 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const SettingsView(),
     ),
   ],
-  initialLocation: '/',
+  initialLocation: '/projects',
   redirect: (context, state) => switch (state.location) {
     // '/' => SettingsView.routeName,
     _ => null,
