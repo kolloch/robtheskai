@@ -14,6 +14,9 @@ jobs:
           flutter-version: '3.x'
           channel: 'stable'
 
+      - name: Enter app dir
+        run: cd app
+
       - name: Install dependencies
         run: flutter pub get
 
