@@ -1,9 +1,9 @@
-name: macos/ios build
+name: Web/Android build
 
 on: [push, workflow_dispatch]
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -14,12 +14,18 @@ jobs:
           flutter-version: '3.x'
           channel: 'stable'
 
+      - name: Install some required packages
+        run: sudo apt-get install libgtk-3-0 libblkid1 liblzma5
+
       - name: Install dependencies
         working-directory: ./app
         run: flutter pub get
 
       - working-directory: ./app
-        run: flutter build macos
+        run: flutter build web
 
       - working-directory: ./app
-        run: flutter build ios --no-codesign
+        run: flutter build android --no-codesign
+
+      - working-directory: ./app
+        run: flutter build linux --release
