@@ -71,7 +71,7 @@ class CopyFilesView extends HookConsumerWidget {
             ? prettyBytes(volume.totalCapacity?.toDouble() ?? 0)
             : '';
         return ListTile(
-          title: Text("${name} ($prettySize)"),
+          title: Text("$name ($prettySize)"),
           subtitle: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,7 +126,7 @@ class CopyFilesView extends HookConsumerWidget {
                       ref.read(volumesPluginProvider).eject(volume).then(
                           (value) => print("Ejected ${volume.uuidString}"),
                           onError: (e, s) => print(
-                              "(NOT WORKING PROPERLY) ejected ${e} ${volume.uuidString}"));
+                              "(NOT WORKING PROPERLY) ejected $e ${volume.uuidString}"));
                     }),
               IconButton(
                   icon: const Icon(Icons.copy),
