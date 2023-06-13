@@ -21,7 +21,7 @@ jobs:
           channel: 'stable'
 
       - name: Install some required packages
-        run: sudo apt-get install libgtk-3-0 libblkid1 liblzma5
+        run: sudo apt-get install libgtk-3-0 libblkid1 liblzma5 ninja-build
 
       - name: Install dependencies
         working-directory: ./app
