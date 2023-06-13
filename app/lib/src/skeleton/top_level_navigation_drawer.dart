@@ -70,16 +70,21 @@ class TopLevelNavigationDrawer extends ConsumerWidget {
     return NavigationDrawer(
       children: [
         DrawerHeader(
-          decoration: const BoxDecoration(
-            color: Colors.blue,
-          ),
+          // decoration: const BoxDecoration(
+          //   color: Colors.blue,
+          // ),
           child: Column(
             children: [
               Text(
                 'Rob the Skai',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.titleSmall,
               ),
-              if (email != null) const SizedBox(height: 8),
+              if (project != null) const SizedBox(height: 16),
+              if (project != null)
+                Text(
+                  project.name,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
               if (email == null)
                 TextButton.icon(
                     onPressed: () {
@@ -95,12 +100,6 @@ class TopLevelNavigationDrawer extends ConsumerWidget {
                     },
                     icon: const Icon(Icons.account_circle),
                     label: Text(email)),
-              if (project != null) const SizedBox(height: 8),
-              if (project != null)
-                Text(
-                  project.name,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
             ],
           ),
         ),
