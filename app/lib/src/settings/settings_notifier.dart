@@ -13,15 +13,24 @@ final sharedPreferencesProvider =
 });
 
 class SettingsNotifier extends AsyncNotifier<Settings> {
+  static const LAST_PROJECT_IDS_KEY = 'lastProjectIds';
+  static const THEME_KEY = 'theme';
+
   @override
   FutureOr<Settings> build() async {
     final sharedPreferences = await ref.read(sharedPreferencesProvider.future);
-    final theme = sharedPreferences.getString('theme') ?? 'system';
+    final theme =
+        sharedPreferences.getString(THEME_KEY) ?? ThemeMode.system.toString();
     final themeMode = ThemeMode.values.firstWhere(
       (e) => e.toString() == theme,
       orElse: () => ThemeMode.system,
     );
-    return Settings(themeMode: themeMode, lastProjectIds: []);
+    final lastProjectIds = sharedPreferences
+            .getStringList(LAST_PROJECT_IDS_KEY)
+            ?.map((id) => Id.fromString(id))
+            .toList() ??
+        [];
+    return Settings(themeMode: themeMode, lastProjectIds: lastProjectIds);
   }
 
   Future<void> updateThemeMode(ThemeMode? theme) async {
@@ -29,7 +38,7 @@ class SettingsNotifier extends AsyncNotifier<Settings> {
     final sharedPreferences = await ref.read(sharedPreferencesProvider.future);
 
     state = await AsyncValue.guard(() async {
-      await sharedPreferences.setString('theme', theme.toString());
+      await sharedPreferences.setString(THEME_KEY, theme.toString());
       return value.copyWith(themeMode: theme ?? ThemeMode.system);
     });
   }
@@ -39,17 +48,13 @@ class SettingsNotifier extends AsyncNotifier<Settings> {
     final sharedPreferences = await ref.read(sharedPreferencesProvider.future);
 
     state = await AsyncValue.guard(() async {
-      print("addSelectedProject: $projectId to ${value.lastProjectIds}");
-
       final lastProjectIds = [
         projectId,
         ...value.lastProjectIds.where((id) => id != projectId),
       ].take(3).toList();
 
-      print("addSelectedProject: $projectId to $lastProjectIds (after)");
-
       await sharedPreferences.setStringList(
-        'lastProjectIds',
+        LAST_PROJECT_IDS_KEY,
         lastProjectIds.map((id) => id.toString()).toList(),
       );
 

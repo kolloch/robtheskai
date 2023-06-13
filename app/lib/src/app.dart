@@ -14,61 +14,9 @@ import 'copy/copy_volumes_view.dart';
 import 'data/id.dart';
 import 'projects/project_list.dart';
 
-final GoRouter appRouter = GoRouter(
-  routes: [
-    GoRoute(
-      name: AccountSplashPage.routeName,
-      path: "/account",
-      builder: (context, state) => const AccountSplashPage(),
-    ),
-    GoRoute(
-      name: LoginPage.routeName,
-      path: "/account/login",
-      builder: (context, state) => const LoginPage(),
-    ),
-    GoRoute(
-      name: AccountPage.routeName,
-      path: "/account/signup",
-      builder: (context, state) => const AccountPage(),
-    ),
-    GoRoute(
-      name: ProjectListView.routeName,
-      path: '/projects',
-      builder: (context, state) => const ProjectListView(),
-    ),
-    GoRoute(
-      name: ProjectSceneList.routeName,
-      path: '/projects/:projectId/scenes',
-      builder: (context, state) => ProjectSceneList(
-        projectId: Id.fromString(state.pathParameters['projectId']!),
-      ),
-    ),
-    GoRoute(
-      name: CopyFilesView.routeName,
-      path: '/projects/:projectId/copyVolumes',
-      builder: (context, state) => CopyFilesView(
-        projectId: Id.fromString(state.pathParameters['projectId']!),
-      ),
-    ),
-    GoRoute(
-      name: SettingsView.routeName,
-      path: '/settings',
-      builder: (context, state) => const SettingsView(),
-    ),
-  ],
-  initialLocation: '/projects',
-  redirect: (context, state) => switch (state.location) {
-    // '/' => SettingsView.routeName,
-    _ => null,
-  },
-);
-
 /// The Widget that configures your application.
 class MyApp extends ConsumerWidget {
-  final GoRouter router;
-
   const MyApp({
-    required this.router,
     super.key,
   });
 
@@ -85,6 +33,57 @@ class MyApp extends ConsumerWidget {
     }
 
     final settings = maybeSettingsController!.value;
+
+    final GoRouter router = GoRouter(
+      routes: [
+        GoRoute(
+          name: AccountSplashPage.routeName,
+          path: "/account",
+          builder: (context, state) => const AccountSplashPage(),
+        ),
+        GoRoute(
+          name: LoginPage.routeName,
+          path: "/account/login",
+          builder: (context, state) => const LoginPage(),
+        ),
+        GoRoute(
+          name: AccountPage.routeName,
+          path: "/account/signup",
+          builder: (context, state) => const AccountPage(),
+        ),
+        GoRoute(
+          name: ProjectListView.routeName,
+          path: '/projects',
+          builder: (context, state) => const ProjectListView(),
+        ),
+        GoRoute(
+          name: ProjectSceneList.routeName,
+          path: '/projects/:projectId/scenes',
+          builder: (context, state) => ProjectSceneList(
+            projectId: Id.fromString(state.pathParameters['projectId']!),
+          ),
+        ),
+        GoRoute(
+          name: CopyFilesView.routeName,
+          path: '/projects/:projectId/copyVolumes',
+          builder: (context, state) => CopyFilesView(
+            projectId: Id.fromString(state.pathParameters['projectId']!),
+          ),
+        ),
+        GoRoute(
+          name: SettingsView.routeName,
+          path: '/settings',
+          builder: (context, state) => const SettingsView(),
+        ),
+      ],
+      initialLocation: '/',
+      redirect: (context, state) => switch (state.location) {
+        '/' => settings.lastProjectId != null
+            ? '/projects/${settings.lastProjectId}/scenes'
+            : '/projects',
+        _ => null,
+      },
+    );
 
     // Glue the SettingsController to the MaterialApp.
     //

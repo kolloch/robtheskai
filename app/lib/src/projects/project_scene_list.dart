@@ -50,9 +50,11 @@ class ProjectSceneList extends HookConsumerWidget {
     final sceneNumberWidth =
         _maximumSceneNumberWidth(context, titleLarge2, scenes.asData?.value);
 
+    final project = ref.watch(selectedProjectProvider).asData?.value;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Scenes'),
+        title: Text('Scenes of ${project?.name}'),
       ),
       drawer: TopLevelNavigationDrawer(selectedProjectId: projectId),
 
