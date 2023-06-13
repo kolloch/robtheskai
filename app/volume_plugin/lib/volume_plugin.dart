@@ -22,15 +22,12 @@ class Volume with _$Volume {
     bool? supportsPersistentIDs,
     bool? supportsCasePreservedNames,
     bool? supportsRenaming,
-    String? creationDate,
+    double? creationDate, // unix epoch seconds
     String? modificationDate,
-    String? identifier,
     String? localizedFormatDescription,
     String? localizedName,
     String? url,
     String? uuidString,
-    String? type,
-    String? subtype,
     int? availableCapacityForImportantUsage,
     int? totalCapacity,
   }) = _Volume;

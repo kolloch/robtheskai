@@ -3,6 +3,8 @@ import 'package:volume_plugin/volume_plugin.dart';
 class VolumePlugin {
   final bool supported = false;
 
+  const VolumePlugin();
+
   Future<List<Volume>> getVolumes() async {
     return [];
   }

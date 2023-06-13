@@ -12,6 +12,8 @@ class VolumePlugin {
   static const MethodChannel _methodChannel = MethodChannel('volume_plugin');
   static const EventChannel _eventChannel = EventChannel('volumesEventChannel');
 
+  VolumePlugin();
+
   Stream<bool>? _events;
 
   Future<List<Volume>> getVolumes() async {
@@ -19,10 +21,13 @@ class VolumePlugin {
       return [];
     }
 
-    final volumes = await _methodChannel.invokeMethod('getVolumes');
-    final List<Volume> list =
-        volumes.map((v) => Volume.fromJson(Map<String, Object?>.from(v)));
-    return list.toList();
+    final List<dynamic> volumes =
+        await _methodChannel.invokeMethod('getVolumes');
+
+    final List<Volume> list = volumes
+        .map((v) => Volume.fromJson(Map<String, Object?>.from(v)))
+        .toList();
+    return list;
   }
 
   Stream<bool> get _currentEvents {

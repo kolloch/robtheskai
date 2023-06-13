@@ -74,11 +74,7 @@ public class VolumePlugin: NSObject, FlutterPlugin {
         volumeData["isRootFileSystem"] = values.volumeIsRootFileSystem
         volumeData["supportsPersistentIDs"] = values.volumeSupportsPersistentIDs
         volumeData["supportsRenaming"] = values.volumeSupportsRenaming
-        volumeData["creationDate"] = values.volumeCreationDate.map { 
-          // format as date string
-          $0.description(with: Locale.current)
-        }
-        volumeData["identifier"] = values.volumeIdentifier?.description
+        volumeData["creationDate"] = values.volumeCreationDate.map { $0.timeIntervalSince1970 }
         volumeData["localizedFormatDescription"] = values.volumeLocalizedFormatDescription
         volumeData["localizedName"] = values.volumeLocalizedName
         volumeData["uuidString"] = values.volumeUUIDString

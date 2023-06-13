@@ -32,15 +32,13 @@ mixin _$Volume {
   bool? get supportsPersistentIDs => throw _privateConstructorUsedError;
   bool? get supportsCasePreservedNames => throw _privateConstructorUsedError;
   bool? get supportsRenaming => throw _privateConstructorUsedError;
-  String? get creationDate => throw _privateConstructorUsedError;
+  double? get creationDate =>
+      throw _privateConstructorUsedError; // unix epoch seconds
   String? get modificationDate => throw _privateConstructorUsedError;
-  String? get identifier => throw _privateConstructorUsedError;
   String? get localizedFormatDescription => throw _privateConstructorUsedError;
   String? get localizedName => throw _privateConstructorUsedError;
   String? get url => throw _privateConstructorUsedError;
   String? get uuidString => throw _privateConstructorUsedError;
-  String? get type => throw _privateConstructorUsedError;
-  String? get subtype => throw _privateConstructorUsedError;
   int? get availableCapacityForImportantUsage =>
       throw _privateConstructorUsedError;
   int? get totalCapacity => throw _privateConstructorUsedError;
@@ -68,15 +66,12 @@ abstract class $VolumeCopyWith<$Res> {
       bool? supportsPersistentIDs,
       bool? supportsCasePreservedNames,
       bool? supportsRenaming,
-      String? creationDate,
+      double? creationDate,
       String? modificationDate,
-      String? identifier,
       String? localizedFormatDescription,
       String? localizedName,
       String? url,
       String? uuidString,
-      String? type,
-      String? subtype,
       int? availableCapacityForImportantUsage,
       int? totalCapacity});
 }
@@ -108,13 +103,10 @@ class _$VolumeCopyWithImpl<$Res, $Val extends Volume>
     Object? supportsRenaming = freezed,
     Object? creationDate = freezed,
     Object? modificationDate = freezed,
-    Object? identifier = freezed,
     Object? localizedFormatDescription = freezed,
     Object? localizedName = freezed,
     Object? url = freezed,
     Object? uuidString = freezed,
-    Object? type = freezed,
-    Object? subtype = freezed,
     Object? availableCapacityForImportantUsage = freezed,
     Object? totalCapacity = freezed,
   }) {
@@ -170,14 +162,10 @@ class _$VolumeCopyWithImpl<$Res, $Val extends Volume>
       creationDate: freezed == creationDate
           ? _value.creationDate
           : creationDate // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       modificationDate: freezed == modificationDate
           ? _value.modificationDate
           : modificationDate // ignore: cast_nullable_to_non_nullable
-              as String?,
-      identifier: freezed == identifier
-          ? _value.identifier
-          : identifier // ignore: cast_nullable_to_non_nullable
               as String?,
       localizedFormatDescription: freezed == localizedFormatDescription
           ? _value.localizedFormatDescription
@@ -194,14 +182,6 @@ class _$VolumeCopyWithImpl<$Res, $Val extends Volume>
       uuidString: freezed == uuidString
           ? _value.uuidString
           : uuidString // ignore: cast_nullable_to_non_nullable
-              as String?,
-      type: freezed == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String?,
-      subtype: freezed == subtype
-          ? _value.subtype
-          : subtype // ignore: cast_nullable_to_non_nullable
               as String?,
       availableCapacityForImportantUsage: freezed ==
               availableCapacityForImportantUsage
@@ -235,15 +215,12 @@ abstract class _$$_VolumeCopyWith<$Res> implements $VolumeCopyWith<$Res> {
       bool? supportsPersistentIDs,
       bool? supportsCasePreservedNames,
       bool? supportsRenaming,
-      String? creationDate,
+      double? creationDate,
       String? modificationDate,
-      String? identifier,
       String? localizedFormatDescription,
       String? localizedName,
       String? url,
       String? uuidString,
-      String? type,
-      String? subtype,
       int? availableCapacityForImportantUsage,
       int? totalCapacity});
 }
@@ -272,13 +249,10 @@ class __$$_VolumeCopyWithImpl<$Res>
     Object? supportsRenaming = freezed,
     Object? creationDate = freezed,
     Object? modificationDate = freezed,
-    Object? identifier = freezed,
     Object? localizedFormatDescription = freezed,
     Object? localizedName = freezed,
     Object? url = freezed,
     Object? uuidString = freezed,
-    Object? type = freezed,
-    Object? subtype = freezed,
     Object? availableCapacityForImportantUsage = freezed,
     Object? totalCapacity = freezed,
   }) {
@@ -334,14 +308,10 @@ class __$$_VolumeCopyWithImpl<$Res>
       creationDate: freezed == creationDate
           ? _value.creationDate
           : creationDate // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       modificationDate: freezed == modificationDate
           ? _value.modificationDate
           : modificationDate // ignore: cast_nullable_to_non_nullable
-              as String?,
-      identifier: freezed == identifier
-          ? _value.identifier
-          : identifier // ignore: cast_nullable_to_non_nullable
               as String?,
       localizedFormatDescription: freezed == localizedFormatDescription
           ? _value.localizedFormatDescription
@@ -358,14 +328,6 @@ class __$$_VolumeCopyWithImpl<$Res>
       uuidString: freezed == uuidString
           ? _value.uuidString
           : uuidString // ignore: cast_nullable_to_non_nullable
-              as String?,
-      type: freezed == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String?,
-      subtype: freezed == subtype
-          ? _value.subtype
-          : subtype // ignore: cast_nullable_to_non_nullable
               as String?,
       availableCapacityForImportantUsage: freezed ==
               availableCapacityForImportantUsage
@@ -398,13 +360,10 @@ class _$_Volume implements _Volume {
       this.supportsRenaming,
       this.creationDate,
       this.modificationDate,
-      this.identifier,
       this.localizedFormatDescription,
       this.localizedName,
       this.url,
       this.uuidString,
-      this.type,
-      this.subtype,
       this.availableCapacityForImportantUsage,
       this.totalCapacity});
 
@@ -436,11 +395,10 @@ class _$_Volume implements _Volume {
   @override
   final bool? supportsRenaming;
   @override
-  final String? creationDate;
+  final double? creationDate;
+// unix epoch seconds
   @override
   final String? modificationDate;
-  @override
-  final String? identifier;
   @override
   final String? localizedFormatDescription;
   @override
@@ -450,17 +408,13 @@ class _$_Volume implements _Volume {
   @override
   final String? uuidString;
   @override
-  final String? type;
-  @override
-  final String? subtype;
-  @override
   final int? availableCapacityForImportantUsage;
   @override
   final int? totalCapacity;
 
   @override
   String toString() {
-    return 'Volume(name: $name, isBrowsable: $isBrowsable, isEjectable: $isEjectable, isRemovable: $isRemovable, isInternal: $isInternal, isAutomounted: $isAutomounted, isLocal: $isLocal, isReadOnly: $isReadOnly, isRootFileSystem: $isRootFileSystem, supportsPersistentIDs: $supportsPersistentIDs, supportsCasePreservedNames: $supportsCasePreservedNames, supportsRenaming: $supportsRenaming, creationDate: $creationDate, modificationDate: $modificationDate, identifier: $identifier, localizedFormatDescription: $localizedFormatDescription, localizedName: $localizedName, url: $url, uuidString: $uuidString, type: $type, subtype: $subtype, availableCapacityForImportantUsage: $availableCapacityForImportantUsage, totalCapacity: $totalCapacity)';
+    return 'Volume(name: $name, isBrowsable: $isBrowsable, isEjectable: $isEjectable, isRemovable: $isRemovable, isInternal: $isInternal, isAutomounted: $isAutomounted, isLocal: $isLocal, isReadOnly: $isReadOnly, isRootFileSystem: $isRootFileSystem, supportsPersistentIDs: $supportsPersistentIDs, supportsCasePreservedNames: $supportsCasePreservedNames, supportsRenaming: $supportsRenaming, creationDate: $creationDate, modificationDate: $modificationDate, localizedFormatDescription: $localizedFormatDescription, localizedName: $localizedName, url: $url, uuidString: $uuidString, availableCapacityForImportantUsage: $availableCapacityForImportantUsage, totalCapacity: $totalCapacity)';
   }
 
   @override
@@ -496,8 +450,6 @@ class _$_Volume implements _Volume {
                 other.creationDate == creationDate) &&
             (identical(other.modificationDate, modificationDate) ||
                 other.modificationDate == modificationDate) &&
-            (identical(other.identifier, identifier) ||
-                other.identifier == identifier) &&
             (identical(other.localizedFormatDescription,
                     localizedFormatDescription) ||
                 other.localizedFormatDescription ==
@@ -507,8 +459,6 @@ class _$_Volume implements _Volume {
             (identical(other.url, url) || other.url == url) &&
             (identical(other.uuidString, uuidString) ||
                 other.uuidString == uuidString) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.subtype, subtype) || other.subtype == subtype) &&
             (identical(other.availableCapacityForImportantUsage,
                     availableCapacityForImportantUsage) ||
                 other.availableCapacityForImportantUsage ==
@@ -535,13 +485,10 @@ class _$_Volume implements _Volume {
         supportsRenaming,
         creationDate,
         modificationDate,
-        identifier,
         localizedFormatDescription,
         localizedName,
         url,
         uuidString,
-        type,
-        subtype,
         availableCapacityForImportantUsage,
         totalCapacity
       ]);
@@ -574,15 +521,12 @@ abstract class _Volume implements Volume {
       final bool? supportsPersistentIDs,
       final bool? supportsCasePreservedNames,
       final bool? supportsRenaming,
-      final String? creationDate,
+      final double? creationDate,
       final String? modificationDate,
-      final String? identifier,
       final String? localizedFormatDescription,
       final String? localizedName,
       final String? url,
       final String? uuidString,
-      final String? type,
-      final String? subtype,
       final int? availableCapacityForImportantUsage,
       final int? totalCapacity}) = _$_Volume;
 
@@ -613,11 +557,9 @@ abstract class _Volume implements Volume {
   @override
   bool? get supportsRenaming;
   @override
-  String? get creationDate;
-  @override
+  double? get creationDate;
+  @override // unix epoch seconds
   String? get modificationDate;
-  @override
-  String? get identifier;
   @override
   String? get localizedFormatDescription;
   @override
@@ -626,10 +568,6 @@ abstract class _Volume implements Volume {
   String? get url;
   @override
   String? get uuidString;
-  @override
-  String? get type;
-  @override
-  String? get subtype;
   @override
   int? get availableCapacityForImportantUsage;
   @override
